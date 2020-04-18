@@ -1,0 +1,35 @@
+.filter {
+  display: flex;
+  flex-direction: row;
+  border-top: 1px solid #282828;
+  border-bottom: 1px solid #282828;
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: bold;
+    font-size: 1.25rem;
+    padding: .5rem 0;
+  }
+
+  &__item {
+    margin: .5rem 0;
+    padding: 1rem;
+
+    & + .filter__item {
+      margin-left: 1rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .button {
+
+      }
+    }
+
+    display: flex;
+    flex-direction: column;
+  }
+}

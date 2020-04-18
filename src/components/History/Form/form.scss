@@ -1,0 +1,30 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  padding: 1rem;
+  margin: 1rem auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  justify-content: space-between;
+
+  &__element {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 1.25rem;
+      font-weight: bold;
+      padding-bottom: .75rem;
+    }
+
+    select {
+      width: 10rem;
+    }
+  }
+
+  .name {
+    &--error {
+      border: 2px solid red;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+.categories {
+  width: 15rem;
+  h3 {
+    padding-bottom: 1rem;
+  }
+  .button {
+    &--add {
+      padding: 0.5rem;
+      margin-left: 1rem;
+      p {
+        padding: 0;
+      }
+    }
+    &--delete {
+      padding: 0.5rem;
+      p {
+        padding: 0;
+      }
+    }
+  }
+  &__form {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+
+    img {
+      height: 1.25rem;
+    }
+  }
+}

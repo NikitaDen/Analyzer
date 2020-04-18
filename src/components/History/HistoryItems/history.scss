@@ -1,0 +1,45 @@
+.history {
+  width: 100%;
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+
+    .button {
+      margin: 0 0 2rem 0;
+      &+.button {
+        margin-left: 1.25rem;
+      }
+    }
+  }
+
+  .table {
+    &__header {
+      color: white;
+      font-weight: bold;
+      font-size: 1.25rem;
+      background-color: #8D57FF;
+      display: grid;
+      grid-template-columns: 2rem repeat(6, 1fr);
+      width: 100%;
+
+      input {
+        align-self: center;
+        justify-self: center;
+      }
+      &__item {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        padding: .25rem 0;
+        p {
+          margin: 0 auto;
+        }
+      }
+
+      p {
+        padding: .5rem;
+      }
+    }
+  }
+}

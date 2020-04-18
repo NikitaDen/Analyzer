@@ -1,0 +1,29 @@
+.expense {
+  display: grid;
+  grid-template-columns: 2rem repeat(6, 1fr);
+  width: 100%;
+  align-items: center;
+  justify-items: center;
+  border-bottom: 1px solid #282828;
+  cursor: pointer;
+
+  input, select, option {
+    width: 80%;
+  }
+  p  {
+    padding: .75rem;
+  }
+
+  .button {
+    &--edit, &--save {
+      p {
+        padding: .25rem;
+        display: block;
+      }
+    }
+  }
+
+  &--chosen {
+    background-color: #E6E5FF;
+  }
+}

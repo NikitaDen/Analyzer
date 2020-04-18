@@ -1,0 +1,63 @@
+.analytics {
+  &__wrapper {
+    & > h3 {
+      font-size: 1.5rem;
+      margin-top: 1rem;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+
+    &__item {
+      padding: 1rem 0;
+      border-bottom: 1px solid #282828;
+
+      & + .analytics__info__item {
+
+      }
+
+      h3 {
+        padding-bottom: 1rem;
+      }
+    }
+  }
+  .biggest-spending {
+    p {
+      font-weight: bold;
+    }
+    p, span {
+      padding: .25rem;
+    }
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    width: 20rem;
+  }
+
+  &__categories {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    text-align: center;
+    justify-content: center;
+
+    & > div {
+      margin: 0 1rem;
+
+      p {
+        padding-bottom: .5rem;
+      }
+
+      h5 {
+        padding-top: .5rem;
+        font-weight: lighter;
+      }
+    }
+
+    .column {
+      margin: 0 auto;
+    }
+  }
+}
