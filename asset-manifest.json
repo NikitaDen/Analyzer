@@ -1,0 +1,37 @@
+{
+  "files": {
+    "main.css": "/analyzer/static/css/main.f6813862.chunk.css",
+    "main.js": "/analyzer/static/js/main.69b030b0.chunk.js",
+    "main.js.map": "/analyzer/static/js/main.69b030b0.chunk.js.map",
+    "runtime-main.js": "/analyzer/static/js/runtime-main.ea3890f0.js",
+    "runtime-main.js.map": "/analyzer/static/js/runtime-main.ea3890f0.js.map",
+    "static/css/2.b90ce945.chunk.css": "/analyzer/static/css/2.b90ce945.chunk.css",
+    "static/js/2.9e3ee4fd.chunk.js": "/analyzer/static/js/2.9e3ee4fd.chunk.js",
+    "static/js/2.9e3ee4fd.chunk.js.map": "/analyzer/static/js/2.9e3ee4fd.chunk.js.map",
+    "index.html": "/analyzer/index.html",
+    "precache-manifest.c8e468b97f3a4974d74b639d694d5318.js": "/analyzer/precache-manifest.c8e468b97f3a4974d74b639d694d5318.js",
+    "service-worker.js": "/analyzer/service-worker.js",
+    "static/css/2.b90ce945.chunk.css.map": "/analyzer/static/css/2.b90ce945.chunk.css.map",
+    "static/css/main.f6813862.chunk.css.map": "/analyzer/static/css/main.f6813862.chunk.css.map",
+    "static/js/2.9e3ee4fd.chunk.js.LICENSE.txt": "/analyzer/static/js/2.9e3ee4fd.chunk.js.LICENSE.txt",
+    "static/media/add-dark.svg": "/analyzer/static/media/add-dark.58e58a78.svg",
+    "static/media/add.svg": "/analyzer/static/media/add.671c5d46.svg",
+    "static/media/analytics.svg": "/analyzer/static/media/analytics.0e0ff751.svg",
+    "static/media/clear-dark.svg": "/analyzer/static/media/clear-dark.1df4a4af.svg",
+    "static/media/clear.svg": "/analyzer/static/media/clear.57f77dce.svg",
+    "static/media/delete.svg": "/analyzer/static/media/delete.fa5e6b6a.svg",
+    "static/media/edit.svg": "/analyzer/static/media/edit.b79003c0.svg",
+    "static/media/history.svg": "/analyzer/static/media/history.2ec496af.svg",
+    "static/media/save.svg": "/analyzer/static/media/save.33e01ffd.svg",
+    "static/media/search.svg": "/analyzer/static/media/search.234c234c.svg",
+    "static/media/separator.svg": "/analyzer/static/media/separator.13ff7084.svg",
+    "static/media/settings.svg": "/analyzer/static/media/settings.a4fe81f9.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ea3890f0.js",
+    "static/css/2.b90ce945.chunk.css",
+    "static/js/2.9e3ee4fd.chunk.js",
+    "static/css/main.f6813862.chunk.css",
+    "static/js/main.69b030b0.chunk.js"
+  ]
+}
