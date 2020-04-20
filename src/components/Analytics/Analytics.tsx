@@ -98,14 +98,14 @@ const Analytics = (props: any) => {
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
             {showForPeriod ?
-                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={true} expenses={props.expenses}
+                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={true}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Analytics for the time period'}
                                findTotalSpending={findTotalSpendingForPeriod}
                                findSpentCategory={findSpentCategoryForPeriod}
                                findBiggerSpent={findBiggerSpentForPeriod}/>
                 :
-                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={false} expenses={props.expenses}
+                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={false}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Summary analytics'}
                                findTotalSpending={findTotalSpending} findSpentCategory={findSpentCategory}

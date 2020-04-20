@@ -23,6 +23,7 @@ const settingsReducer = (state = initialState, action: any) => {
                 {name: 'Products', id: 1},
                 {name: 'Entertainment', id: 2},
                 {name: 'Bill', id: 3},
+                {name: 'Clothes', id: 3},
             ];
             return {
                 ...state,

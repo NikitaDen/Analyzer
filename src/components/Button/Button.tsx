@@ -2,12 +2,10 @@ import React from "react";
 
 interface Props {
     image: string,
-
-    func(val?: any): void,
-
     className: string,
     title: string,
     disabled?: boolean,
+    func(val?: any): void,
 }
 
 const Button: React.FC<Props> = (props) => {

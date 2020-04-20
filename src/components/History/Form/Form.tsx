@@ -49,7 +49,6 @@ const Form: React.FC<Props> = (props) => {
                                    setError(false);
                                }}/>
                     </div>
-                    {console.log('FORM')}
                     <div className={'form__element'}>
                         <label htmlFor="category">Category</label>
                         <select value={category} onChange={(e) => setCategory(e.target.value)} name="category"

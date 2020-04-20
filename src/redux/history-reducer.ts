@@ -75,7 +75,6 @@ const historyReducer = (state = initialState, action: any) => {
 };
 
 export const addExpense = (expense: Expense) => ({type: ADD_EXPENSE, expense});
-// export const deleteExpense = (id: string) => ({type: DELETE_EXPENSE, id});
 export const deleteExpense = (id: any) => ({type: DELETE_EXPENSE, id});
 export const setExpenses = () => ({type: SET_EXPENSES});
 export const getExpenses = () => ({type: GET_EXPENSES});

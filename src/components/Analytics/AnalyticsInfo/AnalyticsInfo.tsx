@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React from "react";
 
 interface Props {
-    expenses: any,
     dateLower: any,
     dateHigher: any,
-    categories: any,
-    title: any,
+    categories: Array<any>,
+    title: string,
     showExpensesPerDay: boolean,
     showMoreInfo: boolean,
     moreInfo: any
@@ -50,7 +49,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                     </div>
 
                     {props.moreInfo.map((item: any) =>
-                        <div className={'more-info'}>
+                        <div key={item.id} className={'more-info'}>
                             <p>{item.name}</p>
                             <p>{item.category}</p>
                             <p>{item.price}</p>
