@@ -12,7 +12,6 @@ import Confirm from "../Confirm/Confirm";
 const History: React.FC = (props: any) => {
     const [filter, setFilter] = useState('noFilter');
     const [sort, setSort] = useState('By Date');
-    const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
     const [descending, setDescending] = useState('Descending');
     const [dateLower, setDateLower] = useState(new Date().setHours(0));
     const [dateHigher, setDateHigher] = useState(new Date().setDate(new Date().getDate() + 1));
@@ -20,6 +19,7 @@ const History: React.FC = (props: any) => {
     const [showForm, setShowForm] = useState(false);
     const [chosenItems, setChosenItems] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
+    const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
 
     const onChangeDateLower = (date: any) => {
         setDateLower(date);

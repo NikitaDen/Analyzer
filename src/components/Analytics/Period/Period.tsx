@@ -14,6 +14,8 @@ interface Props {
     setDateHigher(date: any): void,
 
     setShowForPeriod(show: boolean): void,
+
+    setShowMoreInfo(show: boolean): void
 }
 
 const Period: React.FC<Props> = (props) => {
@@ -23,6 +25,10 @@ const Period: React.FC<Props> = (props) => {
     const onChangeDateHigher = (date: any) => {
         props.setDateHigher(date);
     };
+    const onSetPeriod = (showForPeriod: boolean) => {
+        props.setShowForPeriod(showForPeriod);
+        props.setShowMoreInfo(false);
+    };
 
     return (
         <div className={'period'}>
@@ -31,9 +37,9 @@ const Period: React.FC<Props> = (props) => {
             <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
                         onChange={onChangeDateHigher} selected={props.dateHigher}/>
             <div className={'buttons'}>
-                <Button image={search} func={() => props.setShowForPeriod(true)} className={'button button--search'}
+                <Button image={search} func={() => onSetPeriod(true)} className={'button button--search'}
                         title={'Set'} disabled={props.dateLower > props.dateHigher}/>
-                <Button image={clear} func={() => props.setShowForPeriod(false)} className={'button button--clear'}
+                <Button image={clear} func={() => onSetPeriod(false)} className={'button button--clear'}
                         title={'Clear'} disabled={props.dateLower > props.dateHigher}/>
             </div>
         </div>

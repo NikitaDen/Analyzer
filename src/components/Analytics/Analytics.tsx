@@ -94,7 +94,7 @@ const Analytics = (props: any) => {
     return (
         <div className={'analytics'}>
             <h2>Analytics</h2>
-            <Period dateHigher={dateHigher} dateLower={dateLower} setDateLower={setDateLower}
+            <Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher} dateLower={dateLower} setDateLower={setDateLower}
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
             {showForPeriod ?

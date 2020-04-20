@@ -24,6 +24,24 @@ interface Props {
 }
 
 const HistoryItems: React.FC<Props> = (props) => {
+    const [checkedAll, setCheckedAll] = useState(false);
+    useEffect(() => {
+        if (checkedAll && props.filterInRange) {
+            props.setChosenItems(items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
+        } else if (checkedAll && !props.filterInRange) {
+            if (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending') {
+                props.setChosenItems([...expenses.filter((item: any) => item.category === props.filter).map((item: any) => item.id)]);
+            } else if (props.expenses.length && props.filter !== 'noFilter' && props.descending !== 'Descending') {
+                props.setChosenItems([...expenses.sort(defineSort()).filter((item: any) => item.category === props.filter).map((item: any) => item.id).reverse()]);
+            } else if (props.descending === 'Descending') {
+                props.setChosenItems([...expenses.map((item: any) => item.id)]);
+            } else {
+                props.setChosenItems([...expenses.map((item: any) => item.id).reverse()]);
+            }
+        } else {
+            props.setChosenItems([]);
+        }
+    }, [checkedAll, props.filterInRange]);
 
     const compareNames = (a: any, b: any) => {
         if (a.name > b.name) {
@@ -59,8 +77,8 @@ const HistoryItems: React.FC<Props> = (props) => {
                 return (a: any, b: any) => b.id - a.id;
         }
     };
+
     const expenses = [...props.expenses].sort(defineSort());
-    const [checkedAll, setCheckedAll] = useState(false);
     const expense = (item: any) => {
         return (
             <Expense id={item.id}
@@ -89,24 +107,6 @@ const HistoryItems: React.FC<Props> = (props) => {
             : (props.descending === 'Descending')
                 ? expenses.map((item: any) => expense(item))
                 : expenses.map((item: any) => expense(item)).reverse();
-
-    useEffect(() => {
-        if (checkedAll && props.filterInRange) {
-            props.setChosenItems(items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
-        } else if (checkedAll && !props.filterInRange) {
-            if (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending') {
-                props.setChosenItems([...expenses.filter((item: any) => item.category === props.filter).map((item: any) => item.id)]);
-            } else if (props.expenses.length && props.filter !== 'noFilter' && props.descending !== 'Descending') {
-                props.setChosenItems([...expenses.sort(defineSort()).filter((item: any) => item.category === props.filter).map((item: any) => item.id).reverse()]);
-            } else if (props.descending === 'Descending') {
-                props.setChosenItems([...expenses.map((item: any) => item.id)]);
-            } else {
-                props.setChosenItems([...expenses.map((item: any) => item.id).reverse()]);
-            }
-        } else {
-            props.setChosenItems([]);
-        }
-    }, [checkedAll, props.filterInRange]);
 
     const chooseAllItems = useCallback(() => {
         setCheckedAll(!checkedAll);
