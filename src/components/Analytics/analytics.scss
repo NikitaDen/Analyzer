@@ -22,15 +22,38 @@
       h3 {
         padding-bottom: 1rem;
       }
+
+      &.detail-info {
+        text-align: center;
+
+        .header {
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          padding: .5rem;
+          font-weight: bold;
+          background-color: #282c34;
+          color: white;
+        }
+
+        .more-info {
+          padding: .75rem .5rem;
+          display: grid;
+          grid-template-columns: repeat(6, 1fr);
+          grid-column: 1/7;
+        }
+      }
     }
   }
+
   .biggest-spending {
     p {
       font-weight: bold;
     }
+
     p, span {
       padding: .25rem;
     }
+
     display: grid;
     grid-template-columns: 1fr 2fr;
     width: 20rem;
@@ -58,6 +81,12 @@
 
     .column {
       margin: 0 auto;
+      transition: .2s;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
 }

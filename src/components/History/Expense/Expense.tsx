@@ -84,19 +84,26 @@ const Expense: React.FC<Props> = (props) => {
             {showConfirm ? <Confirm title={'Are you sure?'} func={onDeleteCategory} close={() => setShowConfirm(false)}/> : null}
             {!editMode ?
                 <>
-                    <input checked={checked} onChange={onChooseItem} type="checkbox"/>
+                    <div className={'checkbox-element'}>
+                        <input checked={checked} onChange={onChooseItem} type="checkbox"/>
+                        <label>
+                            <div className={'checked'}/>
+                        </label>
+                    </div>
+
                     <p>{props.name}</p>
                     <p>{props.category}</p>
                     <p>{props.price}</p>
                     <p>{props.count}</p>
                     <p>{props.spent}</p>
+                    
                     <div>
                         <p>{props.date}</p>
                         {checked ? <Button image={edit} func={onEditCategory} className={'button button--edit'} title={'Edit'}/> : null}
                     </div>
                 </> :
                 <>
-                    <p>|</p>
+                    <p/>
                     <input type="text" onChange={onChangeName} value={name}/>
                     <select value={category} onChange={onChangeCategory} name="filter" id="filter">
                         {props.categories.map((item: any) => <option key={item.name} value={item.name}>{item.name}</option>)}

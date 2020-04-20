@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import Expense from "./../Expense/Expense";
 import './history.scss';
-import separator from './../../../assets/images/separator.svg';
+import TableHeader from "../TableHeader/TableHeader";
 
 interface Props {
     filter: any,
@@ -108,40 +108,13 @@ const HistoryItems: React.FC<Props> = (props) => {
         }
     }, [checkedAll, props.filterInRange]);
 
-    const chooseAllItems = () => {
+    const chooseAllItems = useCallback(() => {
         setCheckedAll(!checkedAll);
-    };
+    }, [checkedAll]);
 
     return (
         <div className={'table'}>
-            <div className={'table__header'}>
-                <input type="checkbox" checked={checkedAll} onChange={chooseAllItems}/>
-
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Name</p>
-                </div>
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Category</p>
-                </div>
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Price</p>
-                </div>
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Count</p>
-                </div>
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Spent</p>
-                </div>
-                <div className={'table__header__item'}>
-                    <img src={separator} alt=""/>
-                    <p>Date</p>
-                </div>
-            </div>
+            <TableHeader checkedAll={checkedAll} chooseAllItems={chooseAllItems}/>
 
             {props.filterInRange ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
                 ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :

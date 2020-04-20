@@ -5,14 +5,14 @@ import Period from "./Period/Period";
 import {getExpenses} from "../../redux/history-reducer";
 import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
 import {getCategories} from "../../redux/settings-reducer";
+import Chart from "../Chart/Chart";
 
 const Analytics = (props: any) => {
-    // const [dateLower, setDateLower] = useState(new Date(new Date().setHours(0)).setMinutes(0));
-    // const [dateHigher, setDateHigher] = useState(new Date((new Date(new Date(new Date().setHours(0)).setMinutes(0)).setDate(new Date().getDate() + 1))).getTime());
-
-    const [dateLower, setDateLower] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0,0,0));
-    const [dateHigher, setDateHigher] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 0,0,0));
+    const [dateLower, setDateLower] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0));
+    const [dateHigher, setDateHigher] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 0, 0, 0));
     const [showForPeriod, setShowForPeriod] = useState(false);
+    const [showMoreInfo, setShowMoreInfo] = useState(false);
+    const [moreInfo, setMoreInfo] = useState({});
 
     useEffect(() => {
         props.getExpenses();
@@ -30,36 +30,35 @@ const Analytics = (props: any) => {
 
         props.categories.forEach((category: any) => categories.push({
             category: category.name,
-            spent: [...props.expenses].filter((item: any) => item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0)
+            spent: [...props.expenses].filter((item: any) => item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
+            expenses: [...props.expenses].filter((item: any) => item.category === category.name),
         }));
 
         let sum = categories.reduce((sum, item) => sum + item.spent, 0);
 
-        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent).map(item => <div
-            key={item.category}>
-            <p>{item.spent}</p>
-            <div style={{width: '1.5rem', height: `${item.spent / sum * 150}px`, backgroundColor: `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`}}
-                 className={'column'}/>
-            <h5>{item.category}</h5>
-        </div>);
+        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent).map(item =>
+            <Chart func={() => {
+                setShowMoreInfo(true);
+                setMoreInfo(item.expenses);
+            }} key={item.category} spent={item.spent} category={item.category} sum={sum}/>);
     };
     const findSpentCategoryForPeriod = () => {
         let categories: Array<any> = [];
 
         props.categories.forEach((category: any) => categories.push({
             category: category.name,
-            spent: [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0)
+            spent: [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
+            expenses: [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name)
         }));
 
         let sum = categories.reduce((sum, item) => sum + item.spent, 0);
 
-        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent).map(item => <div
-            key={item.category}>
-            <p>{item.spent}</p>
-            <div style={{width: '1.5rem', height: `${item.spent / sum * 150}px`, backgroundColor: `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`}}
-                 className={'column'}/>
-            <h5>{item.category}</h5>
-        </div>);
+        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent).map(item =>
+            <Chart func={() => {
+                setShowMoreInfo(true);
+                setMoreInfo(item.expenses);
+            }} key={item.category} spent={item.spent}
+                   category={item.category} sum={sum}/>);
     };
     const findBiggerSpentForPeriod = () => {
         return [...props.expenses].filter((item: any) => item.id >= dateLower && item.id <= dateHigher && item.spent === Math.max(...props.expenses.filter((item: any) => item.id >= dateLower && item.id <= dateHigher).map((item: any) => item.spent))).map((item: any) =>
@@ -99,13 +98,15 @@ const Analytics = (props: any) => {
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
             {showForPeriod ?
-                <AnalyticsInfo showExpensesPerDay={true} expenses={props.expenses} dateLower={dateLower} dateHigher={dateHigher}
+                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={true} expenses={props.expenses}
+                               dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Analytics for the time period'}
                                findTotalSpending={findTotalSpendingForPeriod}
                                findSpentCategory={findSpentCategoryForPeriod}
                                findBiggerSpent={findBiggerSpentForPeriod}/>
                 :
-                <AnalyticsInfo showExpensesPerDay={false} expenses={props.expenses} dateLower={dateLower} dateHigher={dateHigher}
+                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={false} expenses={props.expenses}
+                               dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Summary analytics'}
                                findTotalSpending={findTotalSpending} findSpentCategory={findSpentCategory}
                                findBiggerSpent={findBiggerSpent}/>
