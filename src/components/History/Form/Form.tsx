@@ -3,12 +3,14 @@ import {connect} from "react-redux";
 import {addExpense, changeExpense, getExpenses, setExpenses} from "../../../redux/history-reducer";
 import './form.scss';
 import save from './../../../assets/images/save.svg';
+import {getCategories} from "../../../redux/settings-reducer";
 
 interface Props {
     categories: any,
     showForm: boolean,
 
     getExpenses(): void
+    getCategories(): void
 }
 
 const Form: React.FC<Props> = (props) => {
@@ -20,6 +22,7 @@ const Form: React.FC<Props> = (props) => {
 
     useEffect(() => {
         props.getExpenses();
+        props.getCategories();
     }, []);
 
     const onAddExpenseButton = () => {
@@ -83,4 +86,4 @@ let mapStateToProps = (store: any) => ({
     categories: store.settings.categories,
 });
 
-export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense})(Form);
+export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense, getCategories})(Form);
