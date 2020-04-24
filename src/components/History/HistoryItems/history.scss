@@ -6,7 +6,8 @@
     flex-direction: row;
 
     .button {
-      margin: 0 0 2rem 0;
+      margin: 0 0 1rem 0;
+
       &+.button {
         margin-left: 1.25rem;
       }
@@ -17,15 +18,17 @@
     &__header {
       color: white;
       font-weight: bold;
-      font-size: 1.25rem;
-      background-color: #8D57FF;
+      font-size: 1rem;
+      background-color: #448AFF;
       display: grid;
-      grid-template-columns: 2rem repeat(6, 1fr);
+      grid-template-columns: 2rem repeat(6, 1fr) 3rem;
       width: 100%;
 
       input {
         align-self: center;
         justify-self: center;
+        height: 100%;
+        width: 100%;
       }
       &__item {
         display: flex;

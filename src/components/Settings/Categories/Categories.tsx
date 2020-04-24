@@ -6,13 +6,14 @@ import './categories.scss';
 interface Props {
     categories: any,
 
-    setCategories(): void,
-
     getCategories(): void,
+    getCategoriesThunkCreator(): void,
 
     addCategory(category: string): void,
+    addCategoriesThunkCreator(name: string, id: any): void,
 
     deleteCategory(id: string): void,
+    deleteCategoryThunkCreator(id: string): void,
 }
 
 const Categories: React.FC<Props> = (props) => {
@@ -20,15 +21,17 @@ const Categories: React.FC<Props> = (props) => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        props.getCategories();
+        // props.getCategories();
+        props.getCategoriesThunkCreator();
     }, []);
 
     const onAddCategory = () => {
         if (!newCategory) {
             setError(true);
         } else {
-            props.addCategory(newCategory);
-            props.setCategories();
+            // props.addCategory(newCategory);
+            props.addCategoriesThunkCreator(newCategory, Date.now());
+            // props.setCategories();
             setNewCategory('');
         }
     };
@@ -51,8 +54,7 @@ const Categories: React.FC<Props> = (props) => {
             </div>
 
             {props.categories.map((item: any) => <Category key={item.id} name={item.name} id={item.id}
-                                                           setCategories={props.setCategories}
-                                                           deleteCategory={props.deleteCategory}/>)}
+                                                           deleteCategory={props.deleteCategory} deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}/>)}
         </div>
     )
 };

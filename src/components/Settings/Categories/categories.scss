@@ -1,29 +1,54 @@
 .categories {
   width: 15rem;
+
   h3 {
     padding-bottom: 1rem;
   }
+
   .button {
+    display: flex;
+    flex-direction: row;
+
+    img {
+      margin: 0 auto;
+    }
+
     &--add {
       padding: 0.5rem;
       margin-left: 1rem;
+
       p {
         padding: 0;
       }
     }
+
     &--delete {
       padding: 0.5rem;
+
       p {
         padding: 0;
       }
     }
   }
+
   &__form {
     display: grid;
     grid-template-columns: 3fr 1fr;
 
+    .category-name {
+      border: 1px solid rgba(0, 0, 0, .15);
+      border-bottom-left-radius: .5rem;
+      border-top-left-radius: .5rem;
+    }
+
+    .button {
+      border-bottom-right-radius: .5rem;
+      border-top-right-radius: .5rem;
+      background-color: #448AFF;
+    }
+
     img {
-      height: 1.25rem;
+      height: 1.15rem;
     }
   }
 }

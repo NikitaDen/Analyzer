@@ -1,10 +1,18 @@
 .expense {
   display: grid;
-  grid-template-columns: 2rem repeat(6, 1fr);
+  grid-template-columns: 2rem repeat(6, 1fr) 3rem;
   width: 100%;
   align-items: center;
   justify-items: center;
-  border-bottom: 1px solid #282828;
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
+  font-size: .9rem;
+  transition: .2s;
+
+  div {
+    p {
+      font-size: .8rem;
+    }
+  }
 
   input, select, option {
     width: 80%;
@@ -14,16 +22,7 @@
     padding: .75rem;
   }
 
-  .button {
-    &--edit, &--save {
-      p {
-        padding: .25rem;
-        display: block;
-      }
-    }
-  }
-
   &--chosen {
-    background-color: #E6E5FF;
+    background-color: #C5DAFF;
   }
 }

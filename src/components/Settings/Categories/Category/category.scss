@@ -1,5 +1,6 @@
 .category-name {
   border: 1px solid #282828;
+
   &--error {
     border: 1px solid red;
   }
@@ -8,17 +9,18 @@
 .category {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  box-shadow: 0 0 6px gray;
+  box-shadow: 0 0 3px gray;
+  border-radius: 1.5rem;
   justify-content: center;
   align-content: center;
   margin: 1rem 0;
-  padding: .65rem;
+  padding: .65rem 1rem;
   width: 100%;
   transition: .2s;
   cursor: pointer;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   .button {

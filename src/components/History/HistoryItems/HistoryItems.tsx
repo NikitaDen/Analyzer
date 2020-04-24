@@ -2,6 +2,8 @@ import React, {useCallback, useEffect, useState} from "react";
 import Expense from "./../Expense/Expense";
 import './history.scss';
 import TableHeader from "../TableHeader/TableHeader";
+import empty from './../../../assets/images/empty.svg';
+import noData from './../../../assets/images/nodata.svg';
 
 interface Props {
     filter: any,
@@ -19,12 +21,13 @@ interface Props {
     changeExpense(): void,
 
     deleteExpense(id: any): void,
-
+    changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): any
     setExpenses(): void,
 }
 
 const HistoryItems: React.FC<Props> = (props) => {
     const [checkedAll, setCheckedAll] = useState(false);
+
     useEffect(() => {
         if (checkedAll && props.filterInRange) {
             props.setChosenItems(items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
@@ -96,6 +99,7 @@ const HistoryItems: React.FC<Props> = (props) => {
                      changeExpense={props.changeExpense}
                      deleteExpense={props.deleteExpense}
                      setExpenses={props.setExpenses}
+                     changeExpenseThunkCreator={props.changeExpenseThunkCreator}
             />
         )
     };
@@ -118,8 +122,14 @@ const HistoryItems: React.FC<Props> = (props) => {
 
             {props.filterInRange ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
                 ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :
-                <div className={'empty'}>You don't have any data for this period</div> : items}
-            {props.expenses.length === 0 ? <div className={'empty'}>Add your first spent</div> : null}
+                <div className={'empty'}>
+                    <p>You don't have any data for this period</p>
+                    <img src={noData} alt=""/>
+                </div> : items}
+            {props.expenses.length === 0 && !props.filterInRange ? <div className={'empty'}>
+                <p>Add your first expense</p>
+                <img src={empty} alt=""/>
+            </div> : null}
         </div>
     )
 };

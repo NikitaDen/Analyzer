@@ -6,6 +6,16 @@
     }
   }
 
+  .period {
+    display: flex;
+    flex-direction: column;
+    width: 18rem;
+
+    .dark-mode {
+      align-self: flex-end;
+    }
+  }
+
   &__info {
     display: flex;
     flex-direction: column;

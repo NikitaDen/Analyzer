@@ -4,11 +4,12 @@ import './expense.scss';
 import Button from "../../Button/Button";
 import edit from "../../../assets/images/edit.svg";
 import save from "../../../assets/images/save.svg";
+import {changeExpenseThunkCreator} from "../../../redux/history-reducer";
 
 interface Props {
     id: number,
     name: string,
-    category: string,
+    category: any,
     count: any,
     price: any,
     spent: any,
@@ -21,7 +22,7 @@ interface Props {
     changeExpense(id: number, name: string, category: any, spent: any, count: any, price: any): void,
 
     deleteExpense(id: any): void,
-
+    changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): void
     setExpenses(): void,
 }
 
@@ -54,7 +55,7 @@ const Expense: React.FC<Props> = (props) => {
 
     const onDeleteCategory = () => {
         props.deleteExpense(props.id);
-        props.setExpenses();
+        // props.setExpenses();
     };
 
     const onEditCategory = () => {
@@ -62,8 +63,10 @@ const Expense: React.FC<Props> = (props) => {
     };
 
     const onSaveCategory = () => {
-        props.changeExpense(props.id, name, category, spent, count, price);
-        props.setExpenses();
+        // props.changeExpense(props.id, name, category, spent, count, price);
+        debugger
+        props.changeExpenseThunkCreator(props.id, name, category, spent, count, price);
+        // props.setExpenses();
         setEditMode(false);
     };
 
@@ -81,7 +84,7 @@ const Expense: React.FC<Props> = (props) => {
 
     return (
         <div className={checked ? 'expense expense--chosen' : 'expense'}>
-            {showConfirm ? <Confirm title={'Are you sure?'} func={onDeleteCategory} close={() => setShowConfirm(false)}/> : null}
+            {showConfirm ? <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteCategory} close={() => setShowConfirm(false)}/> : null}
             {!editMode ?
                 <>
                     <div className={'checkbox-element'}>
@@ -99,8 +102,8 @@ const Expense: React.FC<Props> = (props) => {
                     
                     <div>
                         <p>{props.date}</p>
-                        {checked ? <Button image={edit} func={onEditCategory} className={'button button--edit'} title={'Edit'}/> : null}
                     </div>
+                    <Button image={edit} func={onEditCategory} className={'button button--edit'}/>
                 </> :
                 <>
                     <p/>
@@ -115,8 +118,8 @@ const Expense: React.FC<Props> = (props) => {
 
                     <div>
                         <p>{props.date}</p>
-                        <Button image={save} func={onSaveCategory} className={'button button--save'} title={'Save'}/>
                     </div>
+                    <Button image={save} func={onSaveCategory} className={'button button--save'}/>
                 </>}
         </div>
     )

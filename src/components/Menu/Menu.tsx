@@ -4,8 +4,12 @@ import './menu.scss';
 import history from './../../assets/images/history.svg';
 import analytics from './../../assets/images/analytics.svg';
 import settings from './../../assets/images/settings.svg';
+import {connect} from "react-redux";
+import {userLogoutThunkCreator} from "../../redux/account-reducer";
+import Button from "../Button/Button";
+import logout from './../../assets/images/logout.svg';
 
-const Menu = () => {
+const Menu = (props: any) => {
     return (
         <nav>
             <NavLink to={'/history'}>
@@ -20,8 +24,20 @@ const Menu = () => {
                 <p>Settings</p>
                 <img src={settings} alt=""/>
             </NavLink>
+
+            <div className={'login-buttons'}>
+                {props.isAuth ? <>
+                    <Button image={logout} className={'button button--logout'} func={() => props.userLogoutThunkCreator()} title={'Logout'}/>
+                    {/*<button className={'button'} onClick={() => props.userLogoutThunkCreator()}>Logout</button>*/}
+                </> : null}
+
+            </div>
         </nav>
     )
 };
 
-export default Menu;
+const mapStateToProps = (store: any) => ({
+   isAuth: store.account.isAuth,
+});
+
+export default connect(mapStateToProps, {userLogoutThunkCreator})(Menu);

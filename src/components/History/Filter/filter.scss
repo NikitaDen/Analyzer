@@ -1,19 +1,23 @@
 .filter {
   display: flex;
   flex-direction: row;
-  border-top: 1px solid #282828;
-  border-bottom: 1px solid #282828;
+  border-top: 1px solid rgba(0, 0, 0, .15);
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
   margin-bottom: 1rem;
 
   label {
     font-weight: bold;
-    font-size: 1.25rem;
-    padding: .5rem 0;
+    font-size: 1rem;
+    padding: .5rem 0 .75rem;
   }
 
   &__item {
     margin: .5rem 0;
     padding: 1rem;
+
+    &--dates {
+      font-size: .9rem;
+    }
 
     & + .filter__item {
       margin-left: 1rem;

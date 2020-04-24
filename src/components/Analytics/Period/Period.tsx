@@ -1,6 +1,5 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import DatePicker from "react-datepicker";
-import Button from "../../Button/Button";
 import search from "../../../assets/images/search.svg";
 import clear from "../../../assets/images/clear.svg";
 
@@ -19,6 +18,12 @@ interface Props {
 }
 
 const Period: React.FC<Props> = (props) => {
+    const [filter, setFilter] = useState(false);
+
+    useEffect(() => {
+        onSetPeriod(filter);
+    }, [filter]);
+
     const onChangeDateLower = (date: any) => {
         props.setDateLower(date);
     };
@@ -30,18 +35,30 @@ const Period: React.FC<Props> = (props) => {
         props.setShowMoreInfo(false);
     };
 
+    const onToggleFilter = () => {
+        setFilter(!filter);
+    };
+
     return (
         <div className={'period'}>
 
-            <DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>
-            <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
-                        onChange={onChangeDateHigher} selected={props.dateHigher}/>
-            <div className={'buttons'}>
-                <Button image={search} func={() => onSetPeriod(true)} className={'button button--search'}
-                        title={'Set'} disabled={props.dateLower > props.dateHigher}/>
-                <Button image={clear} func={() => onSetPeriod(false)} className={'button button--clear'}
-                        title={'Clear'} disabled={props.dateLower > props.dateHigher}/>
+            <div className={'dates'}>
+                <p>From:</p>
+                <DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>
+                <p>To:</p>
+                <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
+                            onChange={onChangeDateHigher} selected={props.dateHigher}/>
             </div>
+
+            {/*<DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>*/}
+            {/*<DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}*/}
+            {/*            onChange={onChangeDateHigher} selected={props.dateHigher}/>*/}
+
+            <input onChange={onToggleFilter} id='dark-check' type="checkbox"/>
+            <label className='dark-mode' htmlFor="dark-check">
+                <div className='toggle'
+                     style={filter ? {backgroundImage: `url(${clear})`, backgroundColor: '#FF7777'} : {backgroundImage: `url(${search})`}}/>
+            </label>
         </div>
     )
 };

@@ -1,33 +1,24 @@
+import * as axios from "axios";
+
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
 const SET_CATEGORIES = 'SET_CATEGORIES';
 const GET_CATEGORIES = 'GET_CATEGORIES';
 
 let initialState: any = {
-    categories: [
-        {name: 'Products', id: 1},
-        {name: 'Entertainment', id: 2},
-        {name: 'Bill', id: 3},
-    ]
+    categories: []
 };
 
 const settingsReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case SET_CATEGORIES: {
-            localStorage.setItem('categories', JSON.stringify([...state.categories]));
             return state;
         }
         case GET_CATEGORIES: {
             // @ts-ignore
-            let categories: any = JSON.parse(localStorage.getItem('categories')) || [
-                {name: 'Products', id: 1},
-                {name: 'Entertainment', id: 2},
-                {name: 'Bill', id: 3},
-                {name: 'Clothes', id: 3},
-            ];
             return {
                 ...state,
-                categories: categories
+                categories: action.categories
             };
         }
         case ADD_CATEGORY: {
@@ -37,7 +28,7 @@ const settingsReducer = (state = initialState, action: any) => {
                     ...state.categories,
                     {
                         name: action.name,
-                        id: Date.now(),
+                        id: action.id,
                     }
                 ]
             };
@@ -55,9 +46,36 @@ const settingsReducer = (state = initialState, action: any) => {
     }
 };
 
-export const addCategory = (name: string) => ({type: ADD_CATEGORY, name});
 export const deleteCategory = (id: string) => ({type: DELETE_CATEGORY, id});
-export const getCategories = () => ({type: GET_CATEGORIES});
+export const getCategories = (categories: any) => ({type: GET_CATEGORIES, categories});
 export const setCategories = () => ({type: SET_CATEGORIES});
+
+export const addCategory = (name: string, id: any) => ({type: ADD_CATEGORY, name, id});
+export const addCategoriesThunkCreator = (name: string, id: any) => async (dispatch: any) => {
+    // @ts-ignore
+    await axios.post('https://analyzerserver.herokuapp.com/api/settings/categories',
+        {name, id},
+        {
+            withCredentials: true
+        });
+    dispatch(addCategory(name, id));
+};
+
+export const getCategoriesThunkCreator = () => async (dispatch: any) => {
+    // @ts-ignore
+    const response = await axios.get('https://analyzerserver.herokuapp.com/api/settings/categories', {
+        withCredentials: true
+    });
+
+    dispatch(getCategories(response.data));
+};
+
+export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => {
+    // @ts-ignore
+    await axios.put('https://analyzerserver.herokuapp.com/api/settings/delete', {id}, {
+        withCredentials: true
+    });
+    dispatch(deleteCategory(id));
+};
 
 export default settingsReducer;

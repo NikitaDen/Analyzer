@@ -2,11 +2,18 @@ import React from 'react';
 import './assets/styles/styles.scss';
 import Menu from "./components/Menu/Menu";
 import History from "./components/History/History";
-import Settings from "./components/Settings/Settings";
 import Analytics from "./components/Analytics/Analytics";
-import { Switch, Route, Redirect } from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
+import {withLoading} from "./HOC/withLoadingSuspense";
+import Login from "./components/Login/Login";
+import Register from "./components/Register/Register";
 
-function App() {
+const Settings = React.lazy(() => import('./components/Settings/Settings'));
+
+
+const App = (props: any) => {
+    
+    const SettingsLoading = withLoading(Settings);
 
     return (
         <div className="App">
@@ -14,22 +21,19 @@ function App() {
                 <Menu/>
                 <div className={'content'}>
                     <Switch>
-                        <Route path={'/history'}>
-                            <History/>
-                        </Route>
-                        <Route path={'/settings'}>
-                            <Settings/>
-                        </Route>
-                        <Route path={'/analytics'}>
-                            <Analytics/>
-                        </Route>
-                        <Redirect to={'/history'} />
+                        // @ts-ignore
+                        <Route path={'/login'} render={() => <Login/>}/>
+                        // @ts-ignore
+                        <Route path={'/register'} render={() => <Register/>}/>
+                        <Route path={'/history'} render={() => <History/>}/>
+                        <Route path={'/analytics'} render={() => <Analytics/>}/>
+                        <Route path={'/settings'} render={() => <SettingsLoading/>}/>
+                        <Redirect to={'/history'}/>
                     </Switch>
                 </div>
             </div>
-
         </div>
     );
-}
+};
 
 export default App;

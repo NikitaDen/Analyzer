@@ -4,6 +4,7 @@ import './filter.scss';
 import ItemDates from "./ItemDates/ItemDates";
 import ItemFilter from "./ItemFilter/ItemFilter";
 import ItemSort from "./ItemSort/ItemSort";
+import ItemDirection from "./ItemDirection/ItemDirection";
 
 interface Props {
     filter: string,
@@ -35,8 +36,9 @@ const Filter: React.FC<Props> = (props) => {
             <ItemFilter filter={props.filter} categories={props.categories} setFilter={props.setFilter}
                         setSort={props.setSort} setDescending={props.setDescending}/>
 
-            <ItemSort sort={props.sort} sortValues={props.sortValues} descending={props.descending}
-                      setSort={props.setSort} setDescending={props.setDescending}/>
+            <ItemSort sort={props.sort} sortValues={props.sortValues} setSort={props.setSort}/>
+
+            <ItemDirection descending={props.descending} setDescending={props.setDescending}/>
 
             <ItemDates filterInRange={props.filterInRange} dateHigher={props.dateHigher} dateLower={props.dateLower}
                        onChangeDateLower={props.onChangeDateLower} onChangeDateHigher={props.onChangeDateHigher}

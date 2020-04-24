@@ -1,38 +1,57 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import {addExpense, changeExpense, getExpenses, setExpenses} from "../../../redux/history-reducer";
+import {
+    addExpense, addExpenseThunkCreator,
+    changeExpense,
+    getExpenses,
+    getExpensesThunkCreator,
+    setExpenses
+} from "../../../redux/history-reducer";
 import './form.scss';
 import save from './../../../assets/images/save.svg';
-import {getCategories} from "../../../redux/settings-reducer";
+import {getCategories, getCategoriesThunkCreator} from "../../../redux/settings-reducer";
 
 interface Props {
     categories: any,
     showForm: boolean,
 
-    getExpenses(): void
-    getCategories(): void
+    getExpenses(): void,
+    getExpensesThunkCreator(): void,
+    getCategoriesThunkCreator(): void,
+    getCategories(): void,
+    addExpenseThunkCreator(expense: any): void,
 }
 
 const Form: React.FC<Props> = (props) => {
     const [name, setName] = useState('');
-    const [category, setCategory] = useState('Products');
+    const [category, setCategory] = useState('');
     const [price, setPrice] = useState('0');
     const [count, setCount] = useState('1');
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        props.getExpenses();
-        props.getCategories();
+        // props.getExpenses();
+        props.getExpensesThunkCreator();
+        // props.getCategories();
+        props.getCategoriesThunkCreator();
     }, []);
+
+    useEffect(() => {
+        if (props.categories.length) {
+            setCategory(props.categories[0].name)
+        }
+    }, [props.categories]);
 
     const onAddExpenseButton = () => {
         if (name) {
             // @ts-ignore
-            props.addExpense({category, count, name, price, spent: price * count});
+            // props.addExpense({category, count, name, price, spent: price * count});
             // @ts-ignore
-            props.setExpenses();
+            props.addExpenseThunkCreator({category, count, name, price, spent: price * count});
+            // @ts-ignore
+            // props.setExpenses();
+
             setName('');
-            setCategory('Products');
             setCount('1');
             setPrice('0');
         } else {
@@ -73,7 +92,6 @@ const Form: React.FC<Props> = (props) => {
 
                     <button className={'button button--addItem'} onClick={onAddExpenseButton}>
                         <img src={save} alt=""/>
-                        <p>Save item</p>
                     </button>
                 </div>
 
@@ -86,4 +104,5 @@ let mapStateToProps = (store: any) => ({
     categories: store.settings.categories,
 });
 
-export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense, getCategories})(Form);
+// @ts-ignore
+export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense, getCategories, getExpensesThunkCreator, addExpenseThunkCreator, getCategoriesThunkCreator})(Form);

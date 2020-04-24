@@ -7,18 +7,19 @@ interface Props {
     name: string,
     id: any,
 
-    setCategories(): void,
-
     deleteCategory(id: string): void,
+
+    deleteCategoryThunkCreator(id: string): void,
+
 }
 
 const Category: React.FC<Props> = (props) => {
     const [showConfirm, setShowConfirm] = useState(false);
 
     const onDeleteCategory = () => {
-        props.deleteCategory(props.id);
-        props.setCategories();
+        props.deleteCategoryThunkCreator(props.id);
     };
+
     const onCloseConfirmWindow = () => {
         setShowConfirm(false);
     };
@@ -29,14 +30,15 @@ const Category: React.FC<Props> = (props) => {
     return (
         <>
             {showConfirm ?
-                <Confirm title={'Are you sure?'} func={onDeleteCategory} close={onCloseConfirmWindow}/> : null}
+                <Confirm className={'confirm show'} title={'Are you sure?'} func={onDeleteCategory}
+                         close={onCloseConfirmWindow}/> :
+                <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteCategory}
+                         close={onCloseConfirmWindow}/>}
             <div key={props.name} className={'category'}>
                 <p>{props.name}</p>
                 <button className={'button'} onClick={onButtonClick}>
                     <img src={clear} alt=""/>
                 </button>
-                {/*<Button image={del} func={onButtonClick} className={'button button--delete'} title={'Delete'}/>*/}
-                {/*<button onClick={onButtonClick}>Delete</button>*/}
             </div>
         </>
     )

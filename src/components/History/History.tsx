@@ -1,6 +1,13 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import {addExpense, changeExpense, deleteExpense, getExpenses, setExpenses} from "../../redux/history-reducer";
+import {
+    addExpense,
+    changeExpense, changeExpenseThunkCreator,
+    deleteExpense, deleteExpensesThunkCreator,
+    getExpenses,
+    getExpensesThunkCreator,
+    setExpenses
+} from "../../redux/history-reducer";
 import Form from "./Form/Form";
 import Filter from "./Filter/Filter";
 import HistoryItems from "./HistoryItems/HistoryItems";
@@ -8,6 +15,8 @@ import add from './../../assets/images/add.svg';
 import Button from "../Button/Button";
 import del from './../../assets/images/delete.svg';
 import Confirm from "../Confirm/Confirm";
+import {getUser} from "../../redux/account-reducer";
+import { Redirect } from "react-router-dom";
 
 const History: React.FC = (props: any) => {
     const [filter, setFilter] = useState('noFilter');
@@ -21,6 +30,14 @@ const History: React.FC = (props: any) => {
     const [showConfirm, setShowConfirm] = useState(false);
     const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
 
+    useEffect(() => {
+        props.getUser();
+    }, []);
+
+    useEffect(() => {
+        props.getExpensesThunkCreator();
+    }, [chosenItems]);
+
     const onChangeDateLower = (date: any) => {
         setDateLower(date);
     };
@@ -30,8 +47,9 @@ const History: React.FC = (props: any) => {
     };
 
     const onDeleteExpense = () => {
-        props.deleteExpense(chosenItems);
-        props.setExpenses();
+        // props.deleteExpense(chosenItems);
+        props.deleteExpensesThunkCreator(chosenItems);
+        // props.setExpenses();
         setChosenItems([]);
         setShowConfirm(false);
     };
@@ -42,26 +60,32 @@ const History: React.FC = (props: any) => {
         }
     };
 
+    if (!props.isAuth) {
+        return <Redirect to={'login'}/>
+    }
+
     return (
         <div className={'history'}>
             <h2>Your history</h2>
 
-            {showConfirm ? <Confirm title={`Do you want delete ${chosenItems.length} items?`} func={onDeleteExpense} close={() => setShowConfirm(false)}/> : null}
+            {showConfirm ? <Confirm className={'confirm show'} title={`Do you want delete ${chosenItems.length} items?`} func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
+                <Confirm className={'confirm'} title={`Do you want delete ${chosenItems.length} items?`} func={onDeleteExpense} close={() => setShowConfirm(false)}/>}
 
-            <div className={'history__buttons'}>
-                <Button image={add} func={() => setShowForm(!showForm)} className={'button button--add'}
-                        title={'Add new'}/>
-                <Button image={del} func={onShowConfirm} className={'button button--delete'} title={`Delete items (${chosenItems.length})`}/>
-            </div>
-
-            <Form showForm={showForm}/>
             <Filter categories={props.categories} descending={descending} setDescending={setDescending} filter={filter}
                     setFilter={setFilter} sort={sort} setSort={setSort} sortValues={sortValues} dateLower={dateLower}
                     dateHigher={dateHigher} onChangeDateLower={onChangeDateLower}
                     onChangeDateHigher={onChangeDateHigher} filterInRange={filterInRange}
                     setFilterInRange={setFilterInRange}/>
 
-            <HistoryItems chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
+            <div className={'history__buttons'}>
+                <Button image={add} func={() => setShowForm(!showForm)} className={'button button--add'}
+                        title={''}/>
+                <Button image={del} func={onShowConfirm} className={'button button--delete'} title={`${chosenItems.length}`}/>
+            </div>
+
+            <Form showForm={showForm}/>
+
+            <HistoryItems changeExpenseThunkCreator={props.changeExpenseThunkCreator} chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
                           filter={filter} sort={sort} descending={descending} expenses={props.expenses}
                           deleteExpense={props.deleteExpense} changeExpense={props.changeExpense}
                           setExpenses={props.setExpenses} dateLower={dateLower} dateHigher={dateHigher}
@@ -73,6 +97,8 @@ const History: React.FC = (props: any) => {
 let mapStateToProps = (store: any) => ({
     expenses: store.history.expenses,
     categories: store.settings.categories,
+    isAuth: store.account.isAuth,
 });
 
-export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense, deleteExpense})(History);
+export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, getUser, changeExpense, deleteExpense, getExpensesThunkCreator,
+    deleteExpensesThunkCreator, changeExpenseThunkCreator})(History);

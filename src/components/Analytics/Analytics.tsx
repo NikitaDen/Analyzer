@@ -2,10 +2,11 @@ import React, {useEffect, useState} from "react";
 import './analytics.scss';
 import {connect} from "react-redux";
 import Period from "./Period/Period";
-import {getExpenses} from "../../redux/history-reducer";
+import {getExpenses, getExpensesThunkCreator} from "../../redux/history-reducer";
 import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
-import {getCategories} from "../../redux/settings-reducer";
+import {addCategoriesThunkCreator, getCategories, getCategoriesThunkCreator} from "../../redux/settings-reducer";
 import Chart from "../Chart/Chart";
+import {Redirect} from "react-router-dom";
 
 const Analytics = (props: any) => {
     const [dateLower, setDateLower] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0));
@@ -15,8 +16,8 @@ const Analytics = (props: any) => {
     const [moreInfo, setMoreInfo] = useState({});
 
     useEffect(() => {
-        props.getExpenses();
-        props.getCategories();
+        props.getExpensesThunkCreator();
+        props.getCategoriesThunkCreator();
     }, []);
 
     const findTotalSpendingForPeriod = () => {
@@ -91,9 +92,14 @@ const Analytics = (props: any) => {
             </div>)
     };
 
+    if (!props.isAuth) {
+        return <Redirect to={'login'}/>
+    }
+
     return (
         <div className={'analytics'}>
             <h2>Analytics</h2>
+
             <Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher} dateLower={dateLower} setDateLower={setDateLower}
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
@@ -119,6 +125,7 @@ const Analytics = (props: any) => {
 const mapStateToProps = (store: any) => ({
     expenses: store.history.expenses,
     categories: store.settings.categories,
+    isAuth: store.account.isAuth,
 });
 
-export default connect(mapStateToProps, {getExpenses, getCategories})(Analytics);
+export default connect(mapStateToProps, {getExpenses, getCategories, getExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);
