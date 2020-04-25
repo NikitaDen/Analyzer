@@ -36,18 +36,25 @@ input[type=checkbox] {
 }
 
 .dates {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  row-gap: 1rem;
+  display: flex;
+  flex-direction: column;
 
-  &>div {
-    justify-self: end;
+  &__element {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    input {
+      margin-bottom: 1rem;
+    }
   }
 
   p {
     display: inline-block;
+    //margin-bottom: .5rem;
     height: 1rem;
-    align-self: center;
+    width: 4rem;
+    text-align: left;
   }
 }
 
@@ -260,22 +267,28 @@ body {
   width: 100vw;
 
   .wrapper {
+    position: relative;
     width: 100%;
     margin: 0 auto;
     display: flex;
     flex-direction: row;
+    //z-index: -2;
   }
 
   .content {
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
     padding: 1rem 2.5rem 1.5rem 2rem;
     background-color: transparent;
     flex: 1;
+    padding-left: 240px;
   }
 }
 
 .empty {
   margin: 2rem auto;
-  color: rgba(0,0,0,.35);
+  color: rgba(0, 0, 0, .35);
   text-align: center;
 
   img {

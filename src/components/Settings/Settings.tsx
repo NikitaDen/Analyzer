@@ -43,7 +43,7 @@ const Settings: React.FC<Props> = (props) => {
     return (
         <div className={'settings'}>
             <h2>Settings</h2>
-            <Categories deleteCategoryThunkCreator={props.deleteCategoryThunkCreator} addCategoriesThunkCreator={props.addCategoriesThunkCreator} getCategoriesThunkCreator={props.getCategoriesThunkCreator} categories={props.categories}
+            <Categories isAuth={props.isAuth} deleteCategoryThunkCreator={props.deleteCategoryThunkCreator} addCategoriesThunkCreator={props.addCategoriesThunkCreator} getCategoriesThunkCreator={props.getCategoriesThunkCreator} categories={props.categories}
                         getCategories={props.getCategories} addCategory={props.addCategory}
                         deleteCategory={props.deleteCategory}/>
         </div>

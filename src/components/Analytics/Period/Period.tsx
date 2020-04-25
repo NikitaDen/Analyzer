@@ -43,16 +43,16 @@ const Period: React.FC<Props> = (props) => {
         <div className={'period'}>
 
             <div className={'dates'}>
-                <p>From:</p>
-                <DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>
-                <p>To:</p>
-                <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
-                            onChange={onChangeDateHigher} selected={props.dateHigher}/>
+                <div className={'dates__element'}>
+                    <p>From:</p>
+                    <DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>
+                </div>
+                <div className={'dates__element'}>
+                    <p>To:</p>
+                    <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
+                                onChange={onChangeDateHigher} selected={props.dateHigher}/>
+                </div>
             </div>
-
-            {/*<DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>*/}
-            {/*<DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}*/}
-            {/*            onChange={onChangeDateHigher} selected={props.dateHigher}/>*/}
 
             <input onChange={onToggleFilter} id='dark-check' type="checkbox"/>
             <label className='dark-mode' htmlFor="dark-check">

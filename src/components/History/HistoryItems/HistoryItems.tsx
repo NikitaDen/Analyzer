@@ -4,6 +4,7 @@ import './history.scss';
 import TableHeader from "../TableHeader/TableHeader";
 import empty from './../../../assets/images/empty.svg';
 import noData from './../../../assets/images/nodata.svg';
+import Loader from "../../Loader/Loader";
 
 interface Props {
     filter: any,
@@ -15,6 +16,7 @@ interface Props {
     dateHigher: any,
     filterInRange: boolean,
     chosenItems: any,
+    isLoading: boolean,
 
     setChosenItems(val?: any): any
 
@@ -119,7 +121,7 @@ const HistoryItems: React.FC<Props> = (props) => {
     return (
         <div className={'table'}>
             <TableHeader checkedAll={checkedAll} chooseAllItems={chooseAllItems}/>
-
+            {props.isLoading ? <Loader/> : null}
             {props.filterInRange ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
                 ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :
                 <div className={'empty'}>

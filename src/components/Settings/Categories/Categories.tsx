@@ -5,6 +5,7 @@ import './categories.scss';
 
 interface Props {
     categories: any,
+    isAuth: boolean,
 
     getCategories(): void,
     getCategoriesThunkCreator(): void,
@@ -23,7 +24,7 @@ const Categories: React.FC<Props> = (props) => {
     useEffect(() => {
         // props.getCategories();
         props.getCategoriesThunkCreator();
-    }, []);
+    }, [props.isAuth]);
 
     const onAddCategory = () => {
         if (!newCategory) {

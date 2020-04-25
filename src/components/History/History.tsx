@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {
     addExpense,
@@ -16,7 +16,8 @@ import Button from "../Button/Button";
 import del from './../../assets/images/delete.svg';
 import Confirm from "../Confirm/Confirm";
 import {getUser} from "../../redux/account-reducer";
-import { Redirect } from "react-router-dom";
+import {Redirect} from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const History: React.FC = (props: any) => {
     const [filter, setFilter] = useState('noFilter');
@@ -46,13 +47,13 @@ const History: React.FC = (props: any) => {
         setDateHigher(date);
     };
 
-    const onDeleteExpense = () => {
+    const onDeleteExpense = useCallback(() => {
         // props.deleteExpense(chosenItems);
         props.deleteExpensesThunkCreator(chosenItems);
         // props.setExpenses();
         setChosenItems([]);
         setShowConfirm(false);
-    };
+    }, [chosenItems]);
 
     const onShowConfirm = () => {
         if (chosenItems.length) {
@@ -68,8 +69,10 @@ const History: React.FC = (props: any) => {
         <div className={'history'}>
             <h2>Your history</h2>
 
-            {showConfirm ? <Confirm className={'confirm show'} title={`Do you want delete ${chosenItems.length} items?`} func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
-                <Confirm className={'confirm'} title={`Do you want delete ${chosenItems.length} items?`} func={onDeleteExpense} close={() => setShowConfirm(false)}/>}
+            {showConfirm ? <Confirm className={'confirm show'} title={`Do you want delete ${chosenItems.length} items?`}
+                                    func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
+                <Confirm className={'confirm'} title={`Do you want delete ${chosenItems.length} items?`}
+                         func={onDeleteExpense} close={() => setShowConfirm(false)}/>}
 
             <Filter categories={props.categories} descending={descending} setDescending={setDescending} filter={filter}
                     setFilter={setFilter} sort={sort} setSort={setSort} sortValues={sortValues} dateLower={dateLower}
@@ -77,15 +80,17 @@ const History: React.FC = (props: any) => {
                     onChangeDateHigher={onChangeDateHigher} filterInRange={filterInRange}
                     setFilterInRange={setFilterInRange}/>
 
-            <div className={'history__buttons'}>
+            <div style={props.isLoading ? {opacity: ".5", pointerEvents: 'none'} : {}} className={'history__buttons'}>
                 <Button image={add} func={() => setShowForm(!showForm)} className={'button button--add'}
                         title={''}/>
-                <Button image={del} func={onShowConfirm} className={'button button--delete'} title={`${chosenItems.length}`}/>
+                <Button image={del} func={onShowConfirm} className={'button button--delete'}
+                        title={`${chosenItems.length}`}/>
             </div>
 
             <Form showForm={showForm}/>
 
-            <HistoryItems changeExpenseThunkCreator={props.changeExpenseThunkCreator} chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
+            <HistoryItems isLoading={props.isLoading} changeExpenseThunkCreator={props.changeExpenseThunkCreator} chosenItems={chosenItems}
+                          setChosenItems={setChosenItems} categories={props.categories}
                           filter={filter} sort={sort} descending={descending} expenses={props.expenses}
                           deleteExpense={props.deleteExpense} changeExpense={props.changeExpense}
                           setExpenses={props.setExpenses} dateLower={dateLower} dateHigher={dateHigher}
@@ -98,7 +103,10 @@ let mapStateToProps = (store: any) => ({
     expenses: store.history.expenses,
     categories: store.settings.categories,
     isAuth: store.account.isAuth,
+    isLoading: store.account.isLoading,
 });
 
-export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, getUser, changeExpense, deleteExpense, getExpensesThunkCreator,
-    deleteExpensesThunkCreator, changeExpenseThunkCreator})(History);
+export default connect(mapStateToProps, {
+    addExpense, setExpenses, getExpenses, getUser, changeExpense, deleteExpense, getExpensesThunkCreator,
+    deleteExpensesThunkCreator, changeExpenseThunkCreator
+})(History);

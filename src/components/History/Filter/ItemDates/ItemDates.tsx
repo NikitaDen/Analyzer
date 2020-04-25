@@ -36,11 +36,15 @@ const ItemDates: React.FC<Props> = (props) => {
             <label htmlFor="sort">Dates</label>
 
             <div className={'dates'}>
-                <p>From:</p>
-                <DatePicker maxDate={props.dateHigher} onChange={props.onChangeDateLower} selected={props.dateLower}/>
-                <p>To:</p>
-                <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
-                            onChange={props.onChangeDateHigher} selected={props.dateHigher}/>
+                <div className={'dates__element'}>
+                    <p>From:</p>
+                    <DatePicker maxDate={props.dateHigher} onChange={props.onChangeDateLower} selected={props.dateLower}/>
+                </div>
+                <div className={'dates__element'}>
+                    <p>To:</p>
+                    <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
+                                onChange={props.onChangeDateHigher} selected={props.dateHigher}/>
+                </div>
             </div>
 
 

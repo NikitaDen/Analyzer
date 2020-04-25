@@ -17,7 +17,6 @@ const App = (props: any) => {
 
     return (
         <div className="App">
-            <div className={'wrapper'}>
                 <Menu/>
                 <div className={'content'}>
                     <Switch>
@@ -30,7 +29,6 @@ const App = (props: any) => {
                         <Route path={'/settings'} render={() => <SettingsLoading/>}/>
                         <Redirect to={'/history'}/>
                     </Switch>
-                </div>
             </div>
         </div>
     );
