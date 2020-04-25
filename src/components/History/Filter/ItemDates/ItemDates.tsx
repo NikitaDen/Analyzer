@@ -29,6 +29,8 @@ const ItemDates: React.FC<Props> = (props) => {
 
     const onToggleFilter = () => {
         setFilter(!filter);
+        console.log(props.dateHigher);
+        console.log(props.dateLower);
     };
 
     return (
@@ -38,11 +40,11 @@ const ItemDates: React.FC<Props> = (props) => {
             <div className={'dates'}>
                 <div className={'dates__element'}>
                     <p>From:</p>
-                    <DatePicker maxDate={props.dateHigher} onChange={props.onChangeDateLower} selected={props.dateLower}/>
+                    <DatePicker maxDate={props.dateHigher} showTimeSelect onChange={props.onChangeDateLower} selected={props.dateLower}/>
                 </div>
                 <div className={'dates__element'}>
                     <p>To:</p>
-                    <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
+                    <DatePicker minDate={props.dateLower} showTimeSelect disabled={props.dateLower > props.dateHigher}
                                 onChange={props.onChangeDateHigher} selected={props.dateHigher}/>
                 </div>
             </div>

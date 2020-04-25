@@ -69,9 +69,9 @@ const History: React.FC = (props: any) => {
         <div className={'history'}>
             <h2>Your history</h2>
 
-            {showConfirm ? <Confirm className={'confirm show'} title={`Do you want delete ${chosenItems.length} items?`}
+            {showConfirm ? <Confirm className={'confirm show'} title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length } items?`}
                                     func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
-                <Confirm className={'confirm'} title={`Do you want delete ${chosenItems.length} items?`}
+                <Confirm className={'confirm'} title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length } items?`}
                          func={onDeleteExpense} close={() => setShowConfirm(false)}/>}
 
             <Filter categories={props.categories} descending={descending} setDescending={setDescending} filter={filter}
@@ -84,7 +84,7 @@ const History: React.FC = (props: any) => {
                 <Button image={add} func={() => setShowForm(!showForm)} className={'button button--add'}
                         title={''}/>
                 <Button image={del} func={onShowConfirm} className={'button button--delete'}
-                        title={`${chosenItems.length}`}/>
+                        title={`${chosenItems === null ? 0 : chosenItems.length }`}/>
             </div>
 
             <Form showForm={showForm}/>

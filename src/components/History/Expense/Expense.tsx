@@ -17,12 +17,15 @@ interface Props {
     categories: any,
     chosenItems: Array<any>,
     checkedAll: boolean,
+
     setChosenItems(val?: any): any,
 
     changeExpense(id: number, name: string, category: any, spent: any, count: any, price: any): void,
 
     deleteExpense(id: any): void,
+
     changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): void
+
     setExpenses(): void,
 }
 
@@ -44,9 +47,14 @@ const Expense: React.FC<Props> = (props) => {
         setChecked(props.checkedAll);
     }, [props.checkedAll]);
 
+    const isIterable = (object: any) => object != null && typeof object[Symbol.iterator] === 'function';
+
     useEffect(() => {
         if (checked) {
-            props.setChosenItems(Array.from(new Set([...props.chosenItems, props.id])));
+            const itemsIter = isIterable(props.chosenItems);
+            if (itemsIter) {
+                props.setChosenItems(Array.from(new Set([...props.chosenItems, props.id])));
+            }
         } else {
             props.chosenItems.splice(props.chosenItems.indexOf(props.id), props.chosenItems.indexOf(props.id) === -1 ? 0 : 1);
             props.setChosenItems([...props.chosenItems]);
@@ -84,7 +92,8 @@ const Expense: React.FC<Props> = (props) => {
 
     return (
         <div className={checked ? 'expense expense--chosen' : 'expense'}>
-            {showConfirm ? <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteCategory} close={() => setShowConfirm(false)}/> : null}
+            {showConfirm ? <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteCategory}
+                                    close={() => setShowConfirm(false)}/> : null}
             {!editMode ?
                 <>
                     <div className={'checkbox-element'}>
@@ -99,7 +108,7 @@ const Expense: React.FC<Props> = (props) => {
                     <p>{props.price}</p>
                     <p>{props.count}</p>
                     <p>{props.spent}</p>
-                    
+
                     <div>
                         <p>{props.date}</p>
                     </div>
@@ -109,7 +118,8 @@ const Expense: React.FC<Props> = (props) => {
                     <p/>
                     <input type="text" onChange={onChangeName} value={name}/>
                     <select value={category} onChange={onChangeCategory} name="filter" id="filter">
-                        {props.categories.map((item: any) => <option key={item.name} value={item.name}>{item.name}</option>)}
+                        {props.categories.map((item: any) => <option key={item.name}
+                                                                     value={item.name}>{item.name}</option>)}
                     </select>
                     <input type="number" id={'price'} value={price} min={0} onChange={(e) => setPrice(e.target.value)}/>
                     <input type="number" id={'count'} value={count} min={1} onChange={(e) => setCount(e.target.value)}/>
