@@ -7,13 +7,10 @@ interface Props {
     categories: any,
     isAuth: boolean,
 
-    getCategories(): void,
     getCategoriesThunkCreator(): void,
 
-    addCategory(category: string): void,
     addCategoriesThunkCreator(name: string, id: any): void,
 
-    deleteCategory(id: string): void,
     deleteCategoryThunkCreator(id: string): void,
 }
 
@@ -22,7 +19,6 @@ const Categories: React.FC<Props> = (props) => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        // props.getCategories();
         props.getCategoriesThunkCreator();
     }, [props.isAuth]);
 
@@ -30,9 +26,7 @@ const Categories: React.FC<Props> = (props) => {
         if (!newCategory) {
             setError(true);
         } else {
-            // props.addCategory(newCategory);
             props.addCategoriesThunkCreator(newCategory, Date.now());
-            // props.setCategories();
             setNewCategory('');
         }
     };
@@ -55,7 +49,7 @@ const Categories: React.FC<Props> = (props) => {
             </div>
 
             {props.categories.map((item: any) => <Category key={item.id} name={item.name} id={item.id}
-                                                           deleteCategory={props.deleteCategory} deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}/>)}
+                                                           deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}/>)}
         </div>
     )
 };

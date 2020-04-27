@@ -6,9 +6,7 @@ import clear from "../../../../assets/images/clear-dark.svg";
 interface Props {
     name: string,
     id: any,
-
-    deleteCategory(id: string): void,
-
+    
     deleteCategoryThunkCreator(id: string): void,
 
 }

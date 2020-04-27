@@ -24,20 +24,21 @@ const Menu = (props: any) => {
                 <p>Settings</p>
                 <img src={settings} alt=""/>
             </NavLink>
+            <p>{props.infoF}</p>
 
             <div className={'login-buttons'}>
                 {props.isAuth ? <>
-                    <Button image={logout} className={'button button--logout'} func={() => props.userLogoutThunkCreator()} title={'Logout'}/>
-                    {/*<button className={'button'} onClick={() => props.userLogoutThunkCreator()}>Logout</button>*/}
+                    <Button image={logout} className={'button button--logout'}
+                            func={() => props.userLogoutThunkCreator()} title={'Logout'}/>
                 </> : null}
-
             </div>
         </nav>
     )
 };
 
 const mapStateToProps = (store: any) => ({
-   isAuth: store.account.isAuth,
+    isAuth: store.account.isAuth,
+    infoF: store.account.infoF,
 });
 
 export default connect(mapStateToProps, {userLogoutThunkCreator})(Menu);

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './analytics.scss';
 import {connect} from "react-redux";
 import Period from "./Period/Period";
-import {getExpenses, getExpensesThunkCreator} from "../../redux/history-reducer";
+import {getExpensesThunkCreator} from "../../redux/history-reducer";
 import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
 import {addCategoriesThunkCreator, getCategories, getCategoriesThunkCreator} from "../../redux/settings-reducer";
 import Chart from "../Chart/Chart";
@@ -128,4 +128,4 @@ const mapStateToProps = (store: any) => ({
     isAuth: store.account.isAuth,
 });
 
-export default connect(mapStateToProps, {getExpenses, getCategories, getExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);
+export default connect(mapStateToProps, {getCategories, getExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);

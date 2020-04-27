@@ -9,7 +9,6 @@ import {
 import {Redirect, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import './login.scss';
-import loading from './../../assets/images/loading-1.svg';
 import Loader from "../Loader/Loader";
 
 const Login = (props: any) => {

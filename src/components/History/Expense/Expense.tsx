@@ -4,7 +4,6 @@ import './expense.scss';
 import Button from "../../Button/Button";
 import edit from "../../../assets/images/edit.svg";
 import save from "../../../assets/images/save.svg";
-import {changeExpenseThunkCreator} from "../../../redux/history-reducer";
 
 interface Props {
     id: number,
@@ -20,13 +19,9 @@ interface Props {
 
     setChosenItems(val?: any): any,
 
-    changeExpense(id: number, name: string, category: any, spent: any, count: any, price: any): void,
-
     deleteExpense(id: any): void,
 
     changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): void
-
-    setExpenses(): void,
 }
 
 const Expense: React.FC<Props> = (props) => {
@@ -61,9 +56,8 @@ const Expense: React.FC<Props> = (props) => {
         }
     }, [checked]);
 
-    const onDeleteCategory = () => {
+    const onDeleteExpense = () => {
         props.deleteExpense(props.id);
-        // props.setExpenses();
     };
 
     const onEditCategory = () => {
@@ -71,10 +65,7 @@ const Expense: React.FC<Props> = (props) => {
     };
 
     const onSaveCategory = () => {
-        // props.changeExpense(props.id, name, category, spent, count, price);
-        debugger
         props.changeExpenseThunkCreator(props.id, name, category, spent, count, price);
-        // props.setExpenses();
         setEditMode(false);
     };
 
@@ -92,7 +83,7 @@ const Expense: React.FC<Props> = (props) => {
 
     return (
         <div className={checked ? 'expense expense--chosen' : 'expense'}>
-            {showConfirm ? <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteCategory}
+            {showConfirm ? <Confirm className={'confirm'} title={'Are you sure?'} func={onDeleteExpense}
                                     close={() => setShowConfirm(false)}/> : null}
             {!editMode ?
                 <>

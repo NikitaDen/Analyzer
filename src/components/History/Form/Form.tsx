@@ -1,38 +1,31 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {
-    addExpense, addExpenseThunkCreator,
+    addExpenseThunkCreator,
     changeExpense,
-    getExpenses,
     getExpensesThunkCreator,
-    setExpenses
 } from "../../../redux/history-reducer";
 import './form.scss';
 import save from './../../../assets/images/save.svg';
-import {getCategories, getCategoriesThunkCreator} from "../../../redux/settings-reducer";
+import {getCategoriesThunkCreator} from "../../../redux/settings-reducer";
 
 interface Props {
     categories: any,
     showForm: boolean,
-
-    getExpenses(): void,
     getExpensesThunkCreator(): void,
     getCategoriesThunkCreator(): void,
-    getCategories(): void,
     addExpenseThunkCreator(expense: any): void,
 }
 
 const Form: React.FC<Props> = (props) => {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
-    const [price, setPrice] = useState('0');
-    const [count, setCount] = useState('1');
+    const [price, setPrice] = useState(0);
+    const [count, setCount] = useState(1);
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        // props.getExpenses();
         props.getExpensesThunkCreator();
-        // props.getCategories();
         props.getCategoriesThunkCreator();
     }, []);
 
@@ -44,16 +37,10 @@ const Form: React.FC<Props> = (props) => {
 
     const onAddExpenseButton = () => {
         if (name) {
-            // @ts-ignore
-            // props.addExpense({category, count, name, price, spent: price * count});
-            // @ts-ignore
             props.addExpenseThunkCreator({category, count, name, price, spent: price * count});
-            // @ts-ignore
-            // props.setExpenses();
-
             setName('');
-            setCount('1');
-            setPrice('0');
+            setCount(1);
+            setPrice(0);
         } else {
             setError(true);
         }
@@ -82,12 +69,12 @@ const Form: React.FC<Props> = (props) => {
                     <div className={'form__element'}>
                         <label htmlFor="count">Count</label>
                         <input type="number" id={'count'} value={count} min={0}
-                               onChange={(e) => setCount(e.target.value)}/>
+                               onChange={(e) => setCount(parseInt(e.target.value))}/>
                     </div>
                     <div className={'form__element'}>
                         <label htmlFor="price">Price</label>
                         <input type="number" id={'price'} value={price} min={0}
-                               onChange={(e) => setPrice(e.target.value)}/>
+                               onChange={(e) => setPrice(parseInt(e.target.value))}/>
                     </div>
 
                     <button className={'button button--addItem'} onClick={onAddExpenseButton}>
@@ -104,5 +91,4 @@ let mapStateToProps = (store: any) => ({
     categories: store.settings.categories,
 });
 
-// @ts-ignore
-export default connect(mapStateToProps, {addExpense, setExpenses, getExpenses, changeExpense, getCategories, getExpensesThunkCreator, addExpenseThunkCreator, getCategoriesThunkCreator})(Form);
+export default connect(mapStateToProps, {changeExpense, getExpensesThunkCreator, addExpenseThunkCreator, getCategoriesThunkCreator})(Form);

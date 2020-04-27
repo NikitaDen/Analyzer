@@ -1,6 +1,54 @@
 .history {
   width: 100%;
 
+  .buttons {
+    margin-top: 1rem;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .button--pages {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+
+      height: 1.75rem;
+      width: 1.75rem;
+      border-radius: 50%;
+
+      img {
+        transition: .3s;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        height: 0;
+        width: 0;
+        border-radius: 50%;
+        background-color: #448AFF;
+        z-index: -1;
+        transition: .3s;
+      }
+        &:hover {
+          img {
+            filter: invert(1);
+          }
+          &::before {
+            height: 1.75rem;
+            width: 1.75rem;
+        }
+      }
+    }
+  }
+  .pages {
+    margin: 0 1rem;
+  }
+
   &__buttons {
     display: flex;
     flex-direction: row;

@@ -6,8 +6,7 @@ import {
     userLogoutThunkCreator,
     userRegisterThunkCreator
 } from "../../redux/account-reducer";
-import {Redirect, withRouter} from "react-router-dom";
-// import './registration.scss';
+import {withRouter} from "react-router-dom";
 import {compose} from "redux";
 import './../Login/login.scss';
 

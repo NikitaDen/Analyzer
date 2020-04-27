@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import {settingsAPI} from "../api/api";
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
@@ -46,36 +46,37 @@ const settingsReducer = (state = initialState, action: any) => {
     }
 };
 
-export const deleteCategory = (id: string) => ({type: DELETE_CATEGORY, id});
-export const getCategories = (categories: any) => ({type: GET_CATEGORIES, categories});
 export const setCategories = () => ({type: SET_CATEGORIES});
 
 export const addCategory = (name: string, id: any) => ({type: ADD_CATEGORY, name, id});
 export const addCategoriesThunkCreator = (name: string, id: any) => async (dispatch: any) => {
-    // @ts-ignore
-    await axios.post('https://analyzerserver.herokuapp.com/api/settings/categories',
-        {name, id},
-        {
-            withCredentials: true
-        });
-    dispatch(addCategory(name, id));
+    try {
+        await settingsAPI.addCategory(name, id);
+        dispatch(addCategory(name, id));
+    } catch (e) {
+        console.log(e.response.data)
+    }
 };
 
+export const getCategories = (categories: any) => ({type: GET_CATEGORIES, categories});
 export const getCategoriesThunkCreator = () => async (dispatch: any) => {
-    // @ts-ignore
-    const response = await axios.get('https://analyzerserver.herokuapp.com/api/settings/categories', {
-        withCredentials: true
-    });
+    try {
+        const response = await settingsAPI.getCategories();
 
-    dispatch(getCategories(response.data));
+        dispatch(getCategories(response.data));
+    } catch (e) {
+        console.log(e.response.data)
+    }
 };
 
+export const deleteCategory = (id: string) => ({type: DELETE_CATEGORY, id});
 export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => {
-    // @ts-ignore
-    await axios.put('https://analyzerserver.herokuapp.com/api/settings/delete', {id}, {
-        withCredentials: true
-    });
-    dispatch(deleteCategory(id));
+    try {
+        await settingsAPI.deleteExpense(id);
+        dispatch(deleteCategory(id));
+    } catch (e) {
+        console.log(e.response.body);
+    }
 };
 
 export default settingsReducer;

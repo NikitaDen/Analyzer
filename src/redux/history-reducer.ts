@@ -1,21 +1,17 @@
-import * as axios from "axios";
 import {showLoading} from "./account-reducer";
+import {historyAPI} from "../api/api";
+import * as axios from "axios";
 
 const ADD_EXPENSE = 'ADD_EXPENSE';
 const DELETE_EXPENSE = 'DELETE_EXPENSE';
-const SET_EXPENSES = 'SET_EXPENSES';
 const GET_EXPENSES = 'GET_EXPENSES';
+const GET_PAGES = 'GET_PAGES';
 const CHANGE_EXPENSE = 'CHANGE_EXPENSE';
-
-interface Expense {
-    name: string,
-    category: string,
-    spent: string,
-    count: string
-}
 
 let initialState: any = {
     expenses: [],
+    pages: 1,
+    limit: 5,
 };
 
 const historyReducer = (state = initialState, action: any) => {
@@ -39,13 +35,16 @@ const historyReducer = (state = initialState, action: any) => {
                     ...state.expenses.filter((item: any) => !action.id.includes(item.id))
                 ]
             };
-        case SET_EXPENSES: {
-            return state;
-        }
         case GET_EXPENSES: {
             return {
                 ...state,
                 expenses: [...action.expenses]
+            };
+        }
+        case GET_PAGES: {
+            return {
+                ...state,
+                pages: Math.ceil(action.pages / state.limit),
             };
         }
         case CHANGE_EXPENSE: {
@@ -76,59 +75,66 @@ const historyReducer = (state = initialState, action: any) => {
 export const addExpense = (expense: any) => ({type: ADD_EXPENSE, expense});
 export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
-    // @ts-ignore
-    await axios.post('https://analyzerserver.herokuapp.com/api/history/expenses', {
-        name: expense.name,
-        category: expense.category,
-        count: expense.count,
-        spent: expense.spent,
-        price: expense.price,
-        date: `${new Date().toLocaleString()}`,
-        id: Date.now(),
-    }, {
-        withCredentials: true
-    });
-    dispatch(showLoading(false));
-    dispatch(addExpense(expense));
+
+    try {
+        await historyAPI.addExpense(expense);
+
+        dispatch(showLoading(false));
+        dispatch(addExpense(expense));
+    } catch (e) {
+        console.log(e.response.data)
+    }
 };
 
 export const deleteExpense = (id: any) => ({type: DELETE_EXPENSE, id});
 export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
-    // @ts-ignore
-    await axios.put('https://analyzerserver.herokuapp.com/api/history/delete', {id}, {
-        withCredentials: true
-    });
-    dispatch(showLoading(false));
-    dispatch(deleteExpense(id));
+    try {
+        await historyAPI.deleteExpense(id);
+
+        dispatch(showLoading(false));
+        dispatch(deleteExpense(id));
+    } catch (e) {
+        console.log(e.response.data)
+    }
 };
 
-export const setExpenses = () => ({type: SET_EXPENSES});
 
 export const getExpenses = (expenses: any) => ({type: GET_EXPENSES, expenses});
-export const getExpensesThunkCreator = () => async (dispatch: any) => {
+export const getPages = (pages: any) => ({type: GET_PAGES, pages});
+
+export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
-    // @ts-ignore
-    const response = await axios.get('https://analyzerserver.herokuapp.com/api/history/expenses', {
-        withCredentials: true
-    });
-
-    dispatch(showLoading(false));
-    dispatch(getExpenses(response.data));
+    try {
+        // @ts-ignore
+        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/expenses?page=${page}&limit=5`, {
+            headers: {
+                'token': `${localStorage.getItem('token')}`
+            }
+        });
+        dispatch(showLoading(false));
+        dispatch(getExpenses(response.data.expenses));
+        dispatch(getPages(response.data.length));
+        console.log(response.data);
+    } catch (e) {
+        console.log(e.response.data);
+    }
 };
 
 export const changeExpense = (id: number, name: string, category: any, spent: any, count: any, price: any) => ({type: CHANGE_EXPENSE, id, name, category, spent, count, price});
 export const changeExpenseThunkCreator = (id: number, name: string, category: any, spent: any, count: any, price: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
-    // @ts-ignore
-    await axios.put('https://analyzerserver.herokuapp.com/api/history/change',
-        {name, category, count, spent, price, id},
-        {withCredentials: true});
-    dispatch(showLoading(false));
 
-    dispatch(changeExpense(id, name, category, spent, count, price));
+    try {
+        await historyAPI.changeExpense(id, name, category, spent, count, price);
+
+        dispatch(showLoading(false));
+        dispatch(changeExpense(id, name, category, spent, count, price));
+    } catch (e) {
+        console.log(e.response.data);
+    }
 };
 
 export default historyReducer;

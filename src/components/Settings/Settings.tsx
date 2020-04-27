@@ -2,11 +2,8 @@ import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import {
     addCategoriesThunkCreator,
-    addCategory,
-    deleteCategory, deleteCategoryThunkCreator,
-    getCategories,
+    deleteCategoryThunkCreator,
     getCategoriesThunkCreator,
-    setCategories
 } from "../../redux/settings-reducer";
 import Categories from "./Categories/Categories";
 import {getUser} from "../../redux/account-reducer";
@@ -17,17 +14,12 @@ interface Props {
     categories: any,
     isAuth: boolean,
 
-    addCategory(name: string): void,
     addCategoriesThunkCreator(name: string, id: any): void,
 
-    getCategories(): void,
     getCategoriesThunkCreator(): void,
 
     getUser(): void,
 
-    setCategories(): void,
-
-    deleteCategory(id: string): void,
     deleteCategoryThunkCreator(id: string): void,
 }
 
@@ -43,9 +35,9 @@ const Settings: React.FC<Props> = (props) => {
     return (
         <div className={'settings'}>
             <h2>Settings</h2>
-            <Categories isAuth={props.isAuth} deleteCategoryThunkCreator={props.deleteCategoryThunkCreator} addCategoriesThunkCreator={props.addCategoriesThunkCreator} getCategoriesThunkCreator={props.getCategoriesThunkCreator} categories={props.categories}
-                        getCategories={props.getCategories} addCategory={props.addCategory}
-                        deleteCategory={props.deleteCategory}/>
+            <Categories isAuth={props.isAuth} deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}
+                        addCategoriesThunkCreator={props.addCategoriesThunkCreator}
+                        getCategoriesThunkCreator={props.getCategoriesThunkCreator} categories={props.categories}/>
         </div>
     )
 };
@@ -55,5 +47,8 @@ const mapStateToProps = (store: any) => ({
     isAuth: store.account.isAuth,
 });
 
-// @ts-ignore
-export default connect(mapStateToProps, {addCategory, addCategoriesThunkCreator, getCategories, setCategories, deleteCategory, deleteCategoryThunkCreator, getUser, getCategoriesThunkCreator})(Settings);
+export default connect(mapStateToProps, {
+    addCategoriesThunkCreator,
+    deleteCategoryThunkCreator,
+    getUser, getCategoriesThunkCreator
+})(Settings);

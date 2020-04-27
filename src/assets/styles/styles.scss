@@ -150,24 +150,32 @@ body {
     width: 2.5rem;
     border-radius: 1.25rem;
 
+    &:hover {
+      transform: rotate(360deg);
+    }
+
     &:active {
       transform: scale(.95);
     }
   }
 
   &--edit {
-    background-color: #FFCF52;
+    &::before {
+      background-color: #FFCF52;
+    }
   }
 
   &--save {
-    background-color: #55CCD3;
+    &::before {
+      background-color: #55CCD3;
+    }
   }
 
   &--save, &--edit {
     display: flex;
     flex-direction: row;
-    color: white;
     font-weight: bold;
+    background-color: transparent;
     height: 2rem;
     width: 2rem;
     border-radius: 50%;
@@ -175,7 +183,29 @@ body {
     justify-content: center;
 
     img {
+      filter: invert(1);
       height: 1rem;
+      transition: .3s;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 0;
+      width: 0;
+      border-radius: 50%;
+      z-index: -1;
+      transition: .3s;
+    }
+
+    &:hover {
+      img {
+        filter: invert(0);
+      }
+      &::before {
+        height: 1.75rem;
+        width: 1.75rem;
+      }
     }
   }
 
@@ -188,6 +218,10 @@ body {
     height: 2.5rem;
     min-width: 4.35rem;
     border-radius: 1.25rem;
+
+    &:hover {
+      transform: translate(0, -10%);
+    }
 
     p {
       line-height: 1;
@@ -208,15 +242,36 @@ body {
     border-radius: 50%;
     display: flex;
     flex-direction: row;
-    font-weight: bold;
-    background-color: #55CCD3;
-    color: white;
+    background-color: transparent;
     align-items: center;
     justify-content: center;
     align-self: flex-end;
+    position: relative;
 
     img {
+      filter: invert(1);
       height: 1.25rem;
+      transition: .3s;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      background-color: #2a87d0;
+      height: 0;
+      width: 0;
+      border-radius: 50%;
+      transition: .3s;
+    }
+
+    &:hover {
+      img {
+        filter: invert(0);
+      }
+      &::before {
+        height: 2.5rem;
+        width: 2.5rem;
+      }
     }
   }
 
@@ -318,7 +373,7 @@ body {
     position: absolute;
     height: 1.7rem;
     width: 1.7rem;
-    background: #61dafb no-repeat center;
+    background: #448AFF no-repeat center;
     background-size: 50%;
     border-radius: .85rem;
     left: 3px;

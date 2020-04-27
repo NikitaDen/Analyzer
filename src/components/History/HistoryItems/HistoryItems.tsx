@@ -19,9 +19,6 @@ interface Props {
     isLoading: boolean,
 
     setChosenItems(val?: any): any
-
-    changeExpense(): void,
-
     deleteExpense(id: any): void,
     changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): any
     setExpenses(): void,
@@ -98,9 +95,7 @@ const HistoryItems: React.FC<Props> = (props) => {
                      price={item.price}
                      spent={item.spent}
                      date={item.date}
-                     changeExpense={props.changeExpense}
                      deleteExpense={props.deleteExpense}
-                     setExpenses={props.setExpenses}
                      changeExpenseThunkCreator={props.changeExpenseThunkCreator}
             />
         )
