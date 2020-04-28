@@ -9,6 +9,7 @@ import {
 import {withRouter} from "react-router-dom";
 import {compose} from "redux";
 import './../Login/login.scss';
+import Loader from "../Loader/Loader";
 
 const Register = (props: any) => {
     const [name, setName] = useState('');
@@ -19,9 +20,17 @@ const Register = (props: any) => {
         props.getUser();
     }, []);
 
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        if (props.info === 'ok') {
+            props.history.push('login');
+        }
+
+    }, [props.info]);
+
     return (
-        <div>
-            <div className={'login'}>
+        <>
+            {props.isLoginLoading ? <Loader/> : <form className={'login'}>
                 <h3>Registration</h3>
                 <label htmlFor="name">Name</label>
                 <input id={'name'} type="text" value={name} onChange={(e) => setName(e.target.value)}/>
@@ -32,16 +41,23 @@ const Register = (props: any) => {
                 <div>
                     <button className={'button'} onClick={() => {
                         props.userRegisterThunkCreator(name, email, password);
-                        props.history.push('login');
-                    }}>Register</button>
+                        // props.history.push('login');
+                    }}>Register
+                    </button>
                 </div>
-            </div>
-        </div>
+                <p className={'error-message'}>{props.info}</p>
+            </form>
+            }
+        </>
     )
 };
 
 const mapStateToProps = (store: any) => ({
     isAuth: store.account.isAuth,
+    info: store.account.info,
+    isLoading: store.account.isLoading,
+    isLoginLoading: store.account.isLoginLoading,
+
 });
 
 export default compose(

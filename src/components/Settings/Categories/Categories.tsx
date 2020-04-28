@@ -22,6 +22,10 @@ const Categories: React.FC<Props> = (props) => {
         props.getCategoriesThunkCreator();
     }, [props.isAuth]);
 
+    useEffect(() => {
+        props.getCategoriesThunkCreator();
+    }, []);
+
     const onKeyAdd = (e: any) => {
         if (e.key === 'Enter' && newCategory && newCategory.replace(/\s+/g, '')) {
             props.addCategoriesThunkCreator(newCategory, Date.now());

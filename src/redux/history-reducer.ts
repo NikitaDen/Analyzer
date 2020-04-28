@@ -11,7 +11,7 @@ const CHANGE_EXPENSE = 'CHANGE_EXPENSE';
 let initialState: any = {
     expenses: [],
     pages: 1,
-    limit: 5,
+    limit: 10,
 };
 
 const historyReducer = (state = initialState, action: any) => {
@@ -110,7 +110,7 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
 
     try {
         // @ts-ignore
-        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/expenses?page=${page}&limit=5`, {
+        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/expenses?page=${page}&limit=10`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
             }

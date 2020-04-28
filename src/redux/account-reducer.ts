@@ -14,7 +14,7 @@ let initialState: any = {
     isAuth: localStorage.getItem('isAuth') || false,
     isLoading: false,
     isLoginLoading: false,
-    infoF: '',
+    info: '',
 };
 
 const accountReducer = (state = initialState, action: any) => {
@@ -27,7 +27,7 @@ const accountReducer = (state = initialState, action: any) => {
         case INFO:
             return {
                 ...state,
-                infoF: action.infoF,
+                info: action.info,
             };
         case LOGIN_LOADING:
             return {
@@ -50,7 +50,7 @@ const accountReducer = (state = initialState, action: any) => {
 };
 
 export const userLogin = (isAuth: boolean) => ({type: USER_LOGIN, isAuth});
-export const setInfo = (infoF: any) => ({type: INFO, infoF});
+export const setInfo = (info: any) => ({type: INFO, info});
 export const getUser = () => ({type: GET_USER});
 export const showLoading = (isLoading: boolean) => ({type: SHOW_LOADING, isLoading});
 export const loginLoading = (isLoading: boolean) => ({type: LOGIN_LOADING, isLoading});
@@ -70,17 +70,24 @@ export const userLoginThunkCreator = (email: string, password: string) => async 
     } catch (e) {
         dispatch(loginLoading(false));
         dispatch(userLogin(false));
-        console.log(e.response.data);
+        dispatch(setInfo(e.response.data));
+        // console.log(e.response.data);
     }
 };
 
 export const userRegisterThunkCreator = (name: string, email: string, password: string) => async (dispatch: any) => {
+    dispatch(loginLoading(true));
+
     try {
         const response = await authAPI.register(name, email, password);
         if (response.data) {
+            dispatch(loginLoading(false));
             dispatch(userLogin(false));
+            dispatch(setInfo('ok'));
         }
     } catch (e) {
+        dispatch(loginLoading(false));
+        dispatch(setInfo(e.response.data));
         console.log(e.response.data);
     }
 };

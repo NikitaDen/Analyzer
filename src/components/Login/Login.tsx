@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {
-    getUser,
+    getUser, setInfo,
     userLoginThunkCreator,
     userLogoutThunkCreator,
     userRegisterThunkCreator
@@ -24,7 +24,7 @@ const Login = (props: any) => {
         return (
             <>
                 {
-                    props.isLoginLoading ? <Loader/> : <div className={'login'}>
+                    props.isLoginLoading ? <Loader/> : <form className={'login'}>
                         <h3>Login</h3>
                         <label htmlFor="email">Email</label>
                         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
@@ -35,7 +35,8 @@ const Login = (props: any) => {
                             or
                             <button className={'button'} onClick={() => props.history.push('register')}>Register</button>
                         </div>
-                    </div>
+                        <p className={'error-message'}>{props.info}</p>
+                    </form>
                 }
             </>
         )
@@ -49,12 +50,13 @@ const mapStateToProps = (store: any) => ({
     isAuth: store.account.isAuth,
     isLoading: store.account.isLoading,
     isLoginLoading: store.account.isLoginLoading,
+    info: store.account.info,
 });
 
 export default compose(
     connect(mapStateToProps, {
         userLoginThunkCreator, userLogoutThunkCreator,
-        userRegisterThunkCreator, getUser
+        userRegisterThunkCreator, getUser, setInfo
     }),
     withRouter
 )(Login);

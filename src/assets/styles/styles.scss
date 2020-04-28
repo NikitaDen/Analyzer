@@ -119,6 +119,11 @@ body {
   overflow-x: hidden;
 }
 
+.error-message {
+  text-align: center;
+  color: #FF7777;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;
@@ -164,6 +169,7 @@ body {
     img {
       filter: invert(1);
     }
+
     &::before {
       background-color: #FFCF52;
     }
@@ -185,10 +191,12 @@ body {
         filter: invert(0);
       }
     }
+
     &::before {
       background-color: #55CCD3;
     }
   }
+
   &--confirm {
     &:hover {
       img {
@@ -200,12 +208,14 @@ body {
       background-color: #FF7777;
     }
   }
+
   &--reject {
     &:hover {
       img {
         filter: invert(1);
       }
     }
+
     &::before {
       background-color: #2ED667;
     }
@@ -304,6 +314,7 @@ body {
       img {
         filter: invert(0);
       }
+
       &::before {
         height: 2.5rem;
         width: 2.5rem;
