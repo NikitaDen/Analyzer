@@ -122,6 +122,7 @@ body {
 .buttons {
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
 
   .button {
     & + .button {
@@ -160,18 +161,57 @@ body {
   }
 
   &--edit {
+    img {
+      filter: invert(1);
+    }
     &::before {
       background-color: #FFCF52;
+    }
+
+    &:hover {
+      img {
+        filter: invert(0);
+      }
     }
   }
 
   &--save {
+    img {
+      filter: invert(1);
+    }
+
+    &:hover {
+      img {
+        filter: invert(0);
+      }
+    }
     &::before {
       background-color: #55CCD3;
     }
   }
+  &--confirm {
+    &:hover {
+      img {
+        filter: invert(1);
+      }
+    }
 
-  &--save, &--edit {
+    &::before {
+      background-color: #FF7777;
+    }
+  }
+  &--reject {
+    &:hover {
+      img {
+        filter: invert(1);
+      }
+    }
+    &::before {
+      background-color: #2ED667;
+    }
+  }
+
+  &--save, &--edit, &--reject, &--confirm {
     display: flex;
     flex-direction: row;
     font-weight: bold;
@@ -183,7 +223,6 @@ body {
     justify-content: center;
 
     img {
-      filter: invert(1);
       height: 1rem;
       transition: .3s;
     }
@@ -199,9 +238,6 @@ body {
     }
 
     &:hover {
-      img {
-        filter: invert(0);
-      }
       &::before {
         height: 1.75rem;
         width: 1.75rem;
@@ -257,7 +293,7 @@ body {
     &::before {
       content: '';
       position: absolute;
-      background-color: #2a87d0;
+      background-color: #448AFF;
       height: 0;
       width: 0;
       border-radius: 50%;
@@ -273,20 +309,6 @@ body {
         width: 2.5rem;
       }
     }
-  }
-
-  &--confirm {
-    padding: .25rem 1.5rem;
-    margin: .5rem 1rem .25rem 0;
-    background-color: #2ED667;
-    color: white;
-  }
-
-  &--reject {
-    padding: .25rem 1.5rem;
-    margin: .5rem 0 .25rem 1rem;
-    background-color: #FF7777;
-    color: white;
   }
 
   &--clear {

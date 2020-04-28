@@ -1,8 +1,9 @@
 import {settingsAPI} from "../api/api";
+import * as axios from "axios";
+import {showLoading} from "./account-reducer";
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
-const SET_CATEGORIES = 'SET_CATEGORIES';
 const GET_CATEGORIES = 'GET_CATEGORIES';
 
 let initialState: any = {
@@ -11,9 +12,6 @@ let initialState: any = {
 
 const settingsReducer = (state = initialState, action: any) => {
     switch (action.type) {
-        case SET_CATEGORIES: {
-            return state;
-        }
         case GET_CATEGORIES: {
             // @ts-ignore
             return {
@@ -46,13 +44,15 @@ const settingsReducer = (state = initialState, action: any) => {
     }
 };
 
-export const setCategories = () => ({type: SET_CATEGORIES});
-
 export const addCategory = (name: string, id: any) => ({type: ADD_CATEGORY, name, id});
 export const addCategoriesThunkCreator = (name: string, id: any) => async (dispatch: any) => {
+    dispatch(showLoading(true));
     try {
-        await settingsAPI.addCategory(name, id);
         dispatch(addCategory(name, id));
+
+        await settingsAPI.addCategory(name, id);
+
+        dispatch(showLoading(false));
     } catch (e) {
         console.log(e.response.data)
     }
@@ -61,7 +61,12 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
 export const getCategories = (categories: any) => ({type: GET_CATEGORIES, categories});
 export const getCategoriesThunkCreator = () => async (dispatch: any) => {
     try {
-        const response = await settingsAPI.getCategories();
+        // @ts-ignore
+        const response = await axios.get('https://analyzerserver.herokuapp.com/api/settings/categories', {
+            headers: {
+                'token': `${localStorage.getItem('token')}`
+            }
+        });
 
         dispatch(getCategories(response.data));
     } catch (e) {
@@ -71,9 +76,14 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
 
 export const deleteCategory = (id: string) => ({type: DELETE_CATEGORY, id});
 export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => {
+    dispatch(showLoading(true));
+
     try {
-        await settingsAPI.deleteExpense(id);
         dispatch(deleteCategory(id));
+
+        await settingsAPI.deleteExpense(id);
+
+        dispatch(showLoading(false));
     } catch (e) {
         console.log(e.response.body);
     }

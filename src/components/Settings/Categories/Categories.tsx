@@ -22,8 +22,17 @@ const Categories: React.FC<Props> = (props) => {
         props.getCategoriesThunkCreator();
     }, [props.isAuth]);
 
+    const onKeyAdd = (e: any) => {
+        if (e.key === 'Enter' && newCategory && newCategory.replace(/\s+/g, '')) {
+            props.addCategoriesThunkCreator(newCategory, Date.now());
+            setNewCategory('');
+        } else {
+            setError(true);
+        }
+    };
+
     const onAddCategory = () => {
-        if (!newCategory) {
+        if (!newCategory || !newCategory.replace(/\s+/g, '')) {
             setError(true);
         } else {
             props.addCategoriesThunkCreator(newCategory, Date.now());
@@ -41,7 +50,7 @@ const Categories: React.FC<Props> = (props) => {
         <div className={'settings__item categories'}>
             <h3>Categories</h3>
             <div className={'categories__form'}>
-                <input className={error ? 'category-name category-name--error' : 'category-name'} type="text"
+                <input onKeyPress={onKeyAdd} placeholder={'Products, Bills, etc.'} autoFocus={true} className={error ? 'category-name category-name--error' : 'category-name'} type="text"
                        value={newCategory} onBlur={() => setError(false)} onChange={onCategoryTyping}/>
                 <button className={'button'} onClick={onAddCategory}>
                     <img src={addDark} alt=""/>

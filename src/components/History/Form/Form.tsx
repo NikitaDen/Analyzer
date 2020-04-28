@@ -8,11 +8,13 @@ import {
 import './form.scss';
 import save from './../../../assets/images/save.svg';
 import {getCategoriesThunkCreator} from "../../../redux/settings-reducer";
+import {NavLink} from "react-router-dom";
 
 interface Props {
     categories: any,
     showForm: boolean,
-    getExpensesThunkCreator(): void,
+    currentPage: number,
+    getExpensesThunkCreator(page: number): void,
     getCategoriesThunkCreator(): void,
     addExpenseThunkCreator(expense: any): void,
 }
@@ -25,7 +27,6 @@ const Form: React.FC<Props> = (props) => {
     const [error, setError] = useState(false);
 
     useEffect(() => {
-        props.getExpensesThunkCreator();
         props.getCategoriesThunkCreator();
     }, []);
 
@@ -52,7 +53,7 @@ const Form: React.FC<Props> = (props) => {
                 <div className={'form'}>
                     <div className={'form__element'}>
                         <label htmlFor="name">Name</label>
-                        <input type="text" className={!error ? 'name' : 'name name--error'} id={'name'} value={name}
+                        <input type="text" autoFocus={true} className={!error ? 'name' : 'name name--error'} id={'name'} value={name}
                                onChange={e => {
                                    setName(e.target.value);
                                    setError(false);
@@ -60,11 +61,12 @@ const Form: React.FC<Props> = (props) => {
                     </div>
                     <div className={'form__element'}>
                         <label htmlFor="category">Category</label>
-                        <select value={category} onChange={(e) => setCategory(e.target.value)} name="category"
-                                id="category">
+                        {props.categories.length ? <select value={category} onChange={(e) => setCategory(e.target.value)} name="category"
+                                                           id="category">
                             {props.categories.map((item: any) => <option key={item.name}
                                                                          value={item.name}>{item.name}</option>)}
-                        </select>
+                        </select> : <NavLink to={'settings'}>Set your categories</NavLink>}
+
                     </div>
                     <div className={'form__element'}>
                         <label htmlFor="count">Count</label>

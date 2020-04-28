@@ -76,10 +76,11 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
     dispatch(showLoading(true));
 
     try {
+        dispatch(addExpense(expense));
+
         await historyAPI.addExpense(expense);
 
         dispatch(showLoading(false));
-        dispatch(addExpense(expense));
     } catch (e) {
         console.log(e.response.data)
     }
@@ -88,12 +89,13 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 export const deleteExpense = (id: any) => ({type: DELETE_EXPENSE, id});
 export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
-    debugger
+
     try {
+        dispatch(deleteExpense(id));
+
         await historyAPI.deleteExpense(id);
 
         dispatch(showLoading(false));
-        dispatch(deleteExpense(id));
     } catch (e) {
         console.log(e.response.data)
     }
@@ -116,7 +118,23 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
         dispatch(showLoading(false));
         dispatch(getExpenses(response.data.expenses));
         dispatch(getPages(response.data.length));
-        console.log(response.data);
+    } catch (e) {
+        console.log(e.response.data);
+    }
+};
+
+export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
+    dispatch(showLoading(true));
+
+    try {
+        // @ts-ignore
+        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/allexpenses`, {
+            headers: {
+                'token': `${localStorage.getItem('token')}`
+            }
+        });
+        dispatch(showLoading(false));
+        dispatch(getExpenses(response.data.expenses));
     } catch (e) {
         console.log(e.response.data);
     }
@@ -127,10 +145,11 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
     dispatch(showLoading(true));
 
     try {
+        dispatch(changeExpense(id, name, category, spent, count, price));
+
         await historyAPI.changeExpense(id, name, category, spent, count, price);
 
         dispatch(showLoading(false));
-        dispatch(changeExpense(id, name, category, spent, count, price));
     } catch (e) {
         console.log(e.response.data);
     }

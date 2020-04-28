@@ -43,9 +43,6 @@ export const settingsAPI = {
     addCategory(name, id) {
         return instance.post('settings/categories', {name, id});
     },
-    getCategories() {
-        return instance.get('settings/categories');
-    },
     deleteExpense(id) {
         return instance.put('settings/delete', {id});
     },

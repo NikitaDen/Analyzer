@@ -17,20 +17,21 @@ interface Props {
     filterInRange: boolean,
     chosenItems: any,
     isLoading: boolean,
+    checkedAll: boolean,
 
     setChosenItems(val?: any): any
+    setCheckedAll(val?: any): any
     deleteExpense(id: any): void,
     changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): any
     setExpenses(): void,
 }
 
 const HistoryItems: React.FC<Props> = (props) => {
-    const [checkedAll, setCheckedAll] = useState(false);
 
     useEffect(() => {
-        if (checkedAll && props.filterInRange) {
+        if (props.checkedAll && props.filterInRange) {
             props.setChosenItems(items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
-        } else if (checkedAll && !props.filterInRange) {
+        } else if (props.checkedAll && !props.filterInRange) {
             if (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending') {
                 props.setChosenItems([...expenses.filter((item: any) => item.category === props.filter).map((item: any) => item.id)]);
             } else if (props.expenses.length && props.filter !== 'noFilter' && props.descending !== 'Descending') {
@@ -43,7 +44,7 @@ const HistoryItems: React.FC<Props> = (props) => {
         } else {
             props.setChosenItems([]);
         }
-    }, [checkedAll, props.filterInRange]);
+    }, [props.checkedAll, props.filterInRange]);
 
     const compareNames = (a: any, b: any) => {
         if (a.name.toLowerCase() > b.name.toLowerCase()) {
@@ -90,7 +91,7 @@ const HistoryItems: React.FC<Props> = (props) => {
                      category={item.category}
                      chosenItems={props.chosenItems}
                      setChosenItems={props.setChosenItems}
-                     checkedAll={checkedAll}
+                     checkedAll={props.checkedAll}
                      count={item.count}
                      price={item.price}
                      spent={item.spent}
@@ -110,12 +111,12 @@ const HistoryItems: React.FC<Props> = (props) => {
                 : expenses.map((item: any) => expense(item)).reverse();
 
     const chooseAllItems = useCallback(() => {
-        setCheckedAll(!checkedAll);
-    }, [checkedAll]);
+        props.setCheckedAll(!props.checkedAll);
+    }, [props.checkedAll]);
 
     return (
         <div className={'table'}>
-            <TableHeader checkedAll={checkedAll} chooseAllItems={chooseAllItems}/>
+            <TableHeader checkedAll={props.checkedAll} chooseAllItems={chooseAllItems}/>
             {props.isLoading ? <Loader/> : null}
             {props.filterInRange ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
                 ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :

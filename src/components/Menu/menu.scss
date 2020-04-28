@@ -8,6 +8,7 @@ nav {
   height: 100vh;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
 
+
   .login-buttons {
     display: flex;
     flex-direction: column;
@@ -68,6 +69,7 @@ nav {
     img {
       justify-self: center;
       padding-right: 1.5rem;
+      height: 1.25rem;
     }
   }
 }

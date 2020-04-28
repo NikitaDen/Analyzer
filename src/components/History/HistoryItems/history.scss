@@ -1,7 +1,7 @@
 .history {
   width: 100%;
 
-  .buttons {
+  & > .buttons {
     margin-top: 1rem;
     justify-content: center;
     display: flex;
@@ -34,17 +34,21 @@
         z-index: -1;
         transition: .3s;
       }
-        &:hover {
-          img {
-            filter: invert(1);
-          }
-          &::before {
-            height: 1.75rem;
-            width: 1.75rem;
+
+      &:hover {
+        img {
+          filter: invert(1);
+        }
+
+        &::before {
+          height: 1.75rem;
+          width: 1.75rem;
         }
       }
     }
   }
+
+
   .pages {
     margin: 0 1rem;
   }
@@ -56,7 +60,7 @@
     .button {
       margin: 0 0 1rem 0;
 
-      &+.button {
+      & + .button {
         margin-left: 1.25rem;
       }
     }
@@ -78,11 +82,13 @@
         height: 100%;
         width: 100%;
       }
+
       &__item {
         display: flex;
         flex-direction: row;
         text-align: center;
         padding: .25rem 0;
+
         p {
           margin: 0 auto;
         }

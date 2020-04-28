@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react";
 import './analytics.scss';
 import {connect} from "react-redux";
 import Period from "./Period/Period";
-import {getExpensesThunkCreator} from "../../redux/history-reducer";
+import {getAllExpensesThunkCreator} from "../../redux/history-reducer";
 import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
 import {addCategoriesThunkCreator, getCategories, getCategoriesThunkCreator} from "../../redux/settings-reducer";
-import Chart from "../Chart/Chart";
+import Chart from "./Chart/Chart";
 import {Redirect} from "react-router-dom";
 
 const Analytics = (props: any) => {
@@ -16,7 +16,8 @@ const Analytics = (props: any) => {
     const [moreInfo, setMoreInfo] = useState({});
 
     useEffect(() => {
-        props.getExpensesThunkCreator();
+        // props.getExpensesThunkCreator();
+        props.getAllExpensesThunkCreator();
         props.getCategoriesThunkCreator();
     }, []);
 
@@ -126,6 +127,7 @@ const mapStateToProps = (store: any) => ({
     expenses: store.history.expenses,
     categories: store.settings.categories,
     isAuth: store.account.isAuth,
+    pages: store.history.pages,
 });
 
-export default connect(mapStateToProps, {getCategories, getExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);
+export default connect(mapStateToProps, {getCategories, getAllExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);

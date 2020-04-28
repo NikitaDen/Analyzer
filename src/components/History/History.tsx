@@ -31,6 +31,7 @@ const History: React.FC = (props: any) => {
     const [showConfirm, setShowConfirm] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [deleteFlag, setDeleteFlag] = useState(true);
+    const [checkedAll, setCheckedAll] = useState(false);
     const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
 
     useEffect(() => {
@@ -42,14 +43,6 @@ const History: React.FC = (props: any) => {
         props.getExpensesThunkCreator(currentPage);
     }, [currentPage, deleteFlag]);
 
-    // useEffect(() => {
-    //     props.getExpensesThunkCreator(currentPage);
-    // }, [deleteFlag]);
-
-    // useEffect(() => {
-    //     props.getExpensesThunkCreator(currentPage);
-    // }, [deleteFlag]);
-
     const onChangeDateLower = (date: any) => {
         setDateLower(date);
     };
@@ -58,21 +51,14 @@ const History: React.FC = (props: any) => {
         setDateHigher(date);
     };
 
-    // const onDeleteExpense = useCallback(() => {
-    //     props.deleteExpensesThunkCreator(chosenItems);
-    //     // props.getExpensesThunkCreator(currentPage);
-    //     setDeleteFlag(!deleteFlag);
-    //     setChosenItems([]);
-    //     setShowConfirm(false);
-    // }, [chosenItems]);
-
-    const onDeleteExpense = () => {
+    const onDeleteExpense = useCallback(() => {
         props.deleteExpensesThunkCreator(chosenItems);
         props.getExpensesThunkCreator(currentPage);
+        setCheckedAll(false);
         setDeleteFlag(!deleteFlag);
         setChosenItems([]);
         setShowConfirm(false);
-    };
+    }, [chosenItems]);
 
     const onShowConfirm = () => {
         if (chosenItems.length) {
@@ -99,7 +85,7 @@ const History: React.FC = (props: any) => {
             <h2>Your history</h2>
 
             {showConfirm ? <Confirm className={'confirm show'}
-                                    title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} items?`}
+                                    title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} ${chosenItems.length === 1 ? 'item' : 'items'}?`}
                                     func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
                 <Confirm className={'confirm'}
                          title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} items?`}
@@ -118,9 +104,9 @@ const History: React.FC = (props: any) => {
                         title={`${chosenItems === null ? 0 : chosenItems.length}`}/>
             </div>
 
-            <Form showForm={showForm}/>
+            <Form currentPage={currentPage} showForm={showForm}/>
 
-            <HistoryItems isLoading={props.isLoading} changeExpenseThunkCreator={props.changeExpenseThunkCreator}
+            <HistoryItems checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading} changeExpenseThunkCreator={props.changeExpenseThunkCreator}
                           chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
                           filter={filter} sort={sort} descending={descending} expenses={props.expenses}
                           deleteExpense={props.deleteExpense} setExpenses={props.setExpenses}
