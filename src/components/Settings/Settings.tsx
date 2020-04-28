@@ -9,6 +9,8 @@ import Categories from "./Categories/Categories";
 import {getUser} from "../../redux/account-reducer";
 import {Redirect} from "react-router-dom";
 import Loader from "../Loader/Loader";
+import {isAuthSelector, isLoadingSelector} from "../../selectors/account-selectors";
+import {categoriesSelector} from "../../selectors/settings-selector";
 
 
 interface Props {
@@ -46,9 +48,9 @@ const Settings: React.FC<Props> = (props) => {
 };
 
 const mapStateToProps = (store: any) => ({
-    categories: store.settings.categories,
-    isAuth: store.account.isAuth,
-    isLoading: store.account.isLoading,
+    categories: categoriesSelector(store),
+    isAuth: isAuthSelector(store),
+    isLoading: isLoadingSelector(store),
 });
 
 export default connect(mapStateToProps, {

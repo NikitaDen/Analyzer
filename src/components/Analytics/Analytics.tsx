@@ -7,6 +7,9 @@ import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
 import {addCategoriesThunkCreator, getCategories, getCategoriesThunkCreator} from "../../redux/settings-reducer";
 import Chart from "./Chart/Chart";
 import {Redirect} from "react-router-dom";
+import {categoriesSelector} from "../../selectors/settings-selector";
+import {isAuthSelector} from "../../selectors/account-selectors";
+import {expensesSelector, pagesSelector} from "../../selectors/history-selectors";
 
 const Analytics = (props: any) => {
     const [dateLower, setDateLower] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 0, 0, 0));
@@ -16,7 +19,6 @@ const Analytics = (props: any) => {
     const [moreInfo, setMoreInfo] = useState({});
 
     useEffect(() => {
-        // props.getExpensesThunkCreator();
         props.getAllExpensesThunkCreator();
         props.getCategoriesThunkCreator();
     }, []);
@@ -124,10 +126,10 @@ const Analytics = (props: any) => {
 };
 
 const mapStateToProps = (store: any) => ({
-    expenses: store.history.expenses,
-    categories: store.settings.categories,
-    isAuth: store.account.isAuth,
-    pages: store.history.pages,
+    expenses: expensesSelector(store),
+    categories: categoriesSelector(store),
+    isAuth: isAuthSelector(store),
+    pages: pagesSelector(store),
 });
 
 export default connect(mapStateToProps, {getCategories, getAllExpensesThunkCreator, getCategoriesThunkCreator, addCategoriesThunkCreator})(Analytics);

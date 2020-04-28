@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {userLogoutThunkCreator} from "../../redux/account-reducer";
 import Button from "../Button/Button";
 import logout from './../../assets/images/logout.svg';
+import {isAuthSelector} from "../../selectors/account-selectors";
 
 const Menu = (props: any) => {
     return (
@@ -37,8 +38,7 @@ const Menu = (props: any) => {
 };
 
 const mapStateToProps = (store: any) => ({
-    isAuth: store.account.isAuth,
-    infoF: store.account.infoF,
+    isAuth: isAuthSelector(store),
 });
 
 export default connect(mapStateToProps, {userLogoutThunkCreator})(Menu);

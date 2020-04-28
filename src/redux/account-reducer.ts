@@ -71,7 +71,6 @@ export const userLoginThunkCreator = (email: string, password: string) => async 
         dispatch(loginLoading(false));
         dispatch(userLogin(false));
         dispatch(setInfo(e.response.data));
-        // console.log(e.response.data);
     }
 };
 
@@ -88,7 +87,6 @@ export const userRegisterThunkCreator = (name: string, email: string, password: 
     } catch (e) {
         dispatch(loginLoading(false));
         dispatch(setInfo(e.response.data));
-        console.log(e.response.data);
     }
 };
 

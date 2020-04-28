@@ -8,7 +8,6 @@ interface Props {
     id: any,
     
     deleteCategoryThunkCreator(id: string): void,
-
 }
 
 const Category: React.FC<Props> = (props) => {

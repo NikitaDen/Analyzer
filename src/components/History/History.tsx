@@ -1,6 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {
+    addExpenseThunkCreator,
     changeExpenseThunkCreator,
     deleteExpensesThunkCreator, getExpenses,
     getExpensesThunkCreator,
@@ -18,6 +19,10 @@ import prev from '../../assets/images/prev.svg';
 import next from '../../assets/images/next.svg';
 import end from '../../assets/images/end.svg';
 import start from '../../assets/images/start.svg';
+import {expensesSelector, pagesSelector} from "../../selectors/history-selectors";
+import {categoriesSelector} from "../../selectors/settings-selector";
+import {isAuthSelector, isLoadingSelector} from "../../selectors/account-selectors";
+import {getCategoriesThunkCreator} from "../../redux/settings-reducer";
 
 const History: React.FC = (props: any) => {
     const [filter, setFilter] = useState('noFilter');
@@ -104,7 +109,7 @@ const History: React.FC = (props: any) => {
                         title={`${chosenItems === null ? 0 : chosenItems.length}`}/>
             </div>
 
-            <Form currentPage={currentPage} showForm={showForm}/>
+            <Form currentPage={currentPage} categories={props.categories} showForm={showForm} addExpenseThunkCreator={props.addExpenseThunkCreator} getCategoriesThunkCreator={props.getCategoriesThunkCreator}/>
 
             <HistoryItems checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading} changeExpenseThunkCreator={props.changeExpenseThunkCreator}
                           chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
@@ -130,14 +135,14 @@ const History: React.FC = (props: any) => {
 };
 
 let mapStateToProps = (store: any) => ({
-    expenses: store.history.expenses,
-    pages: store.history.pages,
-    categories: store.settings.categories,
-    isAuth: store.account.isAuth,
-    isLoading: store.account.isLoading,
+    expenses: expensesSelector(store),
+    pages: pagesSelector(store),
+    categories: categoriesSelector(store),
+    isAuth: isAuthSelector(store),
+    isLoading: isLoadingSelector(store),
 });
 
 export default connect(mapStateToProps, {
-    getUser, getExpensesThunkCreator, getExpenses,
-    deleteExpensesThunkCreator, changeExpenseThunkCreator
+    getUser, getExpensesThunkCreator, getExpenses, addExpenseThunkCreator,
+    deleteExpensesThunkCreator, changeExpenseThunkCreator, getCategoriesThunkCreator
 })(History);

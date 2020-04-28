@@ -11,7 +11,7 @@ import Register from "./components/Register/Register";
 const Settings = React.lazy(() => import('./components/Settings/Settings'));
 
 
-const App = (props: any) => {
+const App = () => {
     
     const SettingsLoading = withLoading(Settings);
 

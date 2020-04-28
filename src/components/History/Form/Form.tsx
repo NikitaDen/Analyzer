@@ -1,20 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {connect} from "react-redux";
-import {
-    addExpenseThunkCreator,
-    changeExpense,
-    getExpensesThunkCreator,
-} from "../../../redux/history-reducer";
 import './form.scss';
 import save from './../../../assets/images/save.svg';
-import {getCategoriesThunkCreator} from "../../../redux/settings-reducer";
 import {NavLink} from "react-router-dom";
 
 interface Props {
     categories: any,
     showForm: boolean,
     currentPage: number,
-    getExpensesThunkCreator(page: number): void,
     getCategoriesThunkCreator(): void,
     addExpenseThunkCreator(expense: any): void,
 }
@@ -88,9 +80,5 @@ const Form: React.FC<Props> = (props) => {
     )
 };
 
-let mapStateToProps = (store: any) => ({
-    expenses: store.history.expenses,
-    categories: store.settings.categories,
-});
 
-export default connect(mapStateToProps, {changeExpense, getExpensesThunkCreator, addExpenseThunkCreator, getCategoriesThunkCreator})(Form);
+export default Form;

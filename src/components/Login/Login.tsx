@@ -10,6 +10,12 @@ import {Redirect, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import './login.scss';
 import Loader from "../Loader/Loader";
+import {
+    infoSelector,
+    isAuthSelector,
+    isLoadingSelector,
+    isLoginLoadingSelector
+} from "../../selectors/account-selectors";
 
 const Login = (props: any) => {
     const [email, setEmail] = useState('');
@@ -35,7 +41,7 @@ const Login = (props: any) => {
                             or
                             <button className={'button'} onClick={() => props.history.push('register')}>Register</button>
                         </div>
-                        <p className={'error-message'}>{props.info}</p>
+                        <p className={'error-message'}>{props.info === 'ok' ? null : props.info}</p>
                     </form>
                 }
             </>
@@ -47,10 +53,10 @@ const Login = (props: any) => {
 };
 
 const mapStateToProps = (store: any) => ({
-    isAuth: store.account.isAuth,
-    isLoading: store.account.isLoading,
-    isLoginLoading: store.account.isLoginLoading,
-    info: store.account.info,
+    isAuth: isAuthSelector(store),
+    isLoading: isLoadingSelector(store),
+    isLoginLoading: isLoginLoadingSelector(store),
+    info: infoSelector(store),
 });
 
 export default compose(
