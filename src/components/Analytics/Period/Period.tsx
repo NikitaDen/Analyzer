@@ -45,11 +45,11 @@ const Period: React.FC<Props> = (props) => {
             <div className={'dates'}>
                 <div className={'dates__element'}>
                     <p>From:</p>
-                    <DatePicker maxDate={props.dateHigher} onChange={onChangeDateLower} selected={props.dateLower}/>
+                    <DatePicker maxDate={props.dateHigher} showTimeSelect onChange={onChangeDateLower} selected={props.dateLower}/>
                 </div>
                 <div className={'dates__element'}>
                     <p>To:</p>
-                    <DatePicker minDate={props.dateLower} disabled={props.dateLower > props.dateHigher}
+                    <DatePicker minDate={props.dateLower} showTimeSelect disabled={props.dateLower > props.dateHigher}
                                 onChange={onChangeDateHigher} selected={props.dateHigher}/>
                 </div>
             </div>

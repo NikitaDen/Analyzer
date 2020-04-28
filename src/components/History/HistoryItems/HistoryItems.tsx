@@ -46,19 +46,19 @@ const HistoryItems: React.FC<Props> = (props) => {
     }, [checkedAll, props.filterInRange]);
 
     const compareNames = (a: any, b: any) => {
-        if (a.name > b.name) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) {
             return 1;
         }
-        if (a.name < b.name) {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) {
             return -1;
         }
         return 0;
     };
     const compareCategory = (a: any, b: any) => {
-        if (a.category > b.category) {
+        if (a.category.toLowerCase() > b.category.toLowerCase()) {
             return 1;
         }
-        if (a.category < b.category) {
+        if (a.category.toLowerCase() < b.category.toLowerCase()) {
             return -1;
         }
         return 0;

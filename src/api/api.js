@@ -28,7 +28,7 @@ export const historyAPI = {
             spent: expense.spent,
             price: expense.price,
             date: `${new Date().toLocaleString()}`,
-            id: Date.now(),
+            id: expense.id,
         });
     },
     changeExpense(id, name, category, spent, count, price) {

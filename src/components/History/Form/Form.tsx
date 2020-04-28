@@ -36,8 +36,8 @@ const Form: React.FC<Props> = (props) => {
     }, [props.categories]);
 
     const onAddExpenseButton = () => {
-        if (name) {
-            props.addExpenseThunkCreator({category, count, name, price, spent: price * count});
+        if (name.replace(/\s+/g, '')) {
+            props.addExpenseThunkCreator({category, count, name, price, spent: price * count, id: Date.now()});
             setName('');
             setCount(1);
             setPrice(0);

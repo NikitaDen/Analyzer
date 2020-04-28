@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {connect} from "react-redux";
 import {
     changeExpenseThunkCreator,
-    deleteExpensesThunkCreator,
+    deleteExpensesThunkCreator, getExpenses,
     getExpensesThunkCreator,
 } from "../../redux/history-reducer";
 import Form from "./Form/Form";
@@ -30,6 +30,7 @@ const History: React.FC = (props: any) => {
     const [chosenItems, setChosenItems] = useState([]);
     const [showConfirm, setShowConfirm] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
+    const [deleteFlag, setDeleteFlag] = useState(true);
     const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
 
     useEffect(() => {
@@ -39,7 +40,15 @@ const History: React.FC = (props: any) => {
 
     useEffect(() => {
         props.getExpensesThunkCreator(currentPage);
-    }, [chosenItems, currentPage]);
+    }, [currentPage, deleteFlag]);
+
+    // useEffect(() => {
+    //     props.getExpensesThunkCreator(currentPage);
+    // }, [deleteFlag]);
+
+    // useEffect(() => {
+    //     props.getExpensesThunkCreator(currentPage);
+    // }, [deleteFlag]);
 
     const onChangeDateLower = (date: any) => {
         setDateLower(date);
@@ -49,12 +58,21 @@ const History: React.FC = (props: any) => {
         setDateHigher(date);
     };
 
-    const onDeleteExpense = useCallback(() => {
+    // const onDeleteExpense = useCallback(() => {
+    //     props.deleteExpensesThunkCreator(chosenItems);
+    //     // props.getExpensesThunkCreator(currentPage);
+    //     setDeleteFlag(!deleteFlag);
+    //     setChosenItems([]);
+    //     setShowConfirm(false);
+    // }, [chosenItems]);
+
+    const onDeleteExpense = () => {
         props.deleteExpensesThunkCreator(chosenItems);
         props.getExpensesThunkCreator(currentPage);
+        setDeleteFlag(!deleteFlag);
         setChosenItems([]);
         setShowConfirm(false);
-    }, [chosenItems]);
+    };
 
     const onShowConfirm = () => {
         if (chosenItems.length) {
@@ -134,6 +152,6 @@ let mapStateToProps = (store: any) => ({
 });
 
 export default connect(mapStateToProps, {
-    getUser, getExpensesThunkCreator,
+    getUser, getExpensesThunkCreator, getExpenses,
     deleteExpensesThunkCreator, changeExpenseThunkCreator
 })(History);

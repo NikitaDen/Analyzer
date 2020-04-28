@@ -24,7 +24,6 @@ const historyReducer = (state = initialState, action: any) => {
                     {
                         ...action.expense,
                         date: `${new Date().toLocaleString()}`,
-                        id: Date.now()
                     },
                 ]
             };
@@ -89,7 +88,7 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 export const deleteExpense = (id: any) => ({type: DELETE_EXPENSE, id});
 export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
-
+    debugger
     try {
         await historyAPI.deleteExpense(id);
 
