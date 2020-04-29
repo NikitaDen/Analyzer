@@ -29,8 +29,6 @@ const ItemDates: React.FC<Props> = (props) => {
 
     const onToggleFilter = () => {
         setFilter(!filter);
-        console.log(props.dateHigher);
-        console.log(props.dateLower);
     };
 
     return (
@@ -48,7 +46,6 @@ const ItemDates: React.FC<Props> = (props) => {
                                 onChange={props.onChangeDateHigher} selected={props.dateHigher}/>
                 </div>
             </div>
-
 
             <input onChange={onToggleFilter} id='dark-check' type="checkbox"/>
             <label className='dark-mode' htmlFor="dark-check">

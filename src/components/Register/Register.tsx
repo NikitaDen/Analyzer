@@ -16,6 +16,7 @@ import {
     isLoadingSelector,
     isLoginLoadingSelector
 } from "../../selectors/account-selectors";
+import Intro from "../Intro/Intro";
 
 const Register = (props: any) => {
     const [name, setName] = useState('');
@@ -52,6 +53,7 @@ const Register = (props: any) => {
                 <p className={'error-message'}>{props.info === 'ok' ? null : props.info}</p>
             </form>
             }
+            <Intro/>
         </>
     )
 };

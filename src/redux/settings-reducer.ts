@@ -54,7 +54,7 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.data)
+        console.log(e.response.statusText)
     }
 };
 
@@ -70,7 +70,7 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
 
         dispatch(getCategories(response.data));
     } catch (e) {
-        console.log(e.response.data)
+        console.log(e.response.statusText)
     }
 };
 
@@ -85,7 +85,7 @@ export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => 
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.body);
+        console.log(e.response.statusText);
     }
 };
 

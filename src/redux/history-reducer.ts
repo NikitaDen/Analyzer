@@ -82,7 +82,7 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.data)
+        console.log(e.response.statusText);
     }
 };
 
@@ -97,7 +97,7 @@ export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => 
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.data)
+        console.log(e.response.statusText);
     }
 };
 
@@ -119,7 +119,7 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
         dispatch(getExpenses(response.data.expenses));
         dispatch(getPages(response.data.length));
     } catch (e) {
-        console.log(e.response.data);
+        console.log(e.response.statusText);
     }
 };
 
@@ -136,7 +136,7 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
         dispatch(showLoading(false));
         dispatch(getExpenses(response.data.expenses));
     } catch (e) {
-        console.log(e.response.data);
+        console.log(e.response.statusText);
     }
 };
 
@@ -151,7 +151,7 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.data);
+        console.log(e.response.statusText);
     }
 };
 

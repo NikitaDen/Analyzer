@@ -98,7 +98,7 @@ export const userLogoutThunkCreator = () => async (dispatch: any) => {
     try {
         await authAPI.logout();
     } catch (e) {
-        console.log(e.response.data)
+        console.log(e.response.statusText)
     }
 };
 

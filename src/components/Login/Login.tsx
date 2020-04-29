@@ -16,6 +16,7 @@ import {
     isLoadingSelector,
     isLoginLoadingSelector
 } from "../../selectors/account-selectors";
+import Intro from "../Intro/Intro";
 
 const Login = (props: any) => {
     const [email, setEmail] = useState('');
@@ -44,6 +45,7 @@ const Login = (props: any) => {
                         <p className={'error-message'}>{props.info === 'ok' ? null : props.info}</p>
                     </form>
                 }
+                <Intro/>
             </>
         )
     }
