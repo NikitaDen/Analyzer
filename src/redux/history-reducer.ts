@@ -1,5 +1,5 @@
-import {showLoading} from "./account-reducer";
-import {historyAPI} from "../api/api";
+import {showLoading, userLogin} from "./account-reducer";
+import {baseURL, historyAPI} from "../api/api";
 import * as axios from "axios";
 
 const ADD_EXPENSE = 'ADD_EXPENSE';
@@ -82,7 +82,33 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+
+                // @ts-ignore
+                await axios.post(`${baseURL}/history/expenses`, {
+                    name: expense.name,
+                    category: expense.category,
+                    count: expense.count,
+                    spent: expense.spent,
+                    price: expense.price,
+                    date: `${new Date().toLocaleString()}`,
+                    id: expense.id,
+                }, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+
+                dispatch(showLoading(false));
+            }
+        }
     }
 };
 
@@ -97,7 +123,26 @@ export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => 
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+                dispatch(deleteExpense(id));
+
+                // @ts-ignore
+                await axios.put(`${baseURL}/history/delete`, {id}, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+                dispatch(showLoading(false));
+            }
+        }
     }
 };
 
@@ -109,8 +154,9 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
     dispatch(showLoading(true));
 
     try {
+        // `https://analyzerserver.herokuapp.com/api/history/expenses?page=${page}&limit=10`
         // @ts-ignore
-        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/expenses?page=${page}&limit=10`, {
+        const response = await axios.get(`${baseURL}/history/expenses?page=${page}&limit=10`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
             }
@@ -119,7 +165,27 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
         dispatch(getExpenses(response.data.expenses));
         dispatch(getPages(response.data.length));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                const expenses = await axios.get(`${baseURL}/history/expenses?page=${page}&limit=10`, {
+                    headers: {
+                        'token': response.data,
+                    }
+                });
+                dispatch(showLoading(false));
+                dispatch(getExpenses(expenses.data.expenses));
+                dispatch(getPages(expenses.data.length));
+            }
+        }
     }
 };
 
@@ -128,7 +194,7 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
 
     try {
         // @ts-ignore
-        const response = await axios.get(`https://analyzerserver.herokuapp.com/api/history/allexpenses`, {
+        const response = await axios.get(`${baseURL}/history/allexpenses`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
             }
@@ -136,7 +202,26 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
         dispatch(showLoading(false));
         dispatch(getExpenses(response.data.expenses));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                const allExpenses = await axios.get(`${baseURL}/history/allexpenses`, {
+                    headers: {
+                        'token': `${localStorage.getItem('token')}`
+                    }
+                });
+                dispatch(showLoading(false));
+                dispatch(getExpenses(allExpenses.data.expenses));
+            }
+        }
     }
 };
 
@@ -151,7 +236,26 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                await axios.put(`${baseURL}/history/change`, {id, name, category, spent, count, price}, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+
+                dispatch(showLoading(false));
+            }
+        }
     }
 };
 

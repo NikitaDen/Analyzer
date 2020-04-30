@@ -1,6 +1,6 @@
 import * as axios from "axios";
 
-import {authAPI} from "../api/api";
+import {authAPI, baseURL} from "../api/api";
 import {getExpenses} from "./history-reducer";
 
 const USER_LOGIN = 'USER_LOGIN';
@@ -61,16 +61,21 @@ export const userLoginThunkCreator = (email: string, password: string) => async 
 
     try {
         // @ts-ignore
-        const response = await axios.post('https://analyzerserver.herokuapp.com/api/user/login', {email, password});
+        const response = await axios.post(`${baseURL}/user/login`, {email, password}, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
         if (response.data) {
-            localStorage.setItem('token', response.data);
+            localStorage.setItem('token', response.data.token);
+            localStorage.setItem('refreshToken', response.data.refreshToken);
+            console.log(response);
             dispatch(loginLoading(false));
             dispatch(userLogin(true));
         }
     } catch (e) {
         dispatch(loginLoading(false));
         dispatch(userLogin(false));
-        dispatch(setInfo(e.response.data));
     }
 };
 
@@ -94,6 +99,7 @@ export const userLogoutThunkCreator = () => async (dispatch: any) => {
     dispatch(userLogin(false));
     dispatch(getExpenses([]));
     localStorage.setItem('token', '');
+    localStorage.setItem('refreshToken', '');
 
     try {
         await authAPI.logout();

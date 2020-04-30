@@ -1,7 +1,18 @@
 import * as axios from "axios";
+import {showLoading, userLogin} from "../redux/account-reducer";
+
+export const invalidToken = (error, dispatch) => {
+    if (error.response.data === 'Invalid Token') {
+        dispatch(userLogin(false))
+    }
+    dispatch(showLoading(false));
+};
+
+// export const baseURL = 'http://localhost:5000/api';
+export const baseURL = 'https://analyzerserver.herokuapp.com/api';
 
 const instance = axios.create({
-    baseURL: 'https://analyzerserver.herokuapp.com/api/',
+    baseURL,
     headers: {
         'token': `${localStorage.getItem('token')}`
     }

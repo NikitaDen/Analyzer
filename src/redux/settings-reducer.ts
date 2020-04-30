@@ -1,6 +1,6 @@
-import {settingsAPI} from "../api/api";
+import {baseURL, invalidToken, settingsAPI} from "../api/api";
 import * as axios from "axios";
-import {showLoading} from "./account-reducer";
+import {showLoading, userLogin} from "./account-reducer";
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
@@ -54,7 +54,26 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.statusText)
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                await axios.post(`${baseURL}/settings/categories`, {name, id}, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+
+                dispatch(showLoading(false));
+            }
+        }
     }
 };
 
@@ -62,7 +81,7 @@ export const getCategories = (categories: any) => ({type: GET_CATEGORIES, catego
 export const getCategoriesThunkCreator = () => async (dispatch: any) => {
     try {
         // @ts-ignore
-        const response = await axios.get('https://analyzerserver.herokuapp.com/api/settings/categories', {
+        const response = await axios.get(`${baseURL}/settings/categories`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
             }
@@ -70,7 +89,26 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
 
         dispatch(getCategories(response.data));
     } catch (e) {
-        console.log(e.response.statusText)
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                const categories = await axios.get(`${baseURL}/settings/categories`, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+
+                dispatch(getCategories(categories.data));
+            }
+        }
     }
 };
 
@@ -85,7 +123,25 @@ export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => 
 
         dispatch(showLoading(false));
     } catch (e) {
-        console.log(e.response.statusText);
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+                dispatch(userLogin(true));
+
+                // @ts-ignore
+                await axios.put(`${baseURL}/settings/delete`, {id}, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+                dispatch(showLoading(false));
+            }
+        }
     }
 };
 
