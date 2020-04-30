@@ -28,7 +28,7 @@ export const authAPI = {
 };
 
 export const historyAPI = {
-    getExpenses(page = 1, limit = 5) {
+    getExpenses(page = 1, limit = 10) {
         return instance.get(`history/expenses?page=${page}&limit=${limit}`);
     },
     addExpense(expense) {

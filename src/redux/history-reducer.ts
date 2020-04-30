@@ -108,6 +108,8 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 
                 dispatch(showLoading(false));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -142,6 +144,8 @@ export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => 
                 });
                 dispatch(showLoading(false));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -173,7 +177,6 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 const expenses = await axios.get(`${baseURL}/history/expenses?page=${page}&limit=10`, {
@@ -185,6 +188,8 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
                 dispatch(getExpenses(expenses.data.expenses));
                 dispatch(getPages(expenses.data.length));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -210,7 +215,6 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 const allExpenses = await axios.get(`${baseURL}/history/allexpenses`, {
@@ -221,6 +225,8 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
                 dispatch(showLoading(false));
                 dispatch(getExpenses(allExpenses.data.expenses));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -244,7 +250,6 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 await axios.put(`${baseURL}/history/change`, {id, name, category, spent, count, price}, {
@@ -254,6 +259,8 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
                 });
 
                 dispatch(showLoading(false));
+            } else {
+                dispatch(userLogin(false));
             }
         }
     }

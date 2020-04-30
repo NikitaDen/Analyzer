@@ -62,7 +62,6 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 await axios.post(`${baseURL}/settings/categories`, {name, id}, {
@@ -73,6 +72,8 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
 
                 dispatch(showLoading(false));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -97,7 +98,6 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 const categories = await axios.get(`${baseURL}/settings/categories`, {
@@ -108,6 +108,8 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
 
                 dispatch(getCategories(categories.data));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };
@@ -131,7 +133,6 @@ export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => 
             });
             if (response.data) {
                 localStorage.setItem('token', response.data);
-                dispatch(userLogin(true));
 
                 // @ts-ignore
                 await axios.put(`${baseURL}/settings/delete`, {id}, {
@@ -141,6 +142,8 @@ export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => 
                 });
                 dispatch(showLoading(false));
             }
+        } else {
+            dispatch(userLogin(false));
         }
     }
 };

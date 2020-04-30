@@ -98,13 +98,39 @@ export const userRegisterThunkCreator = (name: string, email: string, password: 
 export const userLogoutThunkCreator = () => async (dispatch: any) => {
     dispatch(userLogin(false));
     dispatch(getExpenses([]));
-    localStorage.setItem('token', '');
-    localStorage.setItem('refreshToken', '');
-
     try {
-        await authAPI.logout();
+        // @ts-ignore
+        await axios.post(`${baseURL}/user/logout`, {}, {
+            headers: {
+                'token': `${localStorage.getItem('token')}`
+            }
+        });
+
+        localStorage.setItem('token', '');
+        localStorage.setItem('refreshToken', '');
     } catch (e) {
-        console.log(e.response.statusText)
+        // console.log(e.response.statusText)
+
+        const token = `${localStorage.getItem('refreshToken')}`;
+        if (token) {
+            // @ts-ignore
+            const response = await axios.post(`${baseURL}/user/token`, {
+                token: token
+            });
+            if (response.data) {
+                localStorage.setItem('token', response.data);
+
+                // @ts-ignore
+                await axios.post(`${baseURL}/user/logout`, {}, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+            }
+        }
+
+        localStorage.setItem('token', '');
+        localStorage.setItem('refreshToken', '');
     }
 };
 
