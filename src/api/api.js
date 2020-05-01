@@ -1,12 +1,7 @@
 import * as axios from "axios";
 import {showLoading, userLogin} from "../redux/account-reducer";
-
-export const invalidToken = (error, dispatch) => {
-    if (error.response.data === 'Invalid Token') {
-        dispatch(userLogin(false))
-    }
-    dispatch(showLoading(false));
-};
+import {deleteExpense, getExpenses, getPages} from "../redux/history-reducer";
+import {getCategories} from "../redux/settings-reducer";
 
 // export const baseURL = 'http://localhost:5000/api';
 export const baseURL = 'https://analyzerserver.herokuapp.com/api';
@@ -58,3 +53,43 @@ export const settingsAPI = {
         return instance.put('settings/delete', {id});
     },
 };
+
+export const refreshToken = async (url, payload, method, dispatch, actionCreator) => {
+    const token = `${localStorage.getItem('refreshToken')}`;
+    if (token) {
+        const response = await axios.post(`${baseURL}/user/token`, {
+            token: token
+        });
+        if (response.data) {
+            localStorage.setItem('token', response.data);
+
+            if (method !== axios.get) {
+                await method(`${baseURL}${url}`, payload, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+                if (actionCreator === deleteExpense) {
+                    dispatch(deleteExpense(payload.id));
+                }
+            } else {
+                const items = await method(`${baseURL}${url}`, {
+                    headers: {
+                        'token': response.data
+                    }
+                });
+                if (actionCreator === getExpenses) {
+                    dispatch(getExpenses(items.data.expenses));
+                    dispatch(getPages(items.data.length));
+                } else if (actionCreator === getCategories) {
+                    dispatch(getCategories(items.data));
+                }
+            }
+
+            dispatch(showLoading(false));
+        }
+    } else {
+        dispatch(userLogin(false));
+    }
+};
+

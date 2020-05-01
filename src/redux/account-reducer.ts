@@ -1,6 +1,6 @@
 import * as axios from "axios";
 
-import {authAPI, baseURL} from "../api/api";
+import {authAPI, baseURL, refreshToken} from "../api/api";
 import {getExpenses} from "./history-reducer";
 
 const USER_LOGIN = 'USER_LOGIN';
@@ -109,25 +109,8 @@ export const userLogoutThunkCreator = () => async (dispatch: any) => {
         localStorage.setItem('token', '');
         localStorage.setItem('refreshToken', '');
     } catch (e) {
-        // console.log(e.response.statusText)
-
-        const token = `${localStorage.getItem('refreshToken')}`;
-        if (token) {
-            // @ts-ignore
-            const response = await axios.post(`${baseURL}/user/token`, {
-                token: token
-            });
-            if (response.data) {
-                localStorage.setItem('token', response.data);
-
-                // @ts-ignore
-                await axios.post(`${baseURL}/user/logout`, {}, {
-                    headers: {
-                        'token': response.data
-                    }
-                });
-            }
-        }
+        // @ts-ignore
+        await refreshToken('/user/logout', {}, axios.post, dispatch);
 
         localStorage.setItem('token', '');
         localStorage.setItem('refreshToken', '');
