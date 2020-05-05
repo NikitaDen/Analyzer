@@ -1,7 +1,7 @@
-import * as axios from "axios";
-
 import {authAPI, baseURL, refreshToken} from "../api/api";
 import {getExpenses} from "./history-reducer";
+import axios from "axios";
+
 
 const USER_LOGIN = 'USER_LOGIN';
 const GET_USER = 'GET_USER';
@@ -10,7 +10,6 @@ const LOGIN_LOADING = 'LOGIN_LOADING';
 const INFO = 'INFO';
 
 let initialState: any = {
-    // @ts-ignore
     isAuth: localStorage.getItem('isAuth') || false,
     isLoading: false,
     isLoginLoading: false,
@@ -35,13 +34,11 @@ const accountReducer = (state = initialState, action: any) => {
                 isLoginLoading: action.isLoading,
             };
         case USER_LOGIN: {
-            // @ts-ignore
             localStorage.setItem('isAuth', JSON.stringify(action.isAuth));
             return {...state, isAuth: action.isAuth};
         }
         case GET_USER: {
-            // @ts-ignore
-            const isAuth = JSON.parse(localStorage.getItem('isAuth')) || false;
+            const isAuth = JSON.parse(localStorage.getItem('isAuth') || '[]') || false;
             return {...state, isAuth};
         }
         default:
@@ -49,18 +46,22 @@ const accountReducer = (state = initialState, action: any) => {
     }
 };
 
-export const userLogin = (isAuth: boolean) => ({type: USER_LOGIN, isAuth});
-export const setInfo = (info: any) => ({type: INFO, info});
-export const getUser = () => ({type: GET_USER});
-export const showLoading = (isLoading: boolean) => ({type: SHOW_LOADING, isLoading});
-export const loginLoading = (isLoading: boolean) => ({type: LOGIN_LOADING, isLoading});
+type actionCreator = {
+    type: string,
+    [key: string]: any
+}
+
+export const userLogin = (isAuth: boolean): actionCreator => ({type: USER_LOGIN, isAuth});
+export const setInfo = (info: any): actionCreator => ({type: INFO, info});
+export const getUser = (): actionCreator => ({type: GET_USER});
+export const showLoading = (isLoading: boolean): actionCreator => ({type: SHOW_LOADING, isLoading});
+export const loginLoading = (isLoading: boolean): actionCreator => ({type: LOGIN_LOADING, isLoading});
 
 
 export const userLoginThunkCreator = (email: string, password: string) => async (dispatch: any) => {
     dispatch(loginLoading(true));
 
     try {
-        // @ts-ignore
         const response = await axios.post(`${baseURL}/user/login`, {email, password}, {
             headers: {
                 'Content-Type': 'application/json'
@@ -99,7 +100,6 @@ export const userLogoutThunkCreator = () => async (dispatch: any) => {
     dispatch(userLogin(false));
     dispatch(getExpenses([]));
     try {
-        // @ts-ignore
         await axios.post(`${baseURL}/user/logout`, {}, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
@@ -109,7 +109,6 @@ export const userLogoutThunkCreator = () => async (dispatch: any) => {
         localStorage.setItem('token', '');
         localStorage.setItem('refreshToken', '');
     } catch (e) {
-        // @ts-ignore
         await refreshToken('/user/logout', {}, axios.post, dispatch);
 
         localStorage.setItem('token', '');

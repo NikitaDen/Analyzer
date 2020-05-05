@@ -1,4 +1,4 @@
-import * as axios from "axios";
+import axios from "axios";
 import {showLoading, userLogin} from "../redux/account-reducer";
 import {deleteExpense, getExpenses, getPages} from "../redux/history-reducer";
 import {getCategories} from "../redux/settings-reducer";

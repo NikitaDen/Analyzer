@@ -1,6 +1,6 @@
 import {showLoading} from "./account-reducer";
 import {baseURL, historyAPI, refreshToken} from "../api/api";
-import * as axios from "axios";
+import axios from "axios";
 
 const ADD_EXPENSE = 'ADD_EXPENSE';
 const DELETE_EXPENSE = 'DELETE_EXPENSE';
@@ -71,7 +71,12 @@ const historyReducer = (state = initialState, action: any) => {
     }
 };
 
-export const addExpense = (expense: any) => ({type: ADD_EXPENSE, expense});
+type actionCreator = {
+    type: string,
+    [key: string]: any
+}
+
+export const addExpense = (expense: any): actionCreator => ({type: ADD_EXPENSE, expense});
 export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
@@ -90,36 +95,31 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
             price: expense.price,
             date: `${new Date().toLocaleString()}`,
             id: expense.id,
-            // @ts-ignore
         }, axios.post, dispatch);
     }
 };
 
-export const deleteExpense = (id: any) => ({type: DELETE_EXPENSE, id});
+export const deleteExpense = (id: any): actionCreator => ({type: DELETE_EXPENSE, id});
 export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
     try {
-        dispatch(deleteExpense(id));
-
         await historyAPI.deleteExpense(id);
-
+        dispatch(deleteExpense(id));
         dispatch(showLoading(false));
     } catch (e) {
-        // @ts-ignore
         await refreshToken('/history/delete', {id}, axios.put, dispatch, deleteExpense);
     }
 };
 
 
-export const getExpenses = (expenses: any) => ({type: GET_EXPENSES, expenses});
-export const getPages = (pages: any) => ({type: GET_PAGES, pages});
+export const getExpenses = (expenses: any): actionCreator => ({type: GET_EXPENSES, expenses});
+export const getPages = (pages: any): actionCreator => ({type: GET_PAGES, pages});
 
 export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
     try {
-        // @ts-ignore
         const response = await axios.get(`${baseURL}/history/expenses?page=${page}&limit=10`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
@@ -129,7 +129,6 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
         dispatch(getExpenses(response.data.expenses));
         dispatch(getPages(response.data.length));
     } catch (e) {
-        // @ts-ignore
         await refreshToken(`/history/expenses?page=${page}&limit=10`, null, axios.get, dispatch, getExpenses);
     }
 };
@@ -138,7 +137,6 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
     dispatch(showLoading(true));
 
     try {
-        // @ts-ignore
         const response = await axios.get(`${baseURL}/history/allexpenses`, {
             headers: {
                 'token': `${localStorage.getItem('token')}`
@@ -147,12 +145,11 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
         dispatch(showLoading(false));
         dispatch(getExpenses(response.data.expenses));
     } catch (e) {
-        // @ts-ignore
         await refreshToken('/history/allexpenses', null, axios.get, dispatch, getExpenses);
     }
 };
 
-export const changeExpense = (id: number, name: string, category: any, spent: any, count: any, price: any) => ({
+export const changeExpense = (id: number, name: string, category: any, spent: any, count: any, price: any): actionCreator => ({
     type: CHANGE_EXPENSE,
     id,
     name,
@@ -171,7 +168,6 @@ export const changeExpenseThunkCreator = (id: number, name: string, category: an
 
         dispatch(showLoading(false));
     } catch (e) {
-        // @ts-ignore
         await refreshToken('/history/change', {id, name, category, spent, count, price}, axios.put, dispatch);
     }
 };
