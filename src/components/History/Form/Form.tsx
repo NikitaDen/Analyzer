@@ -8,7 +8,7 @@ interface Props {
     showForm: boolean,
     currentPage: number,
     getCategoriesThunkCreator(): void,
-    addExpenseThunkCreator(expense: any): void,
+    addExpenseThunkCreator<T extends object>(expense: T): void,
 }
 
 const Form: React.FC<Props> = (props) => {

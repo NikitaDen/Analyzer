@@ -24,6 +24,8 @@ interface Props {
     changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): void
 }
 
+
+
 const Expense: React.FC<Props> = (props) => {
     const [name, setName] = useState(props.name);
     const [editMode, setEditMode] = useState(false);
@@ -65,6 +67,7 @@ const Expense: React.FC<Props> = (props) => {
     };
 
     const onSaveCategory = () => {
+
         props.changeExpenseThunkCreator(props.id, name, category, spent, count, price);
         setEditMode(false);
     };

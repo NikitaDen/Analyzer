@@ -1,6 +1,7 @@
 import {showLoading} from "./account-reducer";
 import {baseURL, historyAPI, refreshToken} from "../api/api";
 import axios from "axios";
+import {actionCreator} from "./interfaces";
 
 const ADD_EXPENSE = 'ADD_EXPENSE';
 const DELETE_EXPENSE = 'DELETE_EXPENSE';
@@ -13,6 +14,17 @@ let initialState: any = {
     pages: 1,
     limit: 10,
 };
+
+// category, count, name, price, spent: price * count, id: Date.now()
+
+interface Expense {
+    id: number,
+    category: string,
+    count: number,
+    name: string,
+    price: number,
+    spent: number,
+}
 
 const historyReducer = (state = initialState, action: any) => {
     switch (action.type) {
@@ -71,12 +83,7 @@ const historyReducer = (state = initialState, action: any) => {
     }
 };
 
-type actionCreator = {
-    type: string,
-    [key: string]: any
-}
-
-export const addExpense = (expense: any): actionCreator => ({type: ADD_EXPENSE, expense});
+export const addExpense = (expense: Expense): actionCreator => ({type: ADD_EXPENSE, expense});
 export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
@@ -87,7 +94,7 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 
         dispatch(showLoading(false));
     } catch (e) {
-        refreshToken('/history/expenses', {
+        await refreshToken('/history/expenses', {
             name: expense.name,
             category: expense.category,
             count: expense.count,
@@ -149,7 +156,7 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
     }
 };
 
-export const changeExpense = (id: number, name: string, category: any, spent: any, count: any, price: any): actionCreator => ({
+export const changeExpense = (id: number, name: string, category: string, spent: number, count: number, price: number): actionCreator => ({
     type: CHANGE_EXPENSE,
     id,
     name,
@@ -158,7 +165,7 @@ export const changeExpense = (id: number, name: string, category: any, spent: an
     count,
     price
 });
-export const changeExpenseThunkCreator = (id: number, name: string, category: any, spent: any, count: any, price: any) => async (dispatch: any) => {
+export const changeExpenseThunkCreator = (id: number, name: string, category: any, spent: number, count: number, price: number) => async (dispatch: any) => {
     dispatch(showLoading(true));
 
     try {

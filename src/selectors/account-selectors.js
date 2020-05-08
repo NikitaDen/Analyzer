@@ -9,6 +9,7 @@ export const isLoadingSelector = (store) => {
 export const isLoginLoadingSelector = (store) => {
     return store.account.isLoginLoading;
 };
+
 export const infoSelector = (store) => {
     return store.account.info;
 };

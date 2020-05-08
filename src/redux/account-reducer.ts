@@ -1,6 +1,7 @@
 import {authAPI, baseURL, refreshToken} from "../api/api";
 import {getExpenses} from "./history-reducer";
 import axios from "axios";
+import {actionCreator} from "./interfaces";
 
 
 const USER_LOGIN = 'USER_LOGIN';
@@ -45,11 +46,6 @@ const accountReducer = (state = initialState, action: any) => {
             return state;
     }
 };
-
-type actionCreator = {
-    type: string,
-    [key: string]: any
-}
 
 export const userLogin = (isAuth: boolean): actionCreator => ({type: USER_LOGIN, isAuth});
 export const setInfo = (info: any): actionCreator => ({type: INFO, info});

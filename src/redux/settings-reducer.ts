@@ -1,6 +1,7 @@
 import {baseURL, refreshToken, settingsAPI} from "../api/api";
 import axios from "axios";
 import {showLoading} from "./account-reducer";
+import {actionCreator} from "./interfaces";
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
@@ -43,11 +44,6 @@ const settingsReducer = (state = initialState, action: any) => {
     }
 };
 
-type actionCreator = {
-    type: string,
-    [key: string]: any
-}
-
 export const addCategory = (name: string, id: any): actionCreator => ({type: ADD_CATEGORY, name, id});
 export const addCategoriesThunkCreator = (name: string, id: any) => async (dispatch: any) => {
     dispatch(showLoading(true));
@@ -55,7 +51,6 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
         dispatch(addCategory(name, id));
 
         await settingsAPI.addCategory(name, id);
-
         dispatch(showLoading(false));
     } catch (e) {
         await refreshToken('/settings/categories', {name, id}, axios.post, dispatch);

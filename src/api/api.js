@@ -56,6 +56,7 @@ export const settingsAPI = {
 
 export const refreshToken = async (url, payload, method, dispatch, actionCreator) => {
     const token = `${localStorage.getItem('refreshToken')}`;
+
     if (token) {
         const response = await axios.post(`${baseURL}/user/token`, {
             token: token
