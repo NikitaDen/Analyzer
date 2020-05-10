@@ -26,6 +26,16 @@ const Login = (props: any) => {
         props.getUser();
     }, []);
 
+    const onLoginClick = () => {
+        props.userLoginThunkCreator(email, password);
+        props.setInfo('');
+    };
+
+    const onRegisterClick = () => {
+        props.history.push('register');
+        props.setInfo('');
+    };
+
 
     if (!props.isAuth) {
         return (
@@ -38,9 +48,9 @@ const Login = (props: any) => {
                         <label htmlFor="password">Password</label>
                         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                         <div>
-                            <button className={'button'} onClick={() => props.userLoginThunkCreator(email, password)}>Login</button>
+                            <button className={'button'} onClick={onLoginClick}>Sign In</button>
                             or
-                            <button className={'button'} onClick={() => props.history.push('register')}>Register</button>
+                            <button className={'button'} onClick={onRegisterClick}>Sign Up</button>
                         </div>
                         <p className={'error-message'}>{props.info === 'ok' ? null : props.info}</p>
                     </form>

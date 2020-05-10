@@ -53,7 +53,6 @@ export const getUser = (): actionCreator => ({type: GET_USER});
 export const showLoading = (isLoading: boolean): actionCreator => ({type: SHOW_LOADING, isLoading});
 export const loginLoading = (isLoading: boolean): actionCreator => ({type: LOGIN_LOADING, isLoading});
 
-
 export const userLoginThunkCreator = (email: string, password: string) => async (dispatch: any) => {
     dispatch(loginLoading(true));
 
@@ -66,13 +65,13 @@ export const userLoginThunkCreator = (email: string, password: string) => async 
         if (response.data) {
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('refreshToken', response.data.refreshToken);
-            console.log(response);
             dispatch(loginLoading(false));
             dispatch(userLogin(true));
         }
     } catch (e) {
         dispatch(loginLoading(false));
         dispatch(userLogin(false));
+        dispatch(setInfo(e.response.data));
     }
 };
 
