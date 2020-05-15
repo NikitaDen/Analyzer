@@ -15,8 +15,6 @@ let initialState: any = {
     limit: 10,
 };
 
-// category, count, name, price, spent: price * count, id: Date.now()
-
 interface Expense {
     id: number,
     category: string,

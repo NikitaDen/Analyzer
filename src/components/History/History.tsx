@@ -87,7 +87,7 @@ const History: React.FC = (props: any) => {
 
     return (
         <div className={'history'}>
-            <h2>Your history</h2>
+            <h2>History</h2>
 
             {showConfirm ? <Confirm className={'confirm show'}
                                     title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} ${chosenItems.length === 1 ? 'item' : 'items'}?`}

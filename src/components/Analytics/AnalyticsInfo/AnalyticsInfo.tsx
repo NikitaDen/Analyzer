@@ -1,5 +1,5 @@
 import React from "react";
-import {Bar} from 'react-chartjs-2';
+import {Bar, Line} from 'react-chartjs-2';
 
 interface Props {
     dateLower: any,
@@ -8,23 +8,27 @@ interface Props {
     title: string,
     showExpensesPerDay: boolean,
     showMoreInfo: boolean,
-    moreInfo: any
+    moreInfo: any,
+    expenses: any
 
     findTotalSpending(): number,
-
-    findSpentCategory(): any,
 
     findBiggerSpent(): any,
 
     chartsFunc(): any,
+    lineChart(): any
+
     showMoreDetailsForCategory(item: any): any
 }
 
 const AnalyticsInfo: React.FC<Props> = (props) => {
     const categories = props.chartsFunc();
-    // console.log(categories);
+    const expenses = [...props.expenses];
 
-    const data = {
+    const diff = Math.ceil(({...expenses[0]}.id - {...expenses[props.expenses.length - 1]}.id) / 86400000);
+
+
+    const barData = {
         labels: categories.map((item: any) => item.category),
         datasets: [{
             label: 'Spent',
@@ -32,61 +36,86 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
             backgroundColor: categories.map((item: any) => `rgba(${0 + item.spent}, ${255 / (item.spent * .1)}, ${255 / (item.spent * .5)}, 0.2)`),
             borderColor: categories.map((item: any) => `rgba(${0 + item.spent}, ${255 / (item.spent * .1)}, ${255 / (item.spent * .5)}, 1)`),
             borderWidth: 1,
-            hoverBackgroundColor: 'white'
+            hoverBackgroundColor: 'white',
+            maxBarThickness: 100
         }],
     };
 
     return (
-        <div className={'analytics__wrapper'}>
-            <h3>{props.title}</h3>
+        <>
+            <div className={'analytics__header'}>
+                {props.children}
 
-            <div className={'analytics__info'}>
-                <div className={'analytics__info__item'}>
-                    <h3>Total spent:</h3>
-                    {props.findTotalSpending()}
-                </div>
-                <div className={'analytics__info__item'}>
-                    <h3>Most spent for:</h3>
-                    {props.findBiggerSpent()}
-                </div>
-                <div className={'analytics__info__item'}>
-                    <h3>Spending by categories:</h3>
-                    <div className={'analytics__categories'}>
-                        {/*<Bar data={data} onElementsClick={props.showMoreDetailsForCategory}/>*/}
-                        <Bar data={data} getElementAtEvent={e => props.showMoreDetailsForCategory(e[0]._chart.config.data.labels[e[0]._index])}/>
-                        {/*.data.labels[e[0]._index]*/}
-                        {/*onElementsClick={(e) => console.log(e)} getDatasetAtEvent={e => console.log(e)}*/}
+                <div className={'cards'}>
+                    <div className={'cards__item'}>
+                        <h3>Total spent:</h3>
+                        <p>{props.findTotalSpending()}</p>
                     </div>
-                </div>
-
-                {props.showMoreInfo ? <div className={'analytics__info__item detail-info'}>
-                    <div className={'header'}>
-                        <p>Name</p>
-                        <p>Category</p>
-                        <p>Price</p>
-                        <p>Count</p>
-                        <p>Spent</p>
-                        <p>Date</p>
+                    <div className={'cards__item'}>
+                        <h3>Most spent for:</h3>
+                        {props.findBiggerSpent()}
                     </div>
+                    {props.showExpensesPerDay ? <div className={'cards__item'}>
+                        <h3>Average spending per day:</h3>
+                        {props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000)}
+                    </div> : <div className={'cards__item'}>
+                        <h3>Average spending per day:</h3>
+                        {props.findTotalSpending() / diff || 0}
+                    </div>}
 
-                    {props.moreInfo.map((item: any) =>
-                        <div key={item.id} className={'more-info'}>
-                            <p>{item.name}</p>
-                            <p>{item.category}</p>
-                            <p>{item.price}</p>
-                            <p>{item.count}</p>
-                            <p>{item.spent}</p>
-                            <p>{item.date}</p>
-                        </div>)}
-                </div> : null}
-
-                {props.showExpensesPerDay ? <div className={'analytics__info__item'}>
-                    <h3>Spending per day:</h3>
-                    {props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000)}
-                </div> : null}
-
+                </div>
             </div>
-        </div>
+
+
+            <div className={'analytics__wrapper'}>
+                <h3>{props.title}</h3>
+
+                <div className={'analytics__info'}>
+                    <div className={'analytics__info__item'}>
+                        <h3>All-time expenses:</h3>
+                        <div className={'analytics__categories'}>
+                            <Line data={props.lineChart()} height={100}/>
+                        </div>
+                    </div>
+
+                    <div className={'analytics__info__item'}>
+                        <h3>Spending by categories:</h3>
+                        <p>Click the column to see the details below.</p>
+                        <div className={'analytics__categories'}>
+                            <Bar data={barData} height={100}
+                                 getElementAtEvent={e => props.showMoreDetailsForCategory(e[0]._chart.config.data.labels[e[0]._index])}/>
+                        </div>
+                    </div>
+
+                    {props.showMoreInfo ? <div className={'analytics__info__item detail-info'}>
+                        <div className={'header'}>
+                            <p>Name</p>
+                            <p>Category</p>
+                            <p>Price</p>
+                            <p>Count</p>
+                            <p>Spent</p>
+                            <p>Date</p>
+                        </div>
+
+                        {props.moreInfo.map((item: any) =>
+                            <div key={item.id} className={'more-info'}>
+                                <p>{item.name}</p>
+                                <p>{item.category}</p>
+                                <p>{item.price}</p>
+                                <p>{item.count}</p>
+                                <p>{item.spent}</p>
+                                <p>{item.date}</p>
+                            </div>)}
+                    </div> : null}
+
+                    {props.showExpensesPerDay ? <div className={'analytics__info__item'}>
+                        <h3>Spending per day:</h3>
+                        {props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000)}
+                    </div> : null}
+
+                </div>
+            </div>
+        </>
     )
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import './../HistoryItems/history.scss';
+import '../history.scss';
 import separator from './../../../assets/images/separator.svg';
 
 interface Props {

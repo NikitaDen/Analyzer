@@ -25,8 +25,6 @@ const Menu = (props: any) => {
                 <p>Settings</p>
                 <img src={settings} alt=""/>
             </NavLink>
-            <p>{props.infoF}</p>
-
             <div className={'login-buttons'}>
                 {props.isAuth ? <>
                     <Button image={logout} className={'button button--logout'}

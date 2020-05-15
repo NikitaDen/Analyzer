@@ -1,9 +1,11 @@
 @import "./../../components/Confirm/confirm";
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,700&display=swap');
+//@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-$text-font: 'Roboto', sans-serif;
-$header-font: 'Open Sans', sans-serif;
+$text-font: 'Poppins', sans-serif;
+$header-font: 'Raleway', sans-serif;
 
 * {
   margin: 0;
@@ -35,6 +37,27 @@ input[type=checkbox] {
   cursor: pointer;
 }
 
+.App {
+  min-height: 100vh;
+
+  .wrapper {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .content {
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+    background-color: transparent;
+    width: 90%;
+    margin: 5rem auto;
+  }
+}
+
 .dates {
   display: flex;
   flex-direction: column;
@@ -51,7 +74,6 @@ input[type=checkbox] {
 
   p {
     display: inline-block;
-    //margin-bottom: .5rem;
     height: 1rem;
     width: 4rem;
     text-align: left;
@@ -346,29 +368,6 @@ body {
     &:active {
       transform: scale(.95);
     }
-  }
-}
-
-
-.App {
-  min-height: 100vh;
-  width: 100vw;
-
-  .wrapper {
-    position: relative;
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: row;
-  }
-
-  .content {
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-    padding: 1rem 2.5rem 1.5rem 240px;
-    background-color: transparent;
-    flex: 1;
   }
 }
 

@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useState} from "react";
 import Expense from "./../Expense/Expense";
-import './history.scss';
+import '../history.scss';
 import TableHeader from "../TableHeader/TableHeader";
 import empty from './../../../assets/images/empty.svg';
 import noData from './../../../assets/images/nodata.svg';

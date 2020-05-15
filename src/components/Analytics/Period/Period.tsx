@@ -41,7 +41,6 @@ const Period: React.FC<Props> = (props) => {
 
     return (
         <div className={'period'}>
-
             <div className={'dates'}>
                 <div className={'dates__element'}>
                     <p>From:</p>
