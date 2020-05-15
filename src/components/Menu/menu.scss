@@ -58,7 +58,7 @@ nav {
     text-align: left;
     transition: .2s;
 
-    &:focus {
+    &.active {
       background-color: #C5DAFF;
     }
 

@@ -26,9 +26,11 @@ const Analytics = (props: any) => {
     const findTotalSpendingForPeriod = () => {
         return [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher).reduce((sum: any, item: any) => sum + item.spent, 0)
     };
+
     const findTotalSpending = () => {
         return [...props.expenses].reduce((sum: any, item: any) => sum + item.spent, 0);
     };
+
     const findSpentCategory = () => {
         let categories: Array<any> = [];
 
@@ -46,6 +48,19 @@ const Analytics = (props: any) => {
                 setMoreInfo(item.expenses);
             }} key={item.category} spent={item.spent} category={item.category} sum={sum}/>);
     };
+
+    const chartsFunc = () => {
+        let categories: Array<any> = [];
+
+        props.categories.forEach((category: any) => categories.push({
+            category: category.name,
+            spent: [...props.expenses].filter((item: any) => item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
+            expenses: [...props.expenses].filter((item: any) => item.category === category.name),
+        }));
+
+        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent);
+    };
+
     const findSpentCategoryForPeriod = () => {
         let categories: Array<any> = [];
 
@@ -107,14 +122,14 @@ const Analytics = (props: any) => {
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
             {showForPeriod ?
-                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={true}
+                <AnalyticsInfo moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={true}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Analytics for the time period'}
                                findTotalSpending={findTotalSpendingForPeriod}
                                findSpentCategory={findSpentCategoryForPeriod}
                                findBiggerSpent={findBiggerSpentForPeriod}/>
                 :
-                <AnalyticsInfo moreInfo={moreInfo} showMoreInfo={showMoreInfo} showExpensesPerDay={false}
+                <AnalyticsInfo moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={false}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Summary analytics'}
                                findTotalSpending={findTotalSpending} findSpentCategory={findSpentCategory}
