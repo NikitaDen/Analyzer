@@ -16,12 +16,13 @@ interface Props {
 
     findBiggerSpent(): any,
 
-    chartsFunc(): any
+    chartsFunc(): any,
+    showMoreDetailsForCategory(item: any): any
 }
 
 const AnalyticsInfo: React.FC<Props> = (props) => {
     const categories = props.chartsFunc();
-    console.log(categories);
+    // console.log(categories);
 
     const data = {
         labels: categories.map((item: any) => item.category),
@@ -30,8 +31,9 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
             data: categories.map((item: any) => item.spent),
             backgroundColor: categories.map((item: any) => `rgba(${0 + item.spent}, ${255 / (item.spent * .1)}, ${255 / (item.spent * .5)}, 0.2)`),
             borderColor: categories.map((item: any) => `rgba(${0 + item.spent}, ${255 / (item.spent * .1)}, ${255 / (item.spent * .5)}, 1)`),
-            borderWidth: 1
-        }]
+            borderWidth: 1,
+            hoverBackgroundColor: 'white'
+        }],
     };
 
     return (
@@ -50,7 +52,10 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                 <div className={'analytics__info__item'}>
                     <h3>Spending by categories:</h3>
                     <div className={'analytics__categories'}>
-                        <Bar data={data}/>
+                        {/*<Bar data={data} onElementsClick={props.showMoreDetailsForCategory}/>*/}
+                        <Bar data={data} getElementAtEvent={e => props.showMoreDetailsForCategory(e[0]._chart.config.data.labels[e[0]._index])}/>
+                        {/*.data.labels[e[0]._index]*/}
+                        {/*onElementsClick={(e) => console.log(e)} getDatasetAtEvent={e => console.log(e)}*/}
                     </div>
                 </div>
 

@@ -49,6 +49,11 @@ const Analytics = (props: any) => {
             }} key={item.category} spent={item.spent} category={item.category} sum={sum}/>);
     };
 
+    const showMoreDetailsForCategory = (category: string) => {
+        setShowMoreInfo(true);
+        setMoreInfo(props.expenses.filter((item: any) => item.category === category));
+    };
+
     const chartsFunc = () => {
         let categories: Array<any> = [];
 
@@ -122,14 +127,14 @@ const Analytics = (props: any) => {
                     setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>
 
             {showForPeriod ?
-                <AnalyticsInfo moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={true}
+                <AnalyticsInfo showMoreDetailsForCategory={showMoreDetailsForCategory} moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={true}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Analytics for the time period'}
                                findTotalSpending={findTotalSpendingForPeriod}
                                findSpentCategory={findSpentCategoryForPeriod}
                                findBiggerSpent={findBiggerSpentForPeriod}/>
                 :
-                <AnalyticsInfo moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={false}
+                <AnalyticsInfo showMoreDetailsForCategory={showMoreDetailsForCategory} moreInfo={moreInfo} chartsFunc={chartsFunc} showMoreInfo={showMoreInfo} showExpensesPerDay={false}
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Summary analytics'}
                                findTotalSpending={findTotalSpending} findSpentCategory={findSpentCategory}
