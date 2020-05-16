@@ -87,9 +87,7 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
 
     try {
         dispatch(addExpense(expense));
-
         await historyAPI.addExpense(expense);
-
         dispatch(showLoading(false));
     } catch (e) {
         await refreshToken('/history/expenses', {
@@ -109,8 +107,8 @@ export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => 
     dispatch(showLoading(true));
 
     try {
-        await historyAPI.deleteExpense(id);
         dispatch(deleteExpense(id));
+        await historyAPI.deleteExpense(id);
         dispatch(showLoading(false));
     } catch (e) {
         await refreshToken('/history/delete', {id}, axios.put, dispatch, deleteExpense);

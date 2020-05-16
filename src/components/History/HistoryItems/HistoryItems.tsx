@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 import Expense from "./../Expense/Expense";
 import '../history.scss';
 import TableHeader from "../TableHeader/TableHeader";

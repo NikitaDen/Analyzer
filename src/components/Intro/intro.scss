@@ -1,15 +1,48 @@
 .button--about {
   position: fixed;
-  top: 1rem;
+  top: 5rem;
   right: 1rem;
+  z-index: 6;
+
+  &.active {
+    transform: scale(1.5);
+    filter: invert(1);
+  }
+}
+
+.button--info {
+  position: fixed;
+  top: 4rem;
+  right: 1rem;
+}
+
+.backdrop {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.85);
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 5;
 }
 
 .intro {
   display: grid;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  color: white;
+  font-size: 1.15rem;
+  transform: translate(-50%, -50%);
   grid-template-columns: 1fr 1fr;
-  width: 45rem;
+  width: 70vw;
   grid-gap: .5rem;
   margin: 0 auto;
+  z-index: 6;
+
+  @media all and (max-width: 728px) {
+    width: 90vw;
+  }
 
   div {
     display: inherit;

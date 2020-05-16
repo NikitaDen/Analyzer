@@ -7,15 +7,14 @@
 }
 
 .category {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
+  display: flex;
+  flex-direction: row;
   box-shadow: 0 0 3px gray;
-  border-radius: 1.5rem;
+  border-radius: .5rem;
   justify-content: center;
-  align-content: center;
-  margin: 1rem 0;
+  align-items: center;
+  margin: 1rem 1rem 1rem 0;
   padding: .65rem 1rem;
-  width: 100%;
   transition: .2s;
   cursor: pointer;
 
@@ -24,11 +23,7 @@
   }
 
   .button {
-    align-self: end;
-    justify-self: end;
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
+    margin-top: .2rem;
+    margin-left: 1rem;
   }
 }

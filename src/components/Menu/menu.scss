@@ -8,19 +8,57 @@ nav {
   flex-direction: row;
   background-color: white;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  padding: 0 2rem;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.5rem;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+
+    &__item {
+      font-size: 1.1rem;
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      align-items: center;
+      color: black;
+      text-align: left;
+      transition: .2s;
+
+      &.active {
+        background-color: #C5DAFF;
+      }
+
+      p {
+        padding: 1rem 2rem;
+      }
+
+      img {
+        justify-self: center;
+        padding-right: 1rem;
+        height: 1.05rem;
+      }
+    }
+  }
 
   .login-buttons {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    flex: 1;
+    justify-content: center;
+    align-items: center;
 
     .button {
       background-color: #448AFF;
       color: white;
       border-radius: .25rem;
       padding: .25rem 1rem;
-      margin: .5rem 2rem;
+      margin: .5rem 1rem;
       max-width: 6rem;
       align-self: flex-end;
 
@@ -28,7 +66,6 @@ nav {
         display: flex;
         flex-direction: row;
         padding: .5rem;
-        max-width: 8rem;
 
         &:hover {
           background-color: #FF7777;
@@ -41,31 +78,4 @@ nav {
     }
   }
 
-  a {
-    font-size: 1.1rem;
-    display: grid;
-    grid-template-columns: 3fr 1fr;
-    align-items: center;
-    color: black;
-    text-align: left;
-    transition: .2s;
-    //border-right: 1px solid gray;
-
-    & + a {
-    }
-
-    &.active {
-      background-color: #C5DAFF;
-    }
-
-    p {
-      padding: .5rem 2rem;
-    }
-
-    img {
-      justify-self: center;
-      padding-right: 1rem;
-      height: 1.05rem;
-    }
-  }
 }

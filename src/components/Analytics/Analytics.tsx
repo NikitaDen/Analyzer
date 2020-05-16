@@ -25,7 +25,6 @@ const Analytics = (props: any) => {
     const findTotalSpending = () => {
         return [...props.expenses].reduce((sum: any, item: any) => sum + item.spent, 0);
     };
-
     const findTotalSpendingForPeriod = () => {
         return [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher).reduce((sum: any, item: any) => sum + item.spent, 0)
     };
@@ -35,7 +34,6 @@ const Analytics = (props: any) => {
         setMoreInfo([...props.expenses]
             .filter((item: any) => item.category === category));
     };
-
     const showMoreDetailsForCategoryForPeriod = (category: string) => {
         setShowMoreInfo(true);
         setMoreInfo([...props.expenses]
@@ -43,45 +41,51 @@ const Analytics = (props: any) => {
             .filter((item: any) => item.category === category));
     };
 
-    const chartsFunc = () => {
+    const defineChartInfo = (forPeriod: boolean) => {
         let categories: Array<any> = [];
 
         props.categories.forEach((category: any) => categories.push({
             category: category.name,
-            spent: [...props.expenses].filter((item: any) => item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
-            expenses: [...props.expenses].filter((item: any) => item.category === category.name),
+            spent: forPeriod ?
+                [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0) :
+                [...props.expenses].filter((item: any) => item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
+            expenses: forPeriod ? [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name) : [...props.expenses].filter((item: any) => item.category === category.name),
         }));
 
         return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent);
     };
-    const chartsFuncForPeriod = () => {
-        let categories: Array<any> = [];
+    const chartsFunc = () => defineChartInfo(false);
+    const chartsFuncForPeriod = () => defineChartInfo(true);
 
-        props.categories.forEach((category: any) => categories.push({
-            category: category.name,
-            spent: [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name).reduce((sum: any, elem: any) => sum + elem.spent, 0),
-            expenses: [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher && item.category === category.name)
-        }));
-
-        return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent);
-    };
-
-    const lineChart = () => {
+    const defineLineCharInfo = (forPeriod: boolean) => {
         const lineDates: Array<any> = [];
 
-        [...props.expenses].forEach((item: any) => {
-            lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
-        });
+        forPeriod ?
+            [...props.expenses]
+                .filter((item: any) => item.id > dateLower && item.id < dateHigher)
+                .forEach((item: any) => {
+                    lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
+                }) :
+            [...props.expenses]
+                .forEach((item: any) => {
+                    lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
+                });
 
         const newLineDates: Set<string> = new Set(lineDates);
 
         const expensesByDates: Array<any> = [];
+
         newLineDates.forEach((date: any) => {
             expensesByDates.push({
                 date: date,
-                expenses: [...props.expenses]
-                    .filter((item: any) => `${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}` === date)
-                    .reduce((acc: number, item: any) => acc + +item.spent, 0),
+                expenses: forPeriod ?
+                    [...props.expenses]
+                        .filter((item: any) => item.id > dateLower && item.id < dateHigher)
+                        .filter((item: any) => `${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}` === date)
+                        .reduce((acc: number, item: any) => acc + +item.spent, 0) :
+                    [...props.expenses]
+                        .filter((item: any) => `${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}` === date)
+                        .reduce((acc: number, item: any) => acc + +item.spent, 0),
             });
         });
 
@@ -98,42 +102,8 @@ const Analytics = (props: any) => {
 
         return lineData;
     };
-    const lineChartForPeriod = () => {
-        const lineDates: Array<any> = [];
-
-        [...props.expenses]
-            .filter((item: any) => item.id > dateLower && item.id < dateHigher)
-            .forEach((item: any) => {
-                lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
-            });
-
-        const newLineDates: Set<string> = new Set(lineDates);
-
-        const expensesByDates: Array<any> = [];
-        newLineDates.forEach((date: any) => {
-            expensesByDates.push({
-                date: date,
-                expenses: [...props.expenses]
-                    .filter((item: any) => item.id > dateLower && item.id < dateHigher)
-                    .filter((item: any) => `${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}` === date)
-                    .reduce((acc: number, item: any) => acc + +item.spent, 0),
-            });
-        });
-
-        const lineData = {
-            labels: [...Array.from(newLineDates)].reverse(),
-            datasets: [{
-                label: 'Spent',
-                data: [...expensesByDates.map((item: any) => item.expenses)].reverse(),
-                borderWidth: 1,
-                backgroundColor: 'rgba(68, 138, 255, 0.2)',
-                hoverBackgroundColor: 'white'
-            }],
-        };
-
-        return lineData;
-    };
-
+    const lineChart = () => defineLineCharInfo(false);
+    const lineChartForPeriod = () => defineLineCharInfo(true);
 
     const findBiggerSpentForPeriod = () => {
         return [...props.expenses].filter((item: any) => item.id >= dateLower && item.id <= dateHigher && item.spent === Math.max(...props.expenses.filter((item: any) => item.id >= dateLower && item.id <= dateHigher).map((item: any) => item.spent))).map((item: any) =>
@@ -142,12 +112,8 @@ const Analytics = (props: any) => {
                 <span>{item.name}</span>
                 <p>Spent:</p>
                 <span>{item.spent}</span>
-                {/*<p>Category:</p>*/}
-                {/*<span>{item.category}</span>*/}
                 <p>Date:</p>
                 <span>{item.date}</span>
-                {/*<p>Count:</p>*/}
-                {/*<span>{item.count}</span>*/}
             </div>)
     };
     const findBiggerSpent = () => {
@@ -157,12 +123,8 @@ const Analytics = (props: any) => {
                 <span>{item.name}</span>
                 <p>Spent:</p>
                 <span>{item.spent}</span>
-                {/*<p>Category:</p>*/}
-                {/*<span>{item.category}</span>*/}
                 <p>Date:</p>
                 <span>{item.date}</span>
-                {/*<p>Count:</p>*/}
-                {/*<span>{item.count}</span>*/}
             </div>)
     };
 
@@ -174,10 +136,6 @@ const Analytics = (props: any) => {
         <div className={'analytics'}>
             <h2>Analytics</h2>
 
-            {/*<Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher} dateLower={dateLower}*/}
-            {/*        setDateLower={setDateLower}*/}
-            {/*        setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>*/}
-
             {showForPeriod ?
                 <AnalyticsInfo expenses={props.expenses} lineChart={lineChartForPeriod}
                                showMoreDetailsForCategory={showMoreDetailsForCategoryForPeriod} moreInfo={moreInfo}
@@ -185,9 +143,12 @@ const Analytics = (props: any) => {
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Analytics for the time period'}
                                findTotalSpending={findTotalSpendingForPeriod}
-                               findBiggerSpent={findBiggerSpentForPeriod} children={<Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher} dateLower={dateLower}
-                                                                                            setDateLower={setDateLower}
-                                                                                            setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>}/>
+                               findBiggerSpent={findBiggerSpentForPeriod}
+                               children={<Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher}
+                                                 dateLower={dateLower}
+                                                 setDateLower={setDateLower}
+                                                 setDateHigher={setDateHigher} showForPeriod={showForPeriod}
+                                                 setShowForPeriod={setShowForPeriod}/>}/>
                 :
                 <AnalyticsInfo expenses={props.expenses} lineChart={lineChart}
                                showMoreDetailsForCategory={showMoreDetailsForCategory} moreInfo={moreInfo}
@@ -195,9 +156,12 @@ const Analytics = (props: any) => {
                                dateLower={dateLower} dateHigher={dateHigher}
                                categories={props.categories} title={'Summary analytics'}
                                findTotalSpending={findTotalSpending}
-                               findBiggerSpent={findBiggerSpent} children={<Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher} dateLower={dateLower}
-                                                                                   setDateLower={setDateLower}
-                                                                                   setDateHigher={setDateHigher} showForPeriod={showForPeriod} setShowForPeriod={setShowForPeriod}/>}/>
+                               findBiggerSpent={findBiggerSpent}
+                               children={<Period setShowMoreInfo={setShowMoreInfo} dateHigher={dateHigher}
+                                                 dateLower={dateLower}
+                                                 setDateLower={setDateLower}
+                                                 setDateHigher={setDateHigher} showForPeriod={showForPeriod}
+                                                 setShowForPeriod={setShowForPeriod}/>}/>
             }
 
         </div>

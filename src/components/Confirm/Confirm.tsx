@@ -6,7 +6,7 @@ import confirm from '../../assets/images/confirm.svg';
 interface Props {
     title: string,
     className: string,
-    func(): void,
+    func(): any,
     close(): any,
 }
 

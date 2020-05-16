@@ -13,7 +13,6 @@ const ItemDirection: React.FC<Props> = (props) => {
             <label htmlFor="sort">Direction</label>
             <select value={props.descending} onChange={(e) => props.setDescending(e.target.value)}
                     name="descending">
-                <option value="noSort">No sort</option>
                 <option value="Ascending">Ascending</option>
                 <option value="Descending">Descending</option>
             </select>

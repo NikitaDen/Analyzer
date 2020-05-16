@@ -13,22 +13,27 @@ import {isAuthSelector} from "../../selectors/account-selectors";
 const Menu = (props: any) => {
     return (
         <nav>
-            <NavLink to={'/history'}>
-                <p>History</p>
-                <img src={history} alt=""/>
+            <NavLink className={'logo'} to={'/history'}>
+                <p>Analyzer</p>
             </NavLink>
-            <NavLink to={'/analytics'}>
-                <p>Analytics</p>
-                <img src={analytics} alt=""/>
-            </NavLink>
-            <NavLink to={'/settings'}>
-                <p>Settings</p>
-                <img src={settings} alt=""/>
-            </NavLink>
+            <div className={'menu'}>
+                <NavLink className={'menu__item'} to={'/history'}>
+                    <p>History</p>
+                    <img src={history} alt=""/>
+                </NavLink>
+                <NavLink className={'menu__item'} to={'/analytics'}>
+                    <p>Analytics</p>
+                    <img src={analytics} alt=""/>
+                </NavLink>
+                <NavLink className={'menu__item'} to={'/settings'}>
+                    <p>Settings</p>
+                    <img src={settings} alt=""/>
+                </NavLink>
+            </div>
             <div className={'login-buttons'}>
                 {props.isAuth ? <>
                     <Button image={logout} className={'button button--logout'}
-                            func={() => props.userLogoutThunkCreator()} title={'Logout'}/>
+                            func={() => props.userLogoutThunkCreator()} title={''}/>
                 </> : null}
             </div>
         </nav>

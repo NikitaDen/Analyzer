@@ -94,6 +94,7 @@ export const userRegisterThunkCreator = (name: string, email: string, password: 
 export const userLogoutThunkCreator = () => async (dispatch: any) => {
     dispatch(userLogin(false));
     dispatch(getExpenses([]));
+
     try {
         await axios.post(`${baseURL}/user/logout`, {}, {
             headers: {

@@ -77,6 +77,7 @@ export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => 
     dispatch(showLoading(true));
 
     try {
+        debugger
         dispatch(deleteCategory(id));
 
         await settingsAPI.deleteExpense(id);

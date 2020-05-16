@@ -12,13 +12,14 @@
     .button {
       display: flex;
       flex-direction: row;
+      padding: 0 .5rem;
 
       img {
         margin: 0 auto;
       }
 
       &--add {
-        padding: 0.5rem;
+        padding: 1rem;
         margin-left: 1rem;
 
         p {
@@ -64,5 +65,10 @@
     img {
       height: 1.15rem;
     }
+  }
+
+  &__items {
+    display: flex;
+    flex-direction: row;
   }
 }

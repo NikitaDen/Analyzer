@@ -27,7 +27,6 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
 
     const diff = Math.ceil(({...expenses[0]}.id - {...expenses[props.expenses.length - 1]}.id) / 86400000);
 
-
     const barData = {
         labels: categories.map((item: any) => item.category),
         datasets: [{
@@ -57,10 +56,10 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                     </div>
                     {props.showExpensesPerDay ? <div className={'cards__item'}>
                         <h3>Average spending per day:</h3>
-                        {props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000)}
+                        {Math.ceil(props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000))}
                     </div> : <div className={'cards__item'}>
                         <h3>Average spending per day:</h3>
-                        {props.findTotalSpending() / diff || 0}
+                        {Math.ceil(props.findTotalSpending() / diff) || 0}
                     </div>}
 
                 </div>
@@ -83,7 +82,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                         <p>Click the column to see the details below.</p>
                         <div className={'analytics__categories'}>
                             <Bar data={barData} height={100}
-                                 getElementAtEvent={e => props.showMoreDetailsForCategory(e[0]._chart.config.data.labels[e[0]._index])}/>
+                                 getElementAtEvent={e => props.showMoreDetailsForCategory(e[0] ? e[0]._chart.config.data.labels[e[0]._index] : null)}/>
                         </div>
                     </div>
 

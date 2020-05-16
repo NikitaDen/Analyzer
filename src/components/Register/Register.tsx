@@ -18,7 +18,7 @@ import {
 } from "../../selectors/account-selectors";
 import Intro from "../Intro/Intro";
 
-const Register = (props: any) => {
+const Register: React.FC = (props: any) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

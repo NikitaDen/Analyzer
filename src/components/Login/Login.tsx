@@ -18,7 +18,7 @@ import {
 } from "../../selectors/account-selectors";
 import Intro from "../Intro/Intro";
 
-const Login = (props: any) => {
+const Login: React.FC = (props: any) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 

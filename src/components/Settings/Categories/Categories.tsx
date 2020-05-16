@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import Category from "./Category/Category";
 import addDark from "../../../assets/images/add-dark.svg";
 import './categories.scss';
+import Confirm from "../../Confirm/Confirm";
 
 interface Props {
     categories: any,
@@ -17,6 +18,9 @@ interface Props {
 const Categories: React.FC<Props> = (props) => {
     const [newCategory, setNewCategory] = useState('');
     const [error, setError] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
+    const [categoryId, setCategoryId] = useState('');
+
 
     useEffect(() => {
         props.getCategoriesThunkCreator();
@@ -43,11 +47,23 @@ const Categories: React.FC<Props> = (props) => {
             setNewCategory('');
         }
     };
+
     const onCategoryTyping = (e: any) => {
         setNewCategory(e.currentTarget.value);
         if (error) {
             setError(false);
         }
+    };
+
+    const onDeleteCategory = (id: string) => {
+        props.deleteCategoryThunkCreator(id);
+    };
+
+    const onCloseConfirmWindow = () => {
+        setShowConfirm(false);
+    };
+    const onShowConfirmWindow = () => {
+        setShowConfirm(true)
     };
 
     return (
@@ -61,8 +77,16 @@ const Categories: React.FC<Props> = (props) => {
                 </button>
             </div>
 
-            {props.categories.map((item: any) => <Category key={item.id} name={item.name} id={item.id}
-                                                           deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}/>)}
+            <Confirm className={showConfirm ? 'confirm show' : 'confirm'} title={'Are you sure?'}
+                     func={() => onDeleteCategory(categoryId)}
+                     close={onCloseConfirmWindow}/>
+            <div className={'categories__items'}>
+                {props.categories.map((item: any) => <Category key={item.id} name={item.name} id={item.id}
+                                                               deleteCategoryThunkCreator={props.deleteCategoryThunkCreator}
+                                                               setCategoryId={setCategoryId} setShowConfirm={setShowConfirm}
+                                                               showConfirm={showConfirm} onCloseConfirmWindow={onCloseConfirmWindow}
+                                                               onDeleteCategory={onDeleteCategory} onShowConfirmWindow={onShowConfirmWindow}/>)}
+            </div>
         </div>
     )
 };
