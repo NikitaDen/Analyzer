@@ -78,7 +78,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                     </div>
 
                     <div className={'analytics__info__item'}>
-                        <h3>Spending by categories:</h3>
+                        <h3>Expenses by categories:</h3>
                         <p>Click the column to see the details below.</p>
                         <div className={'analytics__categories'}>
                             <Bar data={barData} height={100}
@@ -86,7 +86,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                         </div>
                     </div>
 
-                    {props.showMoreInfo ? <div className={'analytics__info__item detail-info'}>
+                    {props.showMoreInfo && <div className={'analytics__info__item detail-info'}>
                         <div className={'header'}>
                             <p>Name</p>
                             <p>Category</p>
@@ -105,13 +105,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                                 <p>{item.spent}</p>
                                 <p>{item.date}</p>
                             </div>)}
-                    </div> : null}
-
-                    {props.showExpensesPerDay ? <div className={'analytics__info__item'}>
-                        <h3>Spending per day:</h3>
-                        {props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000)}
-                    </div> : null}
-
+                    </div>}
                 </div>
             </div>
         </>

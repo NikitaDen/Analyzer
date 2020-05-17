@@ -5,6 +5,17 @@ import TableHeader from "../TableHeader/TableHeader";
 import empty from './../../../assets/images/empty.svg';
 import noData from './../../../assets/images/nodata.svg';
 import Loader from "../../Loader/Loader";
+import EmptyInfo from "../../EmptyInfo/EmptyInfo";
+
+interface Expense {
+    id: number
+    name: string
+    category: string
+    count: number
+    price: number
+    spent: number
+    date: string
+}
 
 interface Props {
     filter: any,
@@ -30,7 +41,7 @@ const HistoryItems: React.FC<Props> = (props) => {
 
     useEffect(() => {
         if (props.checkedAll && props.filterInRange) {
-            props.setChosenItems(items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
+            props.setChosenItems(sortedExpenses.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length ? sortedExpenses.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).map(item => item.props.id) : null);
         } else if (props.checkedAll && !props.filterInRange) {
             if (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending') {
                 props.setChosenItems([...expenses.filter((item: any) => item.category === props.filter).map((item: any) => item.id)]);
@@ -46,6 +57,7 @@ const HistoryItems: React.FC<Props> = (props) => {
         }
     }, [props.checkedAll, props.filterInRange]);
 
+    //Compare Functions
     const compareNames = (a: any, b: any) => {
         if (a.name.toLowerCase() > b.name.toLowerCase()) {
             return 1;
@@ -64,6 +76,8 @@ const HistoryItems: React.FC<Props> = (props) => {
         }
         return 0;
     };
+
+    //Sort Function
     const defineSort = () => {
         switch (props.sort) {
             case 'By Date':
@@ -81,8 +95,11 @@ const HistoryItems: React.FC<Props> = (props) => {
         }
     };
 
+    //Sorted Expenses with defineSort function
     const expenses = [...props.expenses].sort(defineSort());
-    const expense = (item: any) => {
+
+    //Expense Component
+    const expense = (item: Expense) => {
         return (
             <Expense id={item.id}
                      key={item.id}
@@ -102,7 +119,9 @@ const HistoryItems: React.FC<Props> = (props) => {
         )
     };
 
-    const items = (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending')
+
+    //Define sorted expenses
+    const sortedExpenses = (props.expenses.length && props.filter !== 'noFilter' && props.descending === 'Descending')
         ? expenses.filter((item: any) => item.category === props.filter).map((item: any) => expense(item))
         : (props.expenses.length && props.filter !== 'noFilter' && props.descending !== 'Descending')
             ? expenses.sort(defineSort()).filter((item: any) => item.category === props.filter).map((item: any) => expense(item)).reverse()
@@ -117,17 +136,14 @@ const HistoryItems: React.FC<Props> = (props) => {
     return (
         <div className={'table'}>
             <TableHeader checkedAll={props.checkedAll} chooseAllItems={chooseAllItems}/>
-            {props.isLoading ? <Loader/> : null}
-            {props.filterInRange ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
-                ? items.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :
-                <div className={'empty'}>
-                    <p>You don't have any data for this period</p>
-                    <img src={noData} alt=""/>
-                </div> : items}
-            {props.expenses.length === 0 && !props.filterInRange ? <div className={'empty'}>
-                <p>Add your first expense</p>
-                <img src={empty} alt=""/>
-            </div> : null}
+
+            {props.isLoading && <Loader/>}
+
+            {props.filterInRange ? sortedExpenses.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower).length
+                ? sortedExpenses.filter(item => item.props.id < props.dateHigher && item.props.id > props.dateLower) :
+                <EmptyInfo title={'You don\'t have any data for this period'} src={noData}/> : sortedExpenses}
+
+            {props.expenses.length === 0 && !props.filterInRange && <EmptyInfo title={'Add your first expense'} src={empty}/>}
         </div>
     )
 };

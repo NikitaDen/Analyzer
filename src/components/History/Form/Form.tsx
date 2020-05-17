@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import './form.scss';
 import save from './../../../assets/images/save.svg';
 import {NavLink} from "react-router-dom";
+import FormElement from "./FormElement/FormElement";
 
 interface Props {
     categories: any,
@@ -43,33 +44,28 @@ const Form: React.FC<Props> = (props) => {
         <>
             {props.showForm ? <>
                 <div className={'form'}>
-                    <div className={'form__element'}>
-                        <label htmlFor="name">Name</label>
+                    <FormElement title={'Name'}>
                         <input type="text" autoFocus={true} className={!error ? 'name' : 'name name--error'} id={'name'} value={name}
                                onChange={e => {
                                    setName(e.target.value);
                                    setError(false);
                                }}/>
-                    </div>
-                    <div className={'form__element'}>
-                        <label htmlFor="category">Category</label>
+                    </FormElement>
+                    <FormElement title={'Category'}>
                         {props.categories.length ? <select value={category} onChange={(e) => setCategory(e.target.value)} name="category"
                                                            id="category">
                             {props.categories.map((item: any) => <option key={item.name}
                                                                          value={item.name}>{item.name}</option>)}
                         </select> : <NavLink to={'settings'}>Set your categories</NavLink>}
-
-                    </div>
-                    <div className={'form__element'}>
-                        <label htmlFor="count">Count</label>
+                    </FormElement>
+                    <FormElement title={'Count'}>
                         <input type="number" id={'count'} value={count} min={0}
                                onChange={(e) => setCount(parseInt(e.target.value))}/>
-                    </div>
-                    <div className={'form__element'}>
-                        <label htmlFor="price">Price</label>
+                    </FormElement>
+                    <FormElement title={'Price'}>
                         <input type="number" id={'price'} value={price} min={0}
                                onChange={(e) => setPrice(parseInt(e.target.value))}/>
-                    </div>
+                    </FormElement>
 
                     <button className={'button button--addItem'} onClick={onAddExpenseButton}>
                         <img src={save} alt=""/>
@@ -81,4 +77,4 @@ const Form: React.FC<Props> = (props) => {
 };
 
 
-export default Form;
+export default React.memo(Form);

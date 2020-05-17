@@ -1,6 +1,6 @@
 import React from "react";
 import '../history.scss';
-import separator from './../../../assets/images/separator.svg';
+import TableItem from "./TableItem/TableItem";
 
 interface Props {
     checkedAll: boolean,
@@ -8,6 +8,7 @@ interface Props {
 }
 
 const TableHeader: React.FC<Props> = (props) => {
+    const tableTitles: Array<string> = ['Name', 'Category', 'Price', 'Count', 'Spent', 'Date'];
 
     return (
         <div className={'table__header'}>
@@ -18,30 +19,7 @@ const TableHeader: React.FC<Props> = (props) => {
                 </label>
             </div>
 
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Name</p>
-            </div>
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Category</p>
-            </div>
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Price</p>
-            </div>
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Count</p>
-            </div>
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Spent</p>
-            </div>
-            <div className={'table__header__item'}>
-                <img src={separator} alt=""/>
-                <p>Date</p>
-            </div>
+            {tableTitles.map((item: string) => <TableItem title={item}/>)}
         </div>
     )
 };

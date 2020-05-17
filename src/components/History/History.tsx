@@ -89,12 +89,9 @@ const History: React.FC = (props: any) => {
         <div className={'history'}>
             <h2>History</h2>
 
-            {showConfirm ? <Confirm className={'confirm show'}
+            <Confirm className={showConfirm ? 'confirm show': 'confirm'}
                                     title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} ${chosenItems.length === 1 ? 'item' : 'items'}?`}
-                                    func={onDeleteExpense} close={() => setShowConfirm(false)}/> :
-                <Confirm className={'confirm'}
-                         title={`Do you want delete ${chosenItems === null ? 0 : chosenItems.length} items?`}
-                         func={onDeleteExpense} close={() => setShowConfirm(false)}/>}
+                                    func={onDeleteExpense} close={() => setShowConfirm(false)}/>
 
             <Filter categories={props.categories} descending={descending} setDescending={setDescending} filter={filter}
                     setFilter={setFilter} sort={sort} setSort={setSort} sortValues={sortValues} dateLower={dateLower}
@@ -109,26 +106,35 @@ const History: React.FC = (props: any) => {
                         title={`${chosenItems === null ? 0 : chosenItems.length}`}/>
             </div>
 
-            <Form currentPage={currentPage} categories={props.categories} showForm={showForm} addExpenseThunkCreator={props.addExpenseThunkCreator} getCategoriesThunkCreator={props.getCategoriesThunkCreator}/>
+            <Form currentPage={currentPage} categories={props.categories} showForm={showForm}
+                  addExpenseThunkCreator={props.addExpenseThunkCreator}
+                  getCategoriesThunkCreator={props.getCategoriesThunkCreator}/>
 
-            <HistoryItems checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading} changeExpenseThunkCreator={props.changeExpenseThunkCreator}
+            <HistoryItems checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading}
+                          changeExpenseThunkCreator={props.changeExpenseThunkCreator}
                           chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
                           filter={filter} sort={sort} descending={descending} expenses={props.expenses}
                           deleteExpense={props.deleteExpense} setExpenses={props.setExpenses}
                           dateLower={dateLower} dateHigher={dateHigher} filterInRange={filterInRange}/>
-            {props.pages > 1 ? <div className={'buttons'}>
+
+            {props.pages > 1 && <div className={'buttons'}>
                 <Button image={start} className={'button button--pages'} func={() => setCurrentPage(1)}/>
-                <Button image={prev} className={'button button--pages'} func={() => currentPage !== 1 ? setCurrentPage(currentPage - 1) : null}/>
+                <Button image={prev} className={'button button--pages'}
+                        func={() => currentPage !== 1 ? setCurrentPage(currentPage - 1) : null}/>
 
-                <div className={'pages'}>{pages.map((item: any) => <button className={'button'} key={item || 0} style={item === currentPage ? {fontWeight: 'bold'} : {}}
-                                                       onClick={() => {
-                                                           props.getExpensesThunkCreator(item);
-                                                           setCurrentPage(item || 0);
-                                                       }}>{item}</button>)}</div>
+                <div className={'pages'}>
+                    {pages.map((item: any) => <button className={'button'} key={item || 0}
+                                                      style={item === currentPage ? {fontWeight: 'bold'} : {}}
+                                                      onClick={() => {
+                                                          props.getExpensesThunkCreator(item);
+                                                          setCurrentPage(item || 0);
+                                                      }}>{item}</button>)}
+                </div>
 
-                <Button image={next} className={'button button--pages'} func={() => currentPage !== props.pages ? setCurrentPage(currentPage + 1) : null}/>
+                <Button image={next} className={'button button--pages'}
+                        func={() => currentPage !== props.pages ? setCurrentPage(currentPage + 1) : null}/>
                 <Button image={end} className={'button button--pages'} func={() => setCurrentPage(props.pages)}/>
-            </div> : null}
+            </div>}
 
         </div>
     )
