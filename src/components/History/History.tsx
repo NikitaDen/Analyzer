@@ -9,12 +9,12 @@ import {
 import Form from "./Form/Form";
 import Filter from "./Filter/Filter";
 import HistoryItems from "./HistoryItems/HistoryItems";
-import add from './../../assets/images/add.svg';
 import Button from "../Button/Button";
-import del from './../../assets/images/delete.svg';
 import Confirm from "../Confirm/Confirm";
 import {getUser} from "../../redux/account-reducer";
 import {Redirect} from "react-router-dom";
+import add from './../../assets/images/add.svg';
+import del from './../../assets/images/delete.svg';
 import prev from '../../assets/images/prev.svg';
 import next from '../../assets/images/next.svg';
 import end from '../../assets/images/end.svg';
@@ -37,6 +37,7 @@ const History: React.FC = (props: any) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [deleteFlag, setDeleteFlag] = useState(true);
     const [checkedAll, setCheckedAll] = useState(false);
+
     const sortValues = ['By Date', 'By Spent', 'By Categories', 'By Name', 'By Count'];
 
     useEffect(() => {
@@ -47,6 +48,11 @@ const History: React.FC = (props: any) => {
     useEffect(() => {
         props.getExpensesThunkCreator(currentPage);
     }, [currentPage, deleteFlag]);
+
+    const onChangeCurrentPage = (item: number) => {
+        props.getExpensesThunkCreator(item);
+        setCurrentPage(item || 0);
+    };
 
     const onChangeDateLower = (date: any) => {
         setDateLower(date);
@@ -71,7 +77,7 @@ const History: React.FC = (props: any) => {
         }
     };
 
-    let pages = [];
+    let pages;
 
     if (currentPage === props.pages) {
         pages = props.pages > 2 ? [currentPage - 2, currentPage - 1, currentPage] : [currentPage - 1, currentPage];
@@ -106,11 +112,10 @@ const History: React.FC = (props: any) => {
                         title={`${chosenItems === null ? 0 : chosenItems.length}`}/>
             </div>
 
-            <Form currentPage={currentPage} categories={props.categories} showForm={showForm}
-                  addExpenseThunkCreator={props.addExpenseThunkCreator}
+            <Form currentPage={currentPage} categories={props.categories} getExpensesThunkCreator={() => props.getExpensesThunkCreator(currentPage)} showForm={showForm} addExpenseThunkCreator={props.addExpenseThunkCreator}
                   getCategoriesThunkCreator={props.getCategoriesThunkCreator}/>
 
-            <HistoryItems checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading}
+            <HistoryItems getExpensesThunkCreator={() => props.getExpensesThunkCreator(currentPage)} checkedAll={checkedAll} setCheckedAll={setCheckedAll} isLoading={props.isLoading}
                           changeExpenseThunkCreator={props.changeExpenseThunkCreator}
                           chosenItems={chosenItems} setChosenItems={setChosenItems} categories={props.categories}
                           filter={filter} sort={sort} descending={descending} expenses={props.expenses}
@@ -120,19 +125,16 @@ const History: React.FC = (props: any) => {
             {props.pages > 1 && <div className={'buttons'}>
                 <Button image={start} className={'button button--pages'} func={() => setCurrentPage(1)}/>
                 <Button image={prev} className={'button button--pages'}
-                        func={() => currentPage !== 1 ? setCurrentPage(currentPage - 1) : null}/>
+                        func={() => currentPage !== 1 && setCurrentPage(currentPage - 1)}/>
 
                 <div className={'pages'}>
                     {pages.map((item: any) => <button className={'button'} key={item || 0}
                                                       style={item === currentPage ? {fontWeight: 'bold'} : {}}
-                                                      onClick={() => {
-                                                          props.getExpensesThunkCreator(item);
-                                                          setCurrentPage(item || 0);
-                                                      }}>{item}</button>)}
+                                                      onClick={() => onChangeCurrentPage(item)}>{item}</button>)}
                 </div>
 
                 <Button image={next} className={'button button--pages'}
-                        func={() => currentPage !== props.pages ? setCurrentPage(currentPage + 1) : null}/>
+                        func={() => currentPage !== props.pages && setCurrentPage(currentPage + 1)}/>
                 <Button image={end} className={'button button--pages'} func={() => setCurrentPage(props.pages)}/>
             </div>}
 

@@ -1,4 +1,4 @@
-export type actionCreator = {
-    type: string,
+export type ActionCreator<T> = {
+    type: T,
     [key: string]: any
 }

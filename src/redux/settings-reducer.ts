@@ -1,17 +1,23 @@
 import {baseURL, refreshToken, settingsAPI} from "../api/api";
 import axios from "axios";
 import {showLoading} from "./account-reducer";
-import {actionCreator} from "./interfaces";
+import {ActionCreator} from "./interfaces";
+import {Dispatch} from "redux";
 
 const ADD_CATEGORY = 'ADD_CATEGORY';
 const DELETE_CATEGORY = 'DELETE_CATEGORY';
 const GET_CATEGORIES = 'GET_CATEGORIES';
 
+export type CategoryType = {
+    name: string,
+    id: number
+}
+
 let initialState: any = {
     categories: []
 };
 
-const settingsReducer = (state = initialState, action: any) => {
+const settingsReducer = (state = initialState, action: ActionCreator<string>) => {
     switch (action.type) {
         case GET_CATEGORIES: {
             return {
@@ -44,8 +50,8 @@ const settingsReducer = (state = initialState, action: any) => {
     }
 };
 
-export const addCategory = (name: string, id: any): actionCreator => ({type: ADD_CATEGORY, name, id});
-export const addCategoriesThunkCreator = (name: string, id: any) => async (dispatch: any) => {
+export const addCategory = (name: string, id: number): ActionCreator<typeof ADD_CATEGORY> => ({type: ADD_CATEGORY, name, id});
+export const addCategoriesThunkCreator = (name: string, id: number) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
     try {
         dispatch(addCategory(name, id));
@@ -57,8 +63,10 @@ export const addCategoriesThunkCreator = (name: string, id: any) => async (dispa
     }
 };
 
-export const getCategories = (categories: any): actionCreator => ({type: GET_CATEGORIES, categories});
-export const getCategoriesThunkCreator = () => async (dispatch: any) => {
+
+
+export const getCategories = (categories: Array<CategoryType>): ActionCreator<typeof GET_CATEGORIES> => ({type: GET_CATEGORIES, categories});
+export const getCategoriesThunkCreator = () => async (dispatch: Dispatch) => {
     try {
         const response = await axios.get(`${baseURL}/settings/categories`, {
             headers: {
@@ -72,12 +80,11 @@ export const getCategoriesThunkCreator = () => async (dispatch: any) => {
     }
 };
 
-export const deleteCategory = (id: string): actionCreator => ({type: DELETE_CATEGORY, id});
-export const deleteCategoryThunkCreator = (id: any) => async (dispatch: any) => {
+export const deleteCategory = (id: number): ActionCreator<typeof DELETE_CATEGORY> => ({type: DELETE_CATEGORY, id});
+export const deleteCategoryThunkCreator = (id: number) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {
-        debugger
         dispatch(deleteCategory(id));
 
         await settingsAPI.deleteExpense(id);

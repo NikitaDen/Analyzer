@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface Props {
     descending: string,
-    setDescending(value: any): void,
+    setDescending(value: string): void,
 }
 
 const ItemDirection: React.FC<Props> = (props) => {

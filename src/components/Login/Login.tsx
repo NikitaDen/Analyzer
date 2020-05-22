@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import {
-    getUser, setInfo,
-    userLoginThunkCreator,
-    userLogoutThunkCreator,
-    userRegisterThunkCreator
-} from "../../redux/account-reducer";
+import {getUser, userLoginThunkCreator} from "../../redux/account-reducer";
 import {Redirect, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import './login.scss';
@@ -18,7 +13,17 @@ import {
 } from "../../selectors/account-selectors";
 import Intro from "../Intro/Intro";
 
-const Login: React.FC = (props: any) => {
+type Props = {
+    isAuth: boolean,
+    isLoading: boolean,
+    isLoginLoading: boolean,
+    info: string,
+    userLoginThunkCreator: (email: string, password: string) => void,
+    getUser: () => void,
+    history: Array<string>
+}
+
+const Login: React.FC<Props> = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -28,12 +33,10 @@ const Login: React.FC = (props: any) => {
 
     const onLoginClick = () => {
         props.userLoginThunkCreator(email, password);
-        props.setInfo('');
     };
 
     const onRegisterClick = () => {
         props.history.push('register');
-        props.setInfo('');
     };
 
 
@@ -72,9 +75,6 @@ const mapStateToProps = (store: any) => ({
 });
 
 export default compose(
-    connect(mapStateToProps, {
-        userLoginThunkCreator, userLogoutThunkCreator,
-        userRegisterThunkCreator, getUser, setInfo
-    }),
+    connect(mapStateToProps, {userLoginThunkCreator, getUser}),
     withRouter
 )(Login);

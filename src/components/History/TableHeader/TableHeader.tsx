@@ -19,7 +19,7 @@ const TableHeader: React.FC<Props> = (props) => {
                 </label>
             </div>
 
-            {tableTitles.map((item: string) => <TableItem title={item}/>)}
+            {tableTitles.map((item: string) => <TableItem key={item} title={item}/>)}
         </div>
     )
 };

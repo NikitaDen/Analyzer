@@ -27,9 +27,7 @@ const Confirm: React.FC<Props> = (props) => {
                     </button>
                     <p>No</p>
                 </div>
-
             </div>
-
         </div>
     )
 };

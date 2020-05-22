@@ -13,18 +13,18 @@ interface Props {
     filterInRange: boolean,
     sortValues: Array<string>,
     descending: string,
-    dateHigher: any,
-    dateLower: any,
+    dateHigher: number,
+    dateLower: number,
 
-    setFilter(value: any): void,
+    setFilter(value: string): void,
 
-    setSort(value: any): void,
+    setSort(value: string): void,
 
-    setDescending(value: any): void,
+    setDescending(value: string): void,
 
-    onChangeDateLower(date: any): void,
+    onChangeDateLower(date: Date): void,
 
-    onChangeDateHigher(date: any): void,
+    onChangeDateHigher(date: Date): void,
 
     setFilterInRange(filter: boolean): void,
 }
@@ -40,7 +40,7 @@ const Filter: React.FC<Props> = (props) => {
 
             <ItemDirection descending={props.descending} setDescending={props.setDescending}/>
 
-            <ItemDates filterInRange={props.filterInRange} dateHigher={props.dateHigher} dateLower={props.dateLower}
+            <ItemDates filterInRange={props.filterInRange} dateHigher={new Date(props.dateHigher)} dateLower={new Date(props.dateLower)}
                        onChangeDateLower={props.onChangeDateLower} onChangeDateHigher={props.onChangeDateHigher}
                        setFilterInRange={props.setFilterInRange}/>
         </div>

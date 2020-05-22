@@ -1,30 +1,29 @@
-import React, {useEffect, useState} from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import Confirm from "../../Confirm/Confirm";
 import './expense.scss';
 import Button from "../../Button/Button";
 import edit from "../../../assets/images/edit.svg";
 import save from "../../../assets/images/save.svg";
+import {CategoryType} from "../../../redux/settings-reducer";
 
 interface Props {
     id: number,
     name: string,
-    category: any,
-    count: any,
-    price: any,
-    spent: any,
+    category: string,
+    count: number,
+    price: number,
+    spent: number,
     date: string,
-    categories: any,
+    categories: Array<CategoryType>,
     chosenItems: Array<any>,
     checkedAll: boolean,
 
-    setChosenItems(val?: any): any,
+    setChosenItems(val?: any): void,
 
     deleteExpense(id: any): void,
-
-    changeExpenseThunkCreator(id: number, name: string, category: any, spent: any, count: any, price: any): void
+    getExpensesThunkCreator(par?: any): void,
+    changeExpenseThunkCreator(id: number, name: string, category: string, spent: number, count: number, price: number): void
 }
-
-
 
 const Expense: React.FC<Props> = (props) => {
     const [name, setName] = useState(props.name);
@@ -67,16 +66,15 @@ const Expense: React.FC<Props> = (props) => {
     };
 
     const onSaveCategory = () => {
-
         props.changeExpenseThunkCreator(props.id, name, category, spent, count, price);
         setEditMode(false);
     };
 
-    const onChangeName = (e: any) => {
+    const onChangeName = (e: ChangeEvent<HTMLInputElement>) => {
         setName(e.currentTarget.value)
     };
 
-    const onChangeCategory = (e: any) => {
+    const onChangeCategory = (e: ChangeEvent<HTMLSelectElement>) => {
         setCategory(e.currentTarget.value)
     };
 
@@ -115,8 +113,8 @@ const Expense: React.FC<Props> = (props) => {
                         {props.categories.map((item: any) => <option key={item.name}
                                                                      value={item.name}>{item.name}</option>)}
                     </select>
-                    <input type="number" id={'price'} value={price} min={0} onChange={(e) => setPrice(e.target.value)}/>
-                    <input type="number" id={'count'} value={count} min={1} onChange={(e) => setCount(e.target.value)}/>
+                    <input type="number" id={'price'} value={price} min={0} onChange={(e) => setPrice(+e.target.value)}/>
+                    <input type="number" id={'count'} value={count} min={1} onChange={(e) => setCount(+e.target.value)}/>
 
                     <p>{spent}</p>
 

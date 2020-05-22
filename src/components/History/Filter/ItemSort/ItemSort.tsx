@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 interface Props {
     sort: string,
     sortValues: Array<string>,
-    setSort(value: any): void,
+    setSort(value: string): void,
 }
 
 const ItemSort: React.FC<Props> = (props) => {

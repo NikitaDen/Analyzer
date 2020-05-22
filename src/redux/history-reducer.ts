@@ -1,7 +1,9 @@
 import {showLoading} from "./account-reducer";
 import {baseURL, historyAPI, refreshToken} from "../api/api";
 import axios from "axios";
-import {actionCreator} from "./interfaces";
+import {ActionCreator} from "./interfaces";
+import { Dispatch } from "redux";
+import {CategoryType} from "./settings-reducer";
 
 const ADD_EXPENSE = 'ADD_EXPENSE';
 const DELETE_EXPENSE = 'DELETE_EXPENSE';
@@ -9,10 +11,10 @@ const GET_EXPENSES = 'GET_EXPENSES';
 const GET_PAGES = 'GET_PAGES';
 const CHANGE_EXPENSE = 'CHANGE_EXPENSE';
 
-let initialState: any = {
-    expenses: [],
-    pages: 1,
-    limit: 10,
+type InitialState = {
+    expenses: Array<Expense>,
+    pages: number,
+    limit: number,
 };
 
 interface Expense {
@@ -24,7 +26,13 @@ interface Expense {
     spent: number,
 }
 
-const historyReducer = (state = initialState, action: any) => {
+let initialState: InitialState = {
+    expenses: [],
+    pages: 1,
+    limit: 10,
+};
+
+const historyReducer = (state = initialState, action: ActionCreator<string>) => {
     switch (action.type) {
         case ADD_EXPENSE:
             return {
@@ -81,8 +89,8 @@ const historyReducer = (state = initialState, action: any) => {
     }
 };
 
-export const addExpense = (expense: Expense): actionCreator => ({type: ADD_EXPENSE, expense});
-export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) => {
+export const addExpense = (expense: Expense): ActionCreator<typeof ADD_EXPENSE> => ({type: ADD_EXPENSE, expense});
+export const addExpenseThunkCreator = (expense: Expense) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {
@@ -102,8 +110,8 @@ export const addExpenseThunkCreator = (expense: any) => async (dispatch: any) =>
     }
 };
 
-export const deleteExpense = (id: any): actionCreator => ({type: DELETE_EXPENSE, id});
-export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => {
+export const deleteExpense = (id: Array<string>): ActionCreator<typeof DELETE_EXPENSE> => ({type: DELETE_EXPENSE, id});
+export const deleteExpensesThunkCreator = (id: Array<string>) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {
@@ -116,10 +124,10 @@ export const deleteExpensesThunkCreator = (id: any) => async (dispatch: any) => 
 };
 
 
-export const getExpenses = (expenses: any): actionCreator => ({type: GET_EXPENSES, expenses});
-export const getPages = (pages: any): actionCreator => ({type: GET_PAGES, pages});
+export const getExpenses = (expenses: Array<Expense>): ActionCreator<typeof GET_EXPENSES> => ({type: GET_EXPENSES, expenses});
+export const getPages = (pages: number): ActionCreator<typeof GET_PAGES> => ({type: GET_PAGES, pages});
 
-export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: any) => {
+export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {
@@ -136,7 +144,7 @@ export const getExpensesThunkCreator = (page: number = 1) => async (dispatch: an
     }
 };
 
-export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
+export const getAllExpensesThunkCreator = () => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {
@@ -152,16 +160,10 @@ export const getAllExpensesThunkCreator = () => async (dispatch: any) => {
     }
 };
 
-export const changeExpense = (id: number, name: string, category: string, spent: number, count: number, price: number): actionCreator => ({
-    type: CHANGE_EXPENSE,
-    id,
-    name,
-    category,
-    spent,
-    count,
-    price
+export const changeExpense = (id: number, name: string, category: string, spent: number, count: number, price: number): ActionCreator<typeof CHANGE_EXPENSE> => ({
+    type: CHANGE_EXPENSE, id, name, category, spent, count, price
 });
-export const changeExpenseThunkCreator = (id: number, name: string, category: any, spent: number, count: number, price: number) => async (dispatch: any) => {
+export const changeExpenseThunkCreator = (id: number, name: string, category: string, spent: number, count: number, price: number) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
 
     try {

@@ -6,12 +6,12 @@ import clear from './../../../../assets/images/clear.svg';
 
 interface Props {
     filterInRange: boolean,
-    dateHigher: any,
-    dateLower: any,
+    dateHigher: Date,
+    dateLower: Date,
 
-    onChangeDateLower(date: any): void,
+    onChangeDateLower(date: Date): void,
 
-    onChangeDateHigher(date: any): void,
+    onChangeDateHigher(date: Date): void,
 
     setFilterInRange(filter: boolean): void,
 }

@@ -14,7 +14,7 @@ const Intro = () => {
 
             <Button image={next} className={!showIntro ? 'button button--about' : 'button button--about active'} func={() => setShowIntro(!showIntro)}/>
 
-            {showIntro ? <div className={'intro'}>
+            {showIntro && <div className={'intro'}>
                 <p>This app helps you to track your expenses in time, check some info according to your expenses (the
                     biggest expense, expenses by categories, spending per day for some period, etc.)</p>
                 <p>App based on <b>MERN</b> stack. I've used a <b>JWT token</b> (expires every 30 seconds) with refresh
@@ -25,8 +25,7 @@ const Intro = () => {
                     <p><b>Email:</b></p> <span>example@mail.com</span>
                     <p><b>Password (at least 6 characters):</b></p> <span>1234567</span>
                 </div>
-            </div> : null}
-
+            </div>}
         </>
     )
 };

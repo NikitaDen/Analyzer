@@ -3,12 +3,14 @@ import './form.scss';
 import save from './../../../assets/images/save.svg';
 import {NavLink} from "react-router-dom";
 import FormElement from "./FormElement/FormElement";
+import {CategoryType} from "../../../redux/settings-reducer";
 
 interface Props {
-    categories: any,
+    categories: Array<CategoryType>,
     showForm: boolean,
     currentPage: number,
     getCategoriesThunkCreator(): void,
+    getExpensesThunkCreator(): any,
     addExpenseThunkCreator<T extends object>(expense: T): void,
 }
 
@@ -42,7 +44,7 @@ const Form: React.FC<Props> = (props) => {
 
     return (
         <>
-            {props.showForm ? <>
+            {props.showForm && <>
                 <div className={'form'}>
                     <FormElement title={'Name'}>
                         <input type="text" autoFocus={true} className={!error ? 'name' : 'name name--error'} id={'name'} value={name}
@@ -71,10 +73,8 @@ const Form: React.FC<Props> = (props) => {
                         <img src={save} alt=""/>
                     </button>
                 </div>
-
-            </> : null}</>
+            </>}</>
     )
 };
-
 
 export default React.memo(Form);

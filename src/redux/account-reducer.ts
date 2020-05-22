@@ -1,8 +1,8 @@
 import {authAPI, baseURL, refreshToken} from "../api/api";
 import {getExpenses} from "./history-reducer";
 import axios from "axios";
-import {actionCreator} from "./interfaces";
-
+import {ActionCreator} from "./interfaces";
+import { Dispatch } from "redux";
 
 const USER_LOGIN = 'USER_LOGIN';
 const GET_USER = 'GET_USER';
@@ -10,8 +10,15 @@ const SHOW_LOADING = 'SHOW_LOADING';
 const LOGIN_LOADING = 'LOGIN_LOADING';
 const INFO = 'INFO';
 
-let initialState: any = {
-    isAuth: localStorage.getItem('isAuth') || false,
+type InitialState = {
+    isAuth: boolean,
+    isLoading: boolean,
+    isLoginLoading: boolean,
+    info: string,
+}
+
+const initialState: InitialState = {
+    isAuth: !!localStorage.getItem('isAuth') || false,
     isLoading: false,
     isLoginLoading: false,
     info: '',
@@ -47,13 +54,13 @@ const accountReducer = (state = initialState, action: any) => {
     }
 };
 
-export const userLogin = (isAuth: boolean): actionCreator => ({type: USER_LOGIN, isAuth});
-export const setInfo = (info: any): actionCreator => ({type: INFO, info});
-export const getUser = (): actionCreator => ({type: GET_USER});
-export const showLoading = (isLoading: boolean): actionCreator => ({type: SHOW_LOADING, isLoading});
-export const loginLoading = (isLoading: boolean): actionCreator => ({type: LOGIN_LOADING, isLoading});
+export const userLogin = (isAuth: boolean): ActionCreator<typeof USER_LOGIN> => ({type: USER_LOGIN, isAuth});
+export const setInfo = (info: string): ActionCreator<typeof INFO> => ({type: INFO, info});
+export const getUser = (): ActionCreator<typeof GET_USER> => ({type: GET_USER});
+export const showLoading = (isLoading: boolean): ActionCreator<typeof SHOW_LOADING> => ({type: SHOW_LOADING, isLoading});
+export const loginLoading = (isLoading: boolean): ActionCreator<typeof LOGIN_LOADING> => ({type: LOGIN_LOADING, isLoading});
 
-export const userLoginThunkCreator = (email: string, password: string) => async (dispatch: any) => {
+export const userLoginThunkCreator = (email: string, password: string) => async (dispatch: Dispatch) => {
     dispatch(loginLoading(true));
 
     try {
@@ -75,7 +82,7 @@ export const userLoginThunkCreator = (email: string, password: string) => async 
     }
 };
 
-export const userRegisterThunkCreator = (name: string, email: string, password: string) => async (dispatch: any) => {
+export const userRegisterThunkCreator = (name: string, email: string, password: string) => async (dispatch: Dispatch) => {
     dispatch(loginLoading(true));
 
     try {
@@ -91,7 +98,7 @@ export const userRegisterThunkCreator = (name: string, email: string, password: 
     }
 };
 
-export const userLogoutThunkCreator = () => async (dispatch: any) => {
+export const userLogoutThunkCreator = () => async (dispatch: Dispatch) => {
     dispatch(userLogin(false));
     dispatch(getExpenses([]));
 

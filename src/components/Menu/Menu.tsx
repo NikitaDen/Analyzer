@@ -19,22 +19,22 @@ const Menu = (props: any) => {
             <div className={'menu'}>
                 <NavLink className={'menu__item'} to={'/history'}>
                     <p>History</p>
-                    <img src={history} alt=""/>
+                    <img src={history} alt="H"/>
                 </NavLink>
                 <NavLink className={'menu__item'} to={'/analytics'}>
                     <p>Analytics</p>
-                    <img src={analytics} alt=""/>
+                    <img src={analytics} alt="A"/>
                 </NavLink>
                 <NavLink className={'menu__item'} to={'/settings'}>
                     <p>Settings</p>
-                    <img src={settings} alt=""/>
+                    <img src={settings} alt="S"/>
                 </NavLink>
             </div>
             <div className={'login-buttons'}>
-                {props.isAuth ? <>
+                {props.isAuth && <>
                     <Button image={logout} className={'button button--logout'}
-                            func={() => props.userLogoutThunkCreator()} title={''}/>
-                </> : null}
+                            func={props.userLogoutThunkCreator} title={''}/>
+                </>}
             </div>
         </nav>
     )

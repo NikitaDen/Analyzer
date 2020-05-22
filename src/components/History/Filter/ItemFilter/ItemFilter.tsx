@@ -1,19 +1,20 @@
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import {CategoryType} from "../../../../redux/settings-reducer";
 
 interface Props {
     filter: string,
-    categories: any,
+    categories: Array<CategoryType>,
 
-    setFilter(value: any): void,
+    setFilter(value: string): void,
 
-    setSort(value: any): void,
+    setSort(value: string): void,
 
-    setDescending(value: any): void,
+    setDescending(value: string): void,
 }
 
 const ItemFilter: React.FC<Props> = (props) => {
-
+    console.log(props);
     return (
         <div className={'filter__item filter__item--filter'}>
             <label htmlFor="filter">Filter</label>

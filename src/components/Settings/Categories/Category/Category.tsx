@@ -4,27 +4,17 @@ import clear from "../../../../assets/images/clear-dark.svg";
 
 interface Props {
     name: string,
-    id: any,
-    showConfirm: boolean,
-
-    setShowConfirm(show: boolean): any,
-
-    deleteCategoryThunkCreator(id: string): void,
-
-    onDeleteCategory(id: string): void,
-
-    onCloseConfirmWindow(): void,
+    id: number,
 
     onShowConfirmWindow(): void,
 
-    setCategoryId(id: string): any,
+    setCategoryId(id: number): any,
 }
 
 const Category: React.FC<Props> = (props) => {
 
     return (
         <>
-
             <div key={props.name} className={'category'}>
                 <p>{props.name}</p>
                 <button className={'button'} onClick={() => {

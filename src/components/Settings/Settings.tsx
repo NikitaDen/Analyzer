@@ -11,20 +11,21 @@ import {Redirect} from "react-router-dom";
 import Loader from "../Loader/Loader";
 import {isAuthSelector, isLoadingSelector} from "../../selectors/account-selectors";
 import {categoriesSelector} from "../../selectors/settings-selector";
+import {CategoryType} from "../../redux/settings-reducer";
 
 
 interface Props {
-    categories: any,
+    categories: Array<CategoryType>,
     isAuth: boolean,
     isLoading: boolean,
 
-    addCategoriesThunkCreator(name: string, id: any): void,
+    addCategoriesThunkCreator(name: string, id: number): void,
 
     getCategoriesThunkCreator(): void,
 
     getUser(): void,
 
-    deleteCategoryThunkCreator(id: string): void,
+    deleteCategoryThunkCreator(id: number): void,
 }
 
 const Settings: React.FC<Props> = (props) => {
