@@ -7,7 +7,7 @@ interface Props {
 
 const TableItem: React.FC<Props> = (props) => <div className={'table__header__item'}>
     <img src={separator} alt="|"/>
-    <p>Name</p>
+    <p>{props.title}</p>
 </div>;
 
 export default TableItem;

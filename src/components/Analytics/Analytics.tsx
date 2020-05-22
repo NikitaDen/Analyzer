@@ -4,19 +4,30 @@ import {connect} from "react-redux";
 import Period from "./Period/Period";
 import {getAllExpensesThunkCreator} from "../../redux/history-reducer";
 import AnalyticsInfo from "./AnalyticsInfo/AnalyticsInfo";
-import {addCategoriesThunkCreator, getCategories, getCategoriesThunkCreator} from "../../redux/settings-reducer";
+import {
+    addCategoriesThunkCreator,
+    CategoryType,
+    getCategories,
+    getCategoriesThunkCreator
+} from "../../redux/settings-reducer";
 import {Redirect} from "react-router-dom";
 import {categoriesSelector} from "../../selectors/settings-selector";
 import {isAuthSelector} from "../../selectors/account-selectors";
 import {expensesSelector, pagesSelector} from "../../selectors/history-selectors";
 import BiggestExpense from "./BiggestExpense/BiggestExpense";
 
-interface Expenses {
-    id: any
+export type Expenses = {
+    id: number
     category: string
     spent: number,
     name: string,
     date: Date
+}
+
+type CategoriesForAnalytics = {
+    category: string,
+    spent: number,
+    expenses: Array<Expenses>
 }
 
 const Analytics = (props: any) => {
@@ -35,7 +46,7 @@ const Analytics = (props: any) => {
         return [...props.expenses].reduce((sum: any, item: any) => sum + item.spent, 0);
     };
     const findTotalSpendingForPeriod = () => {
-        return [...props.expenses].filter((item: any) => item.id > dateLower && item.id < dateHigher).reduce((sum: any, item: any) => sum + item.spent, 0)
+        return [...props.expenses].filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher).reduce((sum: any, item: any) => sum + item.spent, 0)
     };
 
     const showMoreDetailsForCategory = (category: string) => {
@@ -46,19 +57,19 @@ const Analytics = (props: any) => {
     const showMoreDetailsForCategoryForPeriod = (category: string) => {
         setShowMoreInfo(true);
         setMoreInfo([...props.expenses]
-            .filter((item: Expenses) => item.id > dateLower && item.id < dateHigher)
+            .filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher)
             .filter((item: Expenses) => item.category === category));
     };
 
     const defineChartInfo = (forPeriod: boolean) => {
-        let categories: Array<any> = [];
+        let categories: Array<CategoriesForAnalytics> = [];
 
-        props.categories.forEach((category: any) => categories.push({
+        props.categories.forEach((category: CategoryType) => categories.push({
             category: category.name,
             spent: forPeriod ?
-                [...props.expenses].filter((item: Expenses) => item.id > dateLower && item.id < dateHigher && item.category === category.name).reduce((sum: number, elem: any) => sum + elem.spent, 0) :
+                [...props.expenses].filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher && item.category === category.name).reduce((sum: number, elem: Expenses) => sum + elem.spent, 0) :
                 [...props.expenses].filter((item: Expenses) => item.category === category.name).reduce((sum: number, elem: any) => sum + elem.spent, 0),
-            expenses: forPeriod ? [...props.expenses].filter((item: Expenses) => item.id > dateLower && item.id < dateHigher && item.category === category.name) : [...props.expenses].filter((item: Expenses) => item.category === category.name),
+            expenses: forPeriod ? [...props.expenses].filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher && item.category === category.name) : [...props.expenses].filter((item: Expenses) => item.category === category.name),
         }));
 
         return categories.filter(item => item.spent !== 0).sort((a, b) => a.spent - b.spent);
@@ -66,35 +77,35 @@ const Analytics = (props: any) => {
     const chartsFunc = () => defineChartInfo(false);
     const chartsFuncForPeriod = () => defineChartInfo(true);
 
-    const defineLineCharInfo = (forPeriod: boolean) => {
-        const lineDates: Array<string> = [];
+    const defineLineChartInfo = (forPeriod: boolean) => {
+        const lineChartData: Array<string> = [];
 
         forPeriod ?
             [...props.expenses]
-                .filter((item: Expenses) => item.id > dateLower && item.id < dateHigher)
+                .filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher)
                 .forEach((item: Expenses) => {
-                    lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
+                    lineChartData.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
                 }) :
             [...props.expenses]
                 .forEach((item: Expenses) => {
-                    lineDates.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
+                    lineChartData.push(`${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}`)
                 });
 
-        const newLineDates: Set<string> = new Set(lineDates);
+        const newLineDates: Set<string> = new Set(lineChartData);
 
-        interface Expense {
+        interface ExpenseForAnalytics {
             date: string
-            expenses: any
+            expenses: Expenses
         }
 
-        const expensesByDates: Array<Expense> = [];
+        const expensesByDates: Array<ExpenseForAnalytics> = [];
 
         newLineDates.forEach((date: string) => {
             expensesByDates.push({
                 date,
                 expenses: forPeriod ?
                     [...props.expenses]
-                        .filter((item: Expenses) => item.id > dateLower && item.id < dateHigher)
+                        .filter((item: Expenses) => new Date(item.id) > dateLower && new Date(item.id) < dateHigher)
                         .filter((item: Expenses) => `${new Date(item.id).getDate()}.${new Date(item.id).getMonth() + 1}.${new Date(item.id).getFullYear()}` === date)
                         .reduce((acc: number, item: Expenses) => acc + +item.spent, 0) :
                     [...props.expenses]
@@ -107,19 +118,19 @@ const Analytics = (props: any) => {
             labels: [...Array.from(newLineDates)].reverse(),
             datasets: [{
                 label: 'Spent',
-                data: [...expensesByDates.map((item: Expense) => item.expenses)].reverse(),
+                data: [...expensesByDates.map((item: ExpenseForAnalytics) => item.expenses)].reverse(),
                 backgroundColor: 'rgba(68, 138, 255, 0.2)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'white'
             }],
         };
     };
-    const lineChart = () => defineLineCharInfo(false);
-    const lineChartForPeriod = () => defineLineCharInfo(true);
+    const lineChart = () => defineLineChartInfo(false);
+    const lineChartForPeriod = () => defineLineChartInfo(true);
 
     const findBiggerSpentForPeriod = () => {
         return [...props.expenses]
-            .filter((item: Expenses) => item.id >= dateLower && item.id <= dateHigher && item.spent === Math.max(...props.expenses.filter((item: any) => item.id >= dateLower && item.id <= dateHigher)
+            .filter((item: Expenses) => new Date(item.id) >= dateLower && new Date(item.id) <= dateHigher && item.spent === Math.max(...props.expenses.filter((item: Expenses) => item.id >= +dateLower && item.id <= +dateHigher)
             .map((item: Expenses) => item.spent)))
             .map((item: Expenses) => <BiggestExpense id={item.id} name={item.name} spent={item.spent} date={item.date}/>)
     };

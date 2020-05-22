@@ -1,24 +1,26 @@
 import React from "react";
 import {Bar, Line} from 'react-chartjs-2';
+import {CategoryType} from "../../../redux/settings-reducer";
+import { Expenses } from "../Analytics";
 
 interface Props {
-    dateLower: any,
-    dateHigher: any,
-    categories: Array<any>,
+    dateLower: Date,
+    dateHigher: Date,
+    categories: Array<CategoryType>,
     title: string,
     showExpensesPerDay: boolean,
     showMoreInfo: boolean,
     moreInfo: any,
-    expenses: any
+    expenses: Array<Expenses>
 
     findTotalSpending(): number,
 
-    findBiggerSpent(): any,
+    findBiggerSpent(): Array<JSX.Element>,
 
     chartsFunc(): any,
     lineChart(): any
 
-    showMoreDetailsForCategory(item: any): any
+    showMoreDetailsForCategory(item: string): void
 }
 
 const AnalyticsInfo: React.FC<Props> = (props) => {
@@ -56,7 +58,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                     </div>
                     {props.showExpensesPerDay ? <div className={'cards__item'}>
                         <h3>Average spending per day:</h3>
-                        {Math.ceil(props.findTotalSpending() / Math.ceil((props.dateHigher - props.dateLower) / 86400000))}
+                        {Math.ceil(props.findTotalSpending() / Math.ceil((+props.dateHigher - +props.dateLower) / 86400000))}
                     </div> : <div className={'cards__item'}>
                         <h3>Average spending per day:</h3>
                         {Math.ceil(props.findTotalSpending() / diff) || 0}
@@ -82,7 +84,7 @@ const AnalyticsInfo: React.FC<Props> = (props) => {
                         <p>Click the column to see the details below.</p>
                         <div className={'analytics__categories'}>
                             <Bar data={barData} height={100}
-                                 getElementAtEvent={e => props.showMoreDetailsForCategory(e[0] ? e[0]._chart.config.data.labels[e[0]._index] : null)}/>
+                                 getElementAtEvent={e => props.showMoreDetailsForCategory(e[0] && e[0]._chart.config.data.labels[e[0]._index])}/>
                         </div>
                     </div>
 

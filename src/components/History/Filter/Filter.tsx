@@ -5,10 +5,11 @@ import ItemDates from "./ItemDates/ItemDates";
 import ItemFilter from "./ItemFilter/ItemFilter";
 import ItemSort from "./ItemSort/ItemSort";
 import ItemDirection from "./ItemDirection/ItemDirection";
+import {CategoryType} from "../../../redux/settings-reducer";
 
 interface Props {
     filter: string,
-    categories: any,
+    categories: Array<CategoryType>,
     sort: string,
     filterInRange: boolean,
     sortValues: Array<string>,

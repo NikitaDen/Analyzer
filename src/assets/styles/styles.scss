@@ -10,6 +10,10 @@ $header-font: 'Raleway', sans-serif;
   padding: 0;
   box-sizing: border-box;
   font-size: 1em;
+
+  @media all and (max-width: 1024px) {
+    font-size: .95em;
+  }
 }
 
 a {
