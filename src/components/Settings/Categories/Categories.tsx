@@ -78,7 +78,7 @@ const Categories: React.FC<Props> = (props) => {
                 </button>
             </div>
 
-            <Confirm className={showConfirm ? 'confirm show' : 'confirm'} title={'Are you sure?'}
+            <Confirm className={showConfirm ? 'confirm show' : 'confirm'} title={'This category will be deleted. Are you sure?'}
                      func={() => onDeleteCategory(+categoryId)}
                      close={onCloseConfirmWindow}/>
 

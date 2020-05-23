@@ -17,6 +17,7 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "cookie-parser": "^1.4.5",
+    "js-file-download": "^0.4.12",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",
     "react-date-picker": "^8.0.1",

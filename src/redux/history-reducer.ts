@@ -110,11 +110,11 @@ export const addExpenseThunkCreator = (expense: Expense) => async (dispatch: Dis
     }
 };
 
-export const deleteExpense = (id: Array<string>): ActionCreator<typeof DELETE_EXPENSE> => ({type: DELETE_EXPENSE, id});
-export const deleteExpensesThunkCreator = (id: Array<string>) => async (dispatch: Dispatch) => {
+export const deleteExpense = (id: Array<number>): ActionCreator<typeof DELETE_EXPENSE> => ({type: DELETE_EXPENSE, id});
+export const deleteExpensesThunkCreator = (id: Array<number>) => async (dispatch: Dispatch) => {
     dispatch(showLoading(true));
-
     try {
+        debugger
         dispatch(deleteExpense(id));
         await historyAPI.deleteExpense(id);
         dispatch(showLoading(false));

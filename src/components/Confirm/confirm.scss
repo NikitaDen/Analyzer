@@ -2,7 +2,7 @@
   position: fixed;
   top: -20%;
   left: 50%;
-  width: 15rem;
+  width: 21rem;
   transform: translate(-50%, -50%);
   box-shadow: 0 0 6px gray;
   padding: .5rem 1.5rem;
@@ -12,10 +12,6 @@
   z-index: 1000;
   transition: .4s ease-in-out;
 
-  &>p {
-    font-weight: bold;
-  }
-
   .buttons {
     justify-content: space-between;
 
@@ -23,14 +19,20 @@
       font-size: .9rem;
       display: flex;
       flex-direction: row;
+      align-items: center;
+
+      p {
+        height: 1.25rem;
+        padding-left: .5rem;
+      }
     }
   }
 
   &.show {
-    top: 50%;
+    top: 40%;
   }
 
-  p {
-    padding: .5rem;
+  &>p {
+    padding: .75rem;
   }
 }

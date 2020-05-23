@@ -12,7 +12,7 @@ const Button: React.FC<Props> = (props) => {
     return (
         <button disabled={props.disabled} className={props.className} onClick={props.func}>
             <img src={props.image} alt=""/>
-            {props.title ? <p>{props.title}</p> : null}
+            {props.title && <p>{props.title}</p>}
         </button>
     )
 };
