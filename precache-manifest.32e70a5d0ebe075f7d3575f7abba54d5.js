@@ -1,39 +1,39 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3c581f1f5cab2fd22b5a1e7f1e06cf3c",
+    "revision": "d4e7c7ed53d39a70446242d9cacd4dc1",
     "url": "/analyzer/index.html"
   },
   {
-    "revision": "6e119b98820d136eac0b",
+    "revision": "863010241955231ccf11",
     "url": "/analyzer/static/css/2.b90ce945.chunk.css"
   },
   {
-    "revision": "61e484cabd8beecca457",
-    "url": "/analyzer/static/css/3.b63fe266.chunk.css"
+    "revision": "ad28c7bd6078ba76b288",
+    "url": "/analyzer/static/css/3.17dced52.chunk.css"
   },
   {
-    "revision": "4c9cee2396c69ffe86d0",
-    "url": "/analyzer/static/css/main.7602e4ba.chunk.css"
+    "revision": "63e515eff2a261137541",
+    "url": "/analyzer/static/css/main.257461bd.chunk.css"
   },
   {
-    "revision": "6e119b98820d136eac0b",
-    "url": "/analyzer/static/js/2.23aa0656.chunk.js"
+    "revision": "863010241955231ccf11",
+    "url": "/analyzer/static/js/2.6d5d415f.chunk.js"
   },
   {
     "revision": "fbbfe9ed4dc77af342a4a500830ec9a4",
-    "url": "/analyzer/static/js/2.23aa0656.chunk.js.LICENSE.txt"
+    "url": "/analyzer/static/js/2.6d5d415f.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "61e484cabd8beecca457",
-    "url": "/analyzer/static/js/3.a7abcb4d.chunk.js"
+    "revision": "ad28c7bd6078ba76b288",
+    "url": "/analyzer/static/js/3.da550b60.chunk.js"
   },
   {
-    "revision": "4c9cee2396c69ffe86d0",
-    "url": "/analyzer/static/js/main.6ac8148a.chunk.js"
+    "revision": "63e515eff2a261137541",
+    "url": "/analyzer/static/js/main.59235a1f.chunk.js"
   },
   {
-    "revision": "d52b514d67e30c4afbae",
-    "url": "/analyzer/static/js/runtime-main.0f1accde.js"
+    "revision": "418d83522422c644b779",
+    "url": "/analyzer/static/js/runtime-main.f8e0fb7a.js"
   },
   {
     "revision": "8cb4e54be8010c96b4c90a4465a8e448",
@@ -68,8 +68,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/analyzer/static/media/confirm.a8562565.svg"
   },
   {
+    "revision": "4007b9b35f0d04c5019c3fd5f28f260e",
+    "url": "/analyzer/static/media/delete-all.4007b9b3.svg"
+  },
+  {
     "revision": "fa5e6b6a85f8552a50995e63e1f25402",
     "url": "/analyzer/static/media/delete.fa5e6b6a.svg"
+  },
+  {
+    "revision": "21e28e14dc04c4e997386cde0bfce16a",
+    "url": "/analyzer/static/media/download.21e28e14.svg"
   },
   {
     "revision": "b79003c0c571c86d71ec60d6b5bf1bfe",
