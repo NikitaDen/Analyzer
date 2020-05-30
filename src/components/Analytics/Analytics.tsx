@@ -132,12 +132,12 @@ const Analytics = (props: any) => {
         return [...props.expenses]
             .filter((item: Expenses) => new Date(item.id) >= dateLower && new Date(item.id) <= dateHigher && item.spent === Math.max(...props.expenses.filter((item: Expenses) => item.id >= +dateLower && item.id <= +dateHigher)
             .map((item: Expenses) => item.spent)))
-            .map((item: Expenses) => <BiggestExpense id={item.id} name={item.name} spent={item.spent} date={item.date}/>)
+            .map((item: Expenses) => <BiggestExpense key={item.id} id={item.id} name={item.name} spent={item.spent} date={item.date}/>)
     };
     const findBiggerSpent = () => {
         return [...props.expenses]
             .filter((item: Expenses) => item.spent === Math.max(...props.expenses.map((item: Expenses) => item.spent)))
-            .map((item: Expenses) => <BiggestExpense id={item.id} name={item.name} spent={item.spent} date={item.date}/>)
+            .map((item: Expenses) => <BiggestExpense key={item.id} id={item.id} name={item.name} spent={item.spent} date={item.date}/>)
     };
 
     if (!props.isAuth) {

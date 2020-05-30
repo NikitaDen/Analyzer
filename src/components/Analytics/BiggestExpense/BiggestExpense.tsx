@@ -9,7 +9,7 @@ interface Props {
 
 const BiggestExpense: React.FC<Props> = (props) => {
     return (
-        <div className={'biggest-spending'} key={props.id}>
+        <div className={'biggest-spending'}>
             <p>Name:</p>
             <span>{props.name}</span>
             <p>Spent:</p>

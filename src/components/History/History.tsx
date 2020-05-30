@@ -13,16 +13,17 @@ import Button from "../Button/Button";
 import Confirm from "../Confirm/Confirm";
 import {getUser} from "../../redux/account-reducer";
 import {Redirect} from "react-router-dom";
+import {expensesSelector, pagesSelector} from "../../selectors/history-selectors";
+import {categoriesSelector} from "../../selectors/settings-selector";
+import {isAuthSelector, isLoadingSelector} from "../../selectors/account-selectors";
+import {getCategoriesThunkCreator} from "../../redux/settings-reducer";
+
 import add from './../../assets/images/add.svg';
 import del from './../../assets/images/delete.svg';
 import prev from '../../assets/images/prev.svg';
 import next from '../../assets/images/next.svg';
 import end from '../../assets/images/end.svg';
 import start from '../../assets/images/start.svg';
-import {expensesSelector, pagesSelector} from "../../selectors/history-selectors";
-import {categoriesSelector} from "../../selectors/settings-selector";
-import {isAuthSelector, isLoadingSelector} from "../../selectors/account-selectors";
-import {getCategoriesThunkCreator} from "../../redux/settings-reducer";
 
 const History: React.FC = (props: any) => {
     const [filter, setFilter] = useState('noFilter');
